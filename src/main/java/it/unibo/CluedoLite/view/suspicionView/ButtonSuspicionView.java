@@ -2,7 +2,7 @@ package it.unibo.CluedoLite.view.suspicionview;
 
 import javax.swing.*;
 import it.unibo.CluedoLite.view.AppColorFont;
-import it.unibo.CluedoLite.controller.accuseandsuspectcontroller.impl.SuspicionController;
+import it.unibo.CluedoLite.controller.accuseandsuspectcontroller.api.InterfaceSuspicionController;
 
 /**
  * This class represents the button that triggers the suspicion phase in the game screen.
@@ -10,10 +10,10 @@ import it.unibo.CluedoLite.controller.accuseandsuspectcontroller.impl.SuspicionC
  *
  * Responsibilities:
  *  - displays a button always visible on the game screen
- *  - when clicked, delegates to the {@link SuspicionController} to open the suspicion view
+ *  - when clicked, delegates to the {@link InterfaceSuspicionController} to open the suspicion view
  *
  * This class has no game logic: it only knows the controller and calls
- * {@link SuspicionController#openSuspicionView()} when the button is pressed.
+ * {@link InterfaceSuspicionController#openSuspicionView()} when the button is pressed.
  * It does not know anything about the model, the cards, or the suspicion result.
  */
 public class ButtonSuspicionView extends JPanel {
@@ -25,7 +25,7 @@ public class ButtonSuspicionView extends JPanel {
      *
      * @param controller the {@link SuspicionController} that handles the suspicion phase.
      */
-    public ButtonSuspicionView(SuspicionController controller) {
+    public ButtonSuspicionView(InterfaceSuspicionController controller) {
 
         setBackground(AppColorFont.PANEL_BACKGROUND);
 
