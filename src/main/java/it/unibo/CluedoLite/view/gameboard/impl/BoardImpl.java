@@ -222,13 +222,32 @@ public class BoardImpl extends JPanel implements Board{
      * @param size the diameter of the token in pixels
      */
     private void drawToken(Graphics2D g2, Player p, int x, int y, int size) {
-        g2.setColor(Color.decode(p.getCharacter().getColor())); // trasforma nel formato "#FF0000"
-        g2.fillOval(x, y, size, size);
-        if (p == controller.currentPlayer()) {
-            g2.setColor(Color.BLACK);
-            g2.setStroke(new BasicStroke(3f));
-            g2.drawOval(x, y, size, size);
-        }
+    final String raw = p.getCharacter().getColor();
+    try {
+        g2.setColor(raw.startsWith("#") ? Color.decode(raw) : parseNamedColor(raw));
+    } catch (NumberFormatException e) {
+        g2.setColor(Color.GRAY);
+    }
+    g2.fillOval(x, y, size, size);
+    if (p == controller.currentPlayer()) {
+        g2.setColor(Color.BLACK);
+        g2.setStroke(new BasicStroke(3f));
+        g2.drawOval(x, y, size, size);
+    }
+    }
+
+    private Color parseNamedColor(final String name) {
+        return switch (name.toUpperCase()) {
+            case "RED"    -> new Color(178, 34, 34);
+            case "GREEN"  -> new Color(34, 139, 34);
+            case "BLUE"   -> new Color(30, 144, 255);
+            case "YELLOW" -> new Color(218, 165, 32);
+            case "WHITE"  -> Color.WHITE;
+            case "BLACK"  -> Color.BLACK;
+            case "PURPLE" -> new Color(128, 0, 128);
+            case "ORANGE" -> new Color(255, 140, 0);
+            default       -> Color.GRAY;
+        };
     }
 
     /**

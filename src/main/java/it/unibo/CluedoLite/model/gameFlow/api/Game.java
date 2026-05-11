@@ -2,8 +2,10 @@ package it.unibo.CluedoLite.model.gameflow.api;
 
 import java.util.List;
 
+import it.unibo.CluedoLite.model.gameboard.api.GameBoardModel;
 import it.unibo.CluedoLite.model.player.api.Player;
 import it.unibo.CluedoLite.model.player.impl.CreationCharacterImpl;
+import it.unibo.CluedoLite.model.turnmanager.api.TurnManager;
 
 /**
  * Defines the contract for the game in CluedoLite
@@ -73,4 +75,8 @@ public interface Game {
      * Restarts the game with the same players
      */
     void resetGame();
+
+    GameBoardModel getGameBoard();
+
+    TurnManager getTurnManager();
 }

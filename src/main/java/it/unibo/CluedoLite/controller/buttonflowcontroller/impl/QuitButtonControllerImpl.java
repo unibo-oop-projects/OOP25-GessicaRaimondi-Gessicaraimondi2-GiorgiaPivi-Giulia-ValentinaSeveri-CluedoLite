@@ -1,5 +1,6 @@
 package it.unibo.CluedoLite.controller.buttonflowcontroller.impl;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import it.unibo.CluedoLite.controller.buttonflowcontroller.api.QuitButtonController;
 import it.unibo.CluedoLite.model.gameflow.api.Game;
@@ -7,22 +8,24 @@ import it.unibo.CluedoLite.view.menuview.StartView;
 import it.unibo.CluedoLite.controller.menucontroller.impl.StartControllerImpl;
 
 /**
- * Controller for the QUIT button
- * Returns to the main menu
+ * Controller for the QUIT button.
+ * Returns to the main menu and closes the game window.
  */
 public class QuitButtonControllerImpl implements QuitButtonController {
 
     private final Game game;
+    private final JFrame gameFrame;
 
     /**
-     * Creates the controller with the game model
+     * Creates the controller with the game model and the game window reference.
      */
-    public QuitButtonControllerImpl(final Game game) {
+    public QuitButtonControllerImpl(final Game game, final JFrame gameFrame) {
         this.game = game;
+        this.gameFrame = gameFrame;
     }
 
     /**
-     * Called when the user clicks QUIT
+     * Called when the user clicks QUIT.
      */
     @Override
     public void onQuitClicked() {
@@ -34,7 +37,8 @@ public class QuitButtonControllerImpl implements QuitButtonController {
         );
         if (confirm == JOptionPane.YES_OPTION) {
             game.quitToMenu();
-            final StartControllerImpl startController = new StartControllerImpl(game);
+            gameFrame.dispose();
+            final StartControllerImpl startController = new StartControllerImpl();
             new StartView(startController);
         }
     }

@@ -26,14 +26,8 @@ public class SecretSolutionStartView extends JFrame {
     /** Height in pixels of the decorative envelope panel. */
     private static final int ENVELOPE_HEIGHT = 200;
 
-    /** Total width of the window. */
-    private static final int WINDOW_WIDTH = 900;
-
-    /** Total height of the window. */
-    private static final int WINDOW_HEIGHT = 700;
-
     /** Delay in milliseconds before the window is automatically closed. */
-    private static final int AUTO_CLOSE_MS = 10_000;
+    private static final int AUTO_CLOSE_MS = 3_000;
 
     /**
      * Creates and displays the secret solution start window.
@@ -48,7 +42,8 @@ public class SecretSolutionStartView extends JFrame {
         setTitle("Secret Solution");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
-        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);  // ← schermo intero
+        setUndecorated(true);                      // ← rimuove la barra del titolo
         setLocationRelativeTo(null);
 
         // Outer panel centres all content both vertically and horizontally
