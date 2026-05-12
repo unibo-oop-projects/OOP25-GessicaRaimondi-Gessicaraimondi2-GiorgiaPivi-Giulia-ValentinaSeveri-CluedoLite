@@ -44,7 +44,7 @@ public class GameView extends JPanel {
                     final InterfaceAccusation accuseController,
                     final ResetButtonController resetController,
                     final QuitButtonController quitController,
-                    final Table table,
+                    final TablePanel tablePanel,
                     final List<Card> solution) {
 
         final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -61,13 +61,13 @@ public class GameView extends JPanel {
 
         // --- tabellone (centro) ---
         final BoardImpl board = new BoardImpl(game.getPlayers(), boardController);
+        boardController.setView(board);
         final int boardSize = (int)(screen.height * 0.95);
         board.setPreferredSize(new Dimension(boardSize, boardSize));
         board.setMinimumSize(new Dimension(boardSize, boardSize));
         add(board, BorderLayout.CENTER);
 
         // --- tabella sospetti (destra) ---
-        final TablePanel tablePanel = new TablePanel(table);
         final JScrollPane scrollTable = new JScrollPane(tablePanel,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

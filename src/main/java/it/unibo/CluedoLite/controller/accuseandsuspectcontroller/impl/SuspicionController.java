@@ -1,6 +1,8 @@
 package it.unibo.CluedoLite.controller.accuseandsuspectcontroller.impl;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import javax.swing.JOptionPane;
 
 import it.unibo.CluedoLite.model.accuseandsuspect.impl.*;
@@ -28,11 +30,11 @@ import it.unibo.CluedoLite.view.suspicionview.SuspicionView;
 public class SuspicionController implements InterfaceSuspicionController {
 
     private final SuspicionManager suspicionManager;
-    private final Player player;
     private final Consumer<Suspicion> suspicionCallback;
     private final Card[] characters;
     private final Card[] weapons;
-    private final Card room;
+    private final Supplier<Card> roomSupplier;
+    private final Supplier<Player> playerSupplier;
 
     /**
      * Constructs a {@link SuspicionController} with all the data needed for the suspicion phase.
@@ -48,18 +50,18 @@ public class SuspicionController implements InterfaceSuspicionController {
      */
     public SuspicionController(
             SuspicionManager suspicionManager,
-            Player player,
             Card[] characters,
             Card[] weapons,
-            Card room,
-            Consumer<Suspicion> suspicionCallback
+            Supplier<Card> roomSupplier,
+            Consumer<Suspicion> suspicionCallback,
+            Supplier<Player> playerSupplier
     ) {
         this.suspicionManager = suspicionManager;
-        this.player = player;
         this.suspicionCallback = suspicionCallback;
         this.characters = characters;
         this.weapons = weapons;
-        this.room = room;
+        this.roomSupplier = roomSupplier;
+        this.playerSupplier = playerSupplier;
     }
 
     /**
@@ -70,7 +72,7 @@ public class SuspicionController implements InterfaceSuspicionController {
      */
     @Override
     public void openSuspicionView() {
-        SuspicionView view = new SuspicionView(characters, weapons, room);
+        SuspicionView view = new SuspicionView(characters, weapons, roomSupplier.get());
         setupListeners(view);
         view.setVisible(true);
     }
@@ -106,7 +108,7 @@ public class SuspicionController implements InterfaceSuspicionController {
         Card selectedCharacter = view.getSelectedCharacter();
         Card selectedWeapon    = view.getSelectedWeapon();
 
-        Suspicion suspicion = suspicionManager.makeSuspicion(player, selectedCharacter, selectedWeapon, this.room);
+        Suspicion suspicion = suspicionManager.makeSuspicion(playerSupplier.get(), selectedCharacter, selectedWeapon, roomSupplier.get());
 
         // If the suspicion is null, the player is not in a room: show an error and re-enable the button
         if (suspicion == null) {

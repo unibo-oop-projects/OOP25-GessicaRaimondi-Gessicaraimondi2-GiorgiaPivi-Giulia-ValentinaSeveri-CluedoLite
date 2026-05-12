@@ -1,5 +1,8 @@
 package it.unibo.CluedoLite.controller.accuseandsuspectcontroller.api;
 
+import it.unibo.CluedoLite.model.creationcards.impl.Card;
+import it.unibo.CluedoLite.model.player.api.Player;
+
 /**
  * Defines the contract for the controller that manages the suspicion phase.
  *
@@ -18,4 +21,5 @@ public interface InterfaceSuspicionController {
      * Each call must create a fully independent view instance.
      */
     void openSuspicionView();
+
 }

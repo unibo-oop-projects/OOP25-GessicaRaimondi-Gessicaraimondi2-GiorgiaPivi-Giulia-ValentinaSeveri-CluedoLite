@@ -31,6 +31,11 @@ public class GameBoardControllerImpl implements GameBoardController{
     @Override
     public void move(Room r){
         Player currentplayer=tm.getCurrentPlayer();
+
+        if (currentplayer.isEliminated()) {
+            view.wrongRoomSelected(); // o un messaggio dedicato se preferisci
+            return;
+        }
         
         if(gb.canMoveTo(currentplayer, r)){
             gb.setPlayerPosition(currentplayer,r);
@@ -39,8 +44,6 @@ public class GameBoardControllerImpl implements GameBoardController{
             view.wrongRoomSelected();
         }
 
-        System.out.println("Tentativo: " + r.getName() + " da " + gb.getPlayerPosition(currentplayer));
-        System.out.println("Adiacenti: " + r.getAdjacent().stream().map(Room::getName).toList());
     }
 
     /**
