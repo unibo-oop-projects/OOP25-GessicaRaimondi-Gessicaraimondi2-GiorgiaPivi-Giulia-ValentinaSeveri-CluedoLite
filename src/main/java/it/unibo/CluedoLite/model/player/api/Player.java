@@ -71,6 +71,19 @@ public interface Player {
     boolean isEliminated();
 
     /**
+    * Marks this player as already moved.
+    * this prevent multiple movements in one turn.
+    */
+    void setMoved(boolean moved);
+
+    /**
+     * Returns whether this player has already moved.
+     *
+     * @return {@code true} if the player has moved, {@code false} otherwise
+     */
+    boolean hasmoved();
+
+    /**
      * Restores this player to an active state after being eliminated.
      * A restored player can take actions and move again.
      */

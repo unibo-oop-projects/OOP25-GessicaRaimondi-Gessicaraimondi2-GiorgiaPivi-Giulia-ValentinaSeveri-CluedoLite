@@ -190,6 +190,10 @@ public class BoardImpl extends JPanel implements Board{
      * @param p the point clicked by the user
      */
     private void handleClick(Point p) {
+        if(controller.currentPlayer().hasmoved()){
+            return;
+        }
+
         for (RoomView r : RoomView.values()) {
              if (r.toRect(getWidth(), getHeight()).contains(p)) {
                 controller.move(controller.getRoomByName(r.name));

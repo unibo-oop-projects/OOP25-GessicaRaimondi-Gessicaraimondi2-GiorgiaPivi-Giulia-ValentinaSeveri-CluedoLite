@@ -107,6 +107,7 @@ public class GameController {
             final EndTurnControllerImpl endTurnController =
                     new EndTurnControllerImpl(this::advanceTurn);
 
+                    
             final ResetButtonControllerImpl resetController =
                     new ResetButtonControllerImpl(game) {
                         @Override

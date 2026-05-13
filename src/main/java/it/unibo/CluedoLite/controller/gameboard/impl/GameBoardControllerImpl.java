@@ -33,12 +33,13 @@ public class GameBoardControllerImpl implements GameBoardController{
         Player currentplayer=tm.getCurrentPlayer();
 
         if (currentplayer.isEliminated()) {
-            view.wrongRoomSelected(); // o un messaggio dedicato se preferisci
+            view.wrongRoomSelected(); 
             return;
         }
-        
+
         if(gb.canMoveTo(currentplayer, r)){
             gb.setPlayerPosition(currentplayer,r);
+            currentplayer.setMoved(true);
             view.repaint();
         }else{
             view.wrongRoomSelected();
