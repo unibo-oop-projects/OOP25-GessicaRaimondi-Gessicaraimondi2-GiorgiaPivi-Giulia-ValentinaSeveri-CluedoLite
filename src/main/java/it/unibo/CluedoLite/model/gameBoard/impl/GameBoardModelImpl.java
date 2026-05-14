@@ -12,7 +12,7 @@ public class GameBoardModelImpl implements GameBoardModel{
     public GameBoardModelImpl(){
 
         rooms.add(new RoomImpl("Kitchen"));
-        rooms.add(new RoomImpl("Ballroom"));
+        rooms.add(new RoomImpl("Ball room"));
         rooms.add(new RoomImpl("Conservatory"));
         rooms.add(new RoomImpl("Billiard Room"));
         rooms.add(new RoomImpl("Library"));
