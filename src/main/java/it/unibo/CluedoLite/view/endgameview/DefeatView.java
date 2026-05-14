@@ -3,32 +3,21 @@ package it.unibo.CluedoLite.view.endgameview;
 import javax.swing.*;
 import java.awt.*;
 import it.unibo.CluedoLite.view.AppColorFont;
-import it.unibo.CluedoLite.view.buttonflowview.QuitButtonView;
-import it.unibo.CluedoLite.view.buttonflowview.ResetButtonView;
-import it.unibo.CluedoLite.controller.buttonflowcontroller.api.QuitButtonController;
-import it.unibo.CluedoLite.controller.buttonflowcontroller.api.ResetButtonController;
 
 public class DefeatView extends JFrame {
 
-    private static final int WINDOW_WIDTH = 700;
-    private static final int WINDOW_HEIGHT = 400;
-
-    public DefeatView(final ResetButtonController resetController, final QuitButtonController quitController) {
+    public DefeatView() {
         setTitle("Defeat");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        setLocationRelativeTo(null);
+        setUndecorated(true);
 
-        // Root panel: BorderLayout to place buttons at the bottom
         final JPanel rootPanel = new JPanel(new BorderLayout());
         rootPanel.setBackground(AppColorFont.BACKGROUND_DARK);
         rootPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 6));
 
-        // Outer panel centres content both vertically and horizontally
         final JPanel outerPanel = new JPanel(new GridBagLayout());
         outerPanel.setBackground(AppColorFont.BACKGROUND_DARK);
 
-        // Inner vertical panel stacks the two text labels
         final JPanel innerPanel = new JPanel();
         innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
         innerPanel.setBackground(AppColorFont.BACKGROUND_DARK);
@@ -48,17 +37,14 @@ public class DefeatView extends JFrame {
         innerPanel.add(titleLabel);
         innerPanel.add(subtitleLabel);
         outerPanel.add(innerPanel);
+        rootPanel.add(outerPanel, BorderLayout.CENTER); // ← collegare outerPanel a rootPanel
 
-        // Buttons panel at the bottom
-        final JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        buttonsPanel.setBackground(AppColorFont.BACKGROUND_DARK);
-        buttonsPanel.add(new ResetButtonView(resetController));
-        buttonsPanel.add(new QuitButtonView(quitController));
+        add(rootPanel);         // ← aggiungere rootPanel al frame
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setVisible(true);       // ← rendere visibile
 
-        rootPanel.add(outerPanel, BorderLayout.CENTER);
-        rootPanel.add(buttonsPanel, BorderLayout.SOUTH);
-
-        add(rootPanel);
-        setVisible(true);
+        final Timer timer = new Timer(3000, e -> dispose());
+        timer.setRepeats(false);
+        timer.start();
     }
 }

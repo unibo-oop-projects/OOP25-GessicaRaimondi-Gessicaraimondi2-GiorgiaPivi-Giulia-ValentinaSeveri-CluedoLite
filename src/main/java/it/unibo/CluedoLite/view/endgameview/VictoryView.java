@@ -19,6 +19,9 @@ public class VictoryView extends JFrame {
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setLocationRelativeTo(null);
 
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setUndecorated(true);
+
         // Root panel: BorderLayout to place buttons at the bottom
         final JPanel rootPanel = new JPanel(new BorderLayout());
         rootPanel.setBackground(AppColorFont.BACKGROUND_DARK);

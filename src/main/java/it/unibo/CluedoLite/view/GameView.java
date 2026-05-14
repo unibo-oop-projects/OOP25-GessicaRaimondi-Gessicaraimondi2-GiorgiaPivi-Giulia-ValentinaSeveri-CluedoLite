@@ -6,6 +6,7 @@ import javax.swing.SwingUtilities;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.util.List;
 
 import it.unibo.CluedoLite.model.creationcards.impl.Card;
@@ -31,6 +32,7 @@ public class GameView extends JPanel {
 
     private final ResetButtonController resetController;
     private final QuitButtonController quitController;
+    private final List<Card> solution;
 
     /**
      * @param game                the game model
@@ -53,6 +55,8 @@ public class GameView extends JPanel {
 
         this.resetController = resetController;
         this.quitController = quitController;
+        this.solution = solution;
+        System.out.println("[DEBUG] Soluzione segreta: " + solution);
 
         final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         setLayout(new BorderLayout());
@@ -90,12 +94,16 @@ public class GameView extends JPanel {
      */
     public void showVictory() {
         SwingUtilities.invokeLater(() -> new VictoryView(resetController, quitController));
+        final Window window = SwingUtilities.getWindowAncestor(this);
+        if (window != null) {
+            window.dispose();
+        }
     }
 
     /**
      * Opens the defeat window. Call this when the accusation is wrong.
      */
     public void showDefeat() {
-        SwingUtilities.invokeLater(() -> new DefeatView(resetController, quitController));
+        SwingUtilities.invokeLater(() -> new DefeatView());
     }
 }
