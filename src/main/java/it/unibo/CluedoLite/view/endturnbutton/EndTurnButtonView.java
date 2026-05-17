@@ -15,7 +15,7 @@ public class EndTurnButtonView extends JButton {
      * @param controller the controller that handles the end turn action
      */
     public EndTurnButtonView(final EndTurnController controller) {
-        setText("FINE TURNO");
+        setText("END TURN");
         setFont(AppColorFont.FONT_BUTTON);
         setBackground(AppColorFont.BUTTON_BACKGROUND);
         setForeground(AppColorFont.BUTTON_FOREGROUND);

@@ -3,6 +3,7 @@ package it.unibo.CluedoLite.view.suspicionview;
 import javax.swing.*;
 import it.unibo.CluedoLite.view.AppColorFont;
 import it.unibo.CluedoLite.controller.accuseandsuspectcontroller.api.InterfaceSuspicionController;
+import it.unibo.CluedoLite.controller.accuseandsuspectcontroller.impl.SuspicionController;
 
 /**
  * This class represents the button that triggers the suspicion phase in the game screen.
@@ -38,5 +39,15 @@ public class ButtonSuspicionView extends JPanel {
         suspicionButton.addActionListener(e -> controller.openSuspicionView());
 
         add(suspicionButton);
+    }
+
+    /**
+     * Enables or disables both the panel and the inner button.
+     * Overridden because setEnabled on a JPanel does not propagate to children.
+     */
+    @Override
+    public void setEnabled(final boolean enabled) {
+        super.setEnabled(enabled);
+        suspicionButton.setEnabled(enabled);
     }
 }

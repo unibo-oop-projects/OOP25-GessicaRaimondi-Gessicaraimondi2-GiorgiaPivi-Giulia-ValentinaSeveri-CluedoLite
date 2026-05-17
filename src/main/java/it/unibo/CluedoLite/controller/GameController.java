@@ -53,9 +53,6 @@ public class GameController {
     private GameBoardControllerImpl boardController;
     private GameView gameView;
 
-    // Turn state: true after suspicion or accusation, reset on advanceTurn()
-    private boolean actionDoneThisTurn = false;
-
     public GameController(final Game game) {
         this.game = game;
 
@@ -83,7 +80,6 @@ public class GameController {
 
     public void openGameWindow(final JFrame previousWindow) {
         final JFrame oldFrame = gameFrame;
-        actionDoneThisTurn = false;
 
         try {
             boardController = new GameBoardControllerImpl(
@@ -107,15 +103,15 @@ public class GameController {
                         final Card refutation = game.getTurnManager().checkSuspicion(suspicion);
                         if (refutation != null) {
                             JOptionPane.showMessageDialog(null,
-                                    "Un giocatore mostra la carta: " + refutation.getName(),
-                                    "Sospetto confutato", JOptionPane.INFORMATION_MESSAGE);
+                                    "A player show the card: " + refutation.getName(),
+                                    "Sospect refuted", JOptionPane.INFORMATION_MESSAGE);
                         } else {
                             JOptionPane.showMessageDialog(null,
-                                    "Nessun giocatore può confutare il sospetto!",
-                                    "Sospetto non confutato", JOptionPane.WARNING_MESSAGE);
+                                    "No player can refute the suspicion!",
+                                    "Unrefuted suspect", JOptionPane.WARNING_MESSAGE);
                         }
                         tableController.handleSuspicion(suspicion);
-                        actionDoneThisTurn = true;  // sblocca il fine turno
+                        gameView.disableActionButtons();
                     },
                     game.getTurnManager()::getCurrentPlayer
             );
@@ -127,12 +123,6 @@ public class GameController {
             // fine turno: bloccato se partita finita o azione non ancora eseguita
             final EndTurnControllerImpl endTurnController = new EndTurnControllerImpl(() -> {
                 if (game.getTurnManager().isGameOver()) return;
-                if (!actionDoneThisTurn) {
-                    JOptionPane.showMessageDialog(null,
-                            "Devi fare un sospetto o un'accusa prima di finire il turno!",
-                            "Azione richiesta", JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
                 advanceTurn();
             });
 
@@ -177,6 +167,8 @@ public class GameController {
                     secretSolution.getSolution()
             );
 
+            gameView.resetForNewTurn(); //disabilita/abilita i pulsanti giusti
+
             gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             gameFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             gameFrame.add(gameView);
@@ -188,8 +180,8 @@ public class GameController {
         } catch (final Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null,
-                    "Errore nell'apertura della finestra di gioco: " + e.getMessage(),
-                    "Errore", JOptionPane.ERROR_MESSAGE);
+                    "Error opening the game window: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -204,7 +196,7 @@ public class GameController {
         } else {
             gameView.showDefeat();
             game.getTurnManager().getCurrentPlayer().eliminate();
-            actionDoneThisTurn = true;  // l'accusa conta come azione del turno
+            advanceTurn();
         }
     }
 
@@ -231,7 +223,7 @@ public class GameController {
     // -----------------------------------------------------------------------
 
     private void advanceTurn() {
-        actionDoneThisTurn = false;
+        gameView.resetForNewTurn();
         boardController.endTurn();
     }
 

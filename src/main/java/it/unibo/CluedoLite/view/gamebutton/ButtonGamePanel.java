@@ -30,6 +30,10 @@ import it.unibo.CluedoLite.controller.accuseandsuspectcontroller.api.InterfaceAc
  */
 public class ButtonGamePanel extends JPanel {
 
+    private final ButtonSuspicionView suspicionButton;
+    private final ButtonAccuseView    accuseButton;
+    private final EndTurnButtonView   endTurnButton;
+
     /**
      * Creates the panel with action buttons at top and flow buttons at bottom.
      *
@@ -57,12 +61,12 @@ public class ButtonGamePanel extends JPanel {
         topButtons.setBackground(AppColorFont.BACKGROUND_MEDIUM);
         topButtons.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final ButtonSuspicionView suspicionButton = new ButtonSuspicionView(suspicionController);
+        suspicionButton = new ButtonSuspicionView(suspicionController);
         suspicionButton.setBackground(AppColorFont.BACKGROUND_MEDIUM);
         suspicionButton.setMaximumSize(new Dimension(300, 55));
         suspicionButton.setPreferredSize(new Dimension(300, 55));
 
-        final ButtonAccuseView accuseButton = new ButtonAccuseView(accuseController);
+        accuseButton = new ButtonAccuseView(accuseController);
         accuseButton.setBackground(AppColorFont.BACKGROUND_MEDIUM);
         accuseButton.setMaximumSize(new Dimension(300, 55));
         accuseButton.setPreferredSize(new Dimension(300, 55));
@@ -77,7 +81,7 @@ public class ButtonGamePanel extends JPanel {
         add(Box.createVerticalGlue());
 
         // --- bottoni in basso ---
-        final EndTurnButtonView endTurnButton = new EndTurnButtonView(endTurnController);
+        endTurnButton = new EndTurnButtonView(endTurnController);
         endTurnButton.setMaximumSize(new Dimension(150, 40));
         endTurnButton.setPreferredSize(new Dimension(150, 40));
         endTurnButton.setFont(AppColorFont.FONT_BUTTON.deriveFont(13f));
@@ -97,5 +101,27 @@ public class ButtonGamePanel extends JPanel {
         add(resetButton);
         add(Box.createVerticalStrut(10));
         add(quitButton);
+    }
+
+    /**
+     * Called after the player makes a suspicion or accusation.
+     * Disables suspicion and accusation, enables end turn.
+     */
+    public void disableActionButtons() {
+        suspicionButton.setEnabled(false);
+        accuseButton.setEnabled(false);
+        endTurnButton.setEnabled(true);
+        repaint();
+    }
+ 
+    /**
+     * Called at the start of each new turn.
+     * Re-enables suspicion and accusation, disables end turn.
+     */
+    public void resetForNewTurn() {
+        suspicionButton.setEnabled(true);
+        accuseButton.setEnabled(true);
+        endTurnButton.setEnabled(false);
+        repaint();
     }
 }

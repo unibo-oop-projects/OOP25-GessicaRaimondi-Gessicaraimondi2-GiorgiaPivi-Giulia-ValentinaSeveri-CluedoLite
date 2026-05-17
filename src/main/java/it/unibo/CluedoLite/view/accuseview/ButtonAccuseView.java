@@ -39,4 +39,14 @@ public class ButtonAccuseView extends JPanel {
 
         add(accusationButton);
     }
+
+    /**
+     * Enables or disables both the panel and the inner button.
+     * Overridden because setEnabled on a JPanel does not propagate to children.
+     */
+    @Override
+    public void setEnabled(final boolean enabled) {
+        super.setEnabled(enabled);
+        accusationButton.setEnabled(enabled);
+    }
 }

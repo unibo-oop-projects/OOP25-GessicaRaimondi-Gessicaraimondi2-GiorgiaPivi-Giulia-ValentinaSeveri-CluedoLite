@@ -33,6 +33,7 @@ public class GameView extends JPanel {
 
     private final ResetButtonController resetController;
     private final QuitButtonController quitController;
+    private final ButtonGamePanel buttonPanel;
     private final List<Card> solution;
 
     /**
@@ -65,7 +66,7 @@ public class GameView extends JPanel {
         setPreferredSize(screen);
 
         // --- pannello bottoni (sinistra) ---
-        final ButtonGamePanel buttonPanel = new ButtonGamePanel(
+        buttonPanel = new ButtonGamePanel(
                 suspicionController,
                 accuseController,
                 resetController,
@@ -92,6 +93,16 @@ public class GameView extends JPanel {
         SwingUtilities.invokeLater(() -> new SecretSolutionStartView(solution));
     }
 
+    /** Disables suspicion + accusation, enables end turn. */
+    public void disableActionButtons() {
+        buttonPanel.disableActionButtons();
+    }
+ 
+    /** Re-enables suspicion + accusation, disables end turn. */
+    public void resetForNewTurn() {
+        buttonPanel.resetForNewTurn();
+    }
+
     /**
      * Opens the victory window. Call this when the accusation is correct.
      */
@@ -109,4 +120,5 @@ public class GameView extends JPanel {
     public void showDefeat() {
         SwingUtilities.invokeLater(() -> new DefeatView());
     }
+
 }
