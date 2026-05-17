@@ -72,6 +72,14 @@ public class SuspicionController implements InterfaceSuspicionController {
      */
     @Override
     public void openSuspicionView() {
+        // Blocca subito se il giocatore non è in una stanza
+        if (roomSupplier.get() == null) {
+            JOptionPane.showMessageDialog(null,
+                    "You cannot make a suspicion because you are not in a room.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         SuspicionView view = new SuspicionView(characters, weapons, roomSupplier.get());
         setupListeners(view);
         view.setVisible(true);

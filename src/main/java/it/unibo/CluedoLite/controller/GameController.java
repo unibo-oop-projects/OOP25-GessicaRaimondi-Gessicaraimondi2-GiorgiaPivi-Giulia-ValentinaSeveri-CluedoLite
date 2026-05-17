@@ -21,6 +21,7 @@ import it.unibo.CluedoLite.model.accuseandsuspect.impl.SuspicionManager;
 import it.unibo.CluedoLite.model.creationcards.impl.Card;
 import it.unibo.CluedoLite.model.creationcards.impl.CardType;
 import it.unibo.CluedoLite.model.gameflow.api.Game;
+import it.unibo.CluedoLite.model.gamesetup.impl.CardDistribution;
 import it.unibo.CluedoLite.model.gamesetup.impl.Deck;
 import it.unibo.CluedoLite.model.gamesetup.impl.SecretSolution;
 import it.unibo.CluedoLite.model.suspectnotes.impl.TableImpl;
@@ -68,10 +69,7 @@ public class GameController {
         this.accuseManager  = new AccuseManager(secretSolution);
 
         Collections.shuffle(allCards);
-        int numPlayers = game.getPlayers().size();
-        for (int i = 0; i < allCards.size(); i++) {
-            game.getPlayers().get(i % numPlayers).addCard(allCards.get(i));
-        }
+        new CardDistribution(allCards, game.getPlayers());
     }
 
     // -----------------------------------------------------------------------
@@ -228,16 +226,16 @@ public class GameController {
     }
 
     private Card getCurrentPlayerRoom() {
-        if (boardController == null) return rooms[0];
+        if (boardController == null) return null; 
 
         final var currentRoom = boardController.getCurrentRoomOf(
                 game.getTurnManager().getCurrentPlayer());
 
-        if (currentRoom == null) return rooms[0];
+        if (currentRoom == null) return null; 
 
         for (final Card card : rooms) {
             if (card.getName().equals(currentRoom.getName())) return card;
         }
-        return rooms[0];
+        return null; 
     }
 }
