@@ -9,6 +9,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Lobby screen where players select their characters before the game starts.
+ * Shows a dropdown for the number of players, one row per player with a character
+ * dropdown, and a START PLAY button.
+ */
 public class LobbyView extends JFrame {
 
     private JComboBox<Integer> numPlayersBox; // menu for the number of player
@@ -16,14 +21,19 @@ public class LobbyView extends JFrame {
     private List<JComboBox<String>> characterBoxes; //list of player 
 
     private static final String[] CHARACTERS = {
-        "Miss Scarlet",
-        "Colonel Mustard",
-        "Mrs. White",
-        "Mr. Green",
-        "Mrs. Peacock",
-        "Professor Plum"
+        "Miss Scarlet [Red]",
+        "Colonel Mustard [Yellow]",
+        "Mrs. White [White]",
+        "Mr. Green [Green]",
+        "Mrs. Peacock [Blue]",
+        "Professor Plum [Purple]",
     };
 
+    /**
+     * Creates and displays the lobby screen.
+     *
+     * @param controller the controller notified when START PLAY is clicked
+     */
     public LobbyView(final LobbyController controller) {
         setTitle("Cluedo Lite - Lobby");
         setResizable(true);
@@ -78,7 +88,7 @@ public class LobbyView extends JFrame {
         // Aggiorna righe quando cambia il numero
         numPlayersBox.addActionListener(e -> updatePlayersPanel());
 
-        // Inizializza con 3 giocatori
+        
         updatePlayersPanel();
 
         setVisible(true);
@@ -119,17 +129,32 @@ public class LobbyView extends JFrame {
         playersPanel.repaint();
     }
 
-    /* Returns the selected number of players. */
+    /**
+     * Returns the number of players currently selected.
+     *
+     * @return the selected player count (3–6)
+     */
     public int getNumPlayers() {
         return (int) numPlayersBox.getSelectedItem();
     }
 
-    /* Returns the selected character name for a given player index. */
-    public String getSelectedCharacter(int index) {
-        return (String) characterBoxes.get(index).getSelectedItem();
+    /**
+     * Returns the character name chosen by the player at the given index,
+     * stripping the colour tag.
+     *
+     * @param index zero-based player index
+     * @return the plain character name without the colour annotation
+     */
+    public String getSelectedCharacterName(final int index) {
+        final String selected = (String) characterBoxes.get(index).getSelectedItem();
+        return selected.split(" \\[")[0];
     }
 
-    /* Returns the number of players dropdown so the controller can attach a listener. */
+    /**
+     * Returns the number-of-players dropdown.
+     *
+     * @return the dropdown controlling the player count
+     */
     public JComboBox<Integer> getNumPlayersBox() {
         return numPlayersBox;
     }
