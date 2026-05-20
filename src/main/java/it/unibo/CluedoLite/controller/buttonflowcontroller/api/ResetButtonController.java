@@ -9,5 +9,5 @@ public interface ResetButtonController {
      * Called when the user clicks RESET
      * Asks for confirmation before restarting the game with the same players
      */
-    void onResetClicked();
+    boolean onResetClicked();
 }

@@ -24,7 +24,7 @@ public class ResetButtonControllerImpl implements ResetButtonController {
      * Called when the user clicks RESET
      */
     @Override
-    public void onResetClicked() {
+    public boolean onResetClicked() {
         final int confirm = JOptionPane.showConfirmDialog(
             null,
             "Are you sure you want to restart?",
@@ -34,6 +34,8 @@ public class ResetButtonControllerImpl implements ResetButtonController {
         if (confirm == JOptionPane.YES_OPTION){   
             game.resetGame();
             game.startGame();
+            return true;
         }
+        return false;
     }
 }

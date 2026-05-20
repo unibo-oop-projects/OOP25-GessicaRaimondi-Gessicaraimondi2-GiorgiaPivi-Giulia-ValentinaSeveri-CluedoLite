@@ -122,13 +122,15 @@ public class GameController {
             final ResetButtonControllerImpl resetController =
                     new ResetButtonControllerImpl(game) {
                         @Override
-                        public void onResetClicked() {
+                        public boolean onResetClicked() {
                             final int confirm = JOptionPane.showConfirmDialog(
                                 null, "Are you sure you want to restart?",
                                 "Reset", JOptionPane.YES_NO_OPTION);
                             if (confirm == JOptionPane.YES_OPTION) {
                                 handleReset();
+                                return true;
                             }
+                            return false;
                         }
                     };
 

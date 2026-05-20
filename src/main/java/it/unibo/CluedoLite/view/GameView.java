@@ -132,20 +132,23 @@ public class GameView extends JPanel {
      * alla finestra corretta.
      */
     public void showVictory() {
-        SwingUtilities.invokeLater(() -> {
-            // ref[0] verrà assegnato dopo la creazione di VictoryView;
-            // il supplier lo legge solo al momento del click, quindi è già valorizzato.
-            final JFrame[] ref = {null};
-            final QuitButtonController vc = quitFactory.apply(() -> ref[0]);
-            ref[0] = new VictoryView(resetController, vc);
-        });
+    SwingUtilities.invokeLater(() -> {
+        final JFrame[] ref = {null};
+        final QuitButtonController vc = quitFactory.apply(() -> ref[0]);
+        ref[0] = new VictoryView(resetController, vc);
 
-        // Chiude la finestra di gioco principale
-        final Window window = SwingUtilities.getWindowAncestor(this);
-        if (window != null) {
-            window.dispose();
-        }
+        // Dopo 1 secondo apre la schermata della soluzione segreta
+        final javax.swing.Timer timer = new javax.swing.Timer(1000, e ->
+            new it.unibo.CluedoLite.view.secretsolutionview.SecretSolutionEndView(solution));
+        timer.setRepeats(false);
+        timer.start();
+    });
+
+    final Window window = SwingUtilities.getWindowAncestor(this);
+    if (window != null) {
+        window.dispose();
     }
+}
 
     /**
      * Apre la schermata di sconfitta temporanea (con timer).
@@ -161,18 +164,21 @@ public class GameView extends JPanel {
      * <p>Stesso pattern lazy di {@link #showVictory()} per il frame corretto.
      */
     public void showFinalDefeat() {
-        SwingUtilities.invokeLater(() -> {
-            // ref[0] verrà assegnato dopo la creazione di FinalDefeatView;
-            // il supplier lo legge solo al momento del click, quindi è già valorizzato.
-            final JFrame[] ref = {null};
-            final QuitButtonController vc = quitFactory.apply(() -> ref[0]);
-            ref[0] = new FinalDefeatView(resetController, vc);
-        });
+    SwingUtilities.invokeLater(() -> {
+        final JFrame[] ref = {null};
+        final QuitButtonController vc = quitFactory.apply(() -> ref[0]);
+        ref[0] = new FinalDefeatView(resetController, vc);
 
-        // Chiude la finestra di gioco principale
-        final Window window = SwingUtilities.getWindowAncestor(this);
-        if (window != null) {
-            window.dispose();
-        }
+        // Dopo 1 secondo apre la schermata della soluzione segreta
+        final javax.swing.Timer timer = new javax.swing.Timer(1000, e ->
+            new it.unibo.CluedoLite.view.secretsolutionview.SecretSolutionEndView(solution));
+        timer.setRepeats(false);
+        timer.start();
+    });
+
+    final Window window = SwingUtilities.getWindowAncestor(this);
+    if (window != null) {
+        window.dispose();
     }
+}
 }

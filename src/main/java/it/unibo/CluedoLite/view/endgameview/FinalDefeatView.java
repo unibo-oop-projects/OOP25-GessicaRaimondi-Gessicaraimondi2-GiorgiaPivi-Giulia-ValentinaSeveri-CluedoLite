@@ -46,7 +46,14 @@ public class FinalDefeatView extends JFrame {
 
         final JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonsPanel.setBackground(AppColorFont.BACKGROUND_DARK);
-        buttonsPanel.add(new ResetButtonView(resetController));
+
+        final ResetButtonView resetBtn = new ResetButtonView(resetController);
+        resetBtn.addActionListener(e -> {
+            if (resetController.onResetClicked()) {
+                dispose();
+            }
+        });
+        buttonsPanel.add(resetBtn);
         buttonsPanel.add(new QuitButtonView(quitController));
 
         rootPanel.add(outerPanel, BorderLayout.CENTER);

@@ -28,7 +28,7 @@ public class SecretSolutionEndView extends JFrame {
     private static final int WINDOW_HEIGHT = 600;
 
     /** Delay in milliseconds before the window is automatically closed. */
-    private static final int AUTO_CLOSE_MS = 15_000;
+    private static final int AUTO_CLOSE_MS = 3_000;
 
     /**
      * Creates and displays the secret solution reveal window.
