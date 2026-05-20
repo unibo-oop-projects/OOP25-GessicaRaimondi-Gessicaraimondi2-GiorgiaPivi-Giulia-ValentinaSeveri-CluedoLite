@@ -164,21 +164,28 @@ public class GameView extends JPanel {
      * <p>Stesso pattern lazy di {@link #showVictory()} per il frame corretto.
      */
     public void showFinalDefeat() {
-    SwingUtilities.invokeLater(() -> {
-        final JFrame[] ref = {null};
-        final QuitButtonController vc = quitFactory.apply(() -> ref[0]);
-        ref[0] = new FinalDefeatView(resetController, vc);
+        SwingUtilities.invokeLater(() -> {
+            final JFrame[] ref = {null};
+            final QuitButtonController vc = quitFactory.apply(() -> ref[0]);
+            ref[0] = new FinalDefeatView(resetController, vc);
 
-        // Dopo 1 secondo apre la schermata della soluzione segreta
-        final javax.swing.Timer timer = new javax.swing.Timer(1000, e ->
-            new it.unibo.CluedoLite.view.secretsolutionview.SecretSolutionEndView(solution));
-        timer.setRepeats(false);
-        timer.start();
-    });
+            // Dopo 1 secondo apre la schermata della soluzione segreta
+            final javax.swing.Timer timer = new javax.swing.Timer(1000, e ->
+                new it.unibo.CluedoLite.view.secretsolutionview.SecretSolutionEndView(solution));
+            timer.setRepeats(false);
+            timer.start();
+        });
 
-    final Window window = SwingUtilities.getWindowAncestor(this);
-    if (window != null) {
-        window.dispose();
+        final Window window = SwingUtilities.getWindowAncestor(this);
+        if (window != null) {
+            window.dispose();
+        }
     }
-}
+
+    public void updateTablePanel(TablePanel newTablePanel) {
+        ((JScrollPane) ((BorderLayout) getLayout()).getLayoutComponent(BorderLayout.EAST))
+            .setViewportView(newTablePanel);
+        revalidate();
+        repaint();
+    }
 }

@@ -56,6 +56,7 @@ public class GameController {
     private GameBoardControllerImpl boardController;
     private GameView gameView;
     private AccusationController accusationController;
+    private TableControllerImpl tableController;
 
     public GameController(final Game game) {
         this.game = game;
@@ -83,7 +84,7 @@ public class GameController {
                     game.getTurnManager().getCurrentPlayer().getHand());
             final TablePanel tablePanel = new TablePanel(table);
 
-            final TableControllerImpl tableController = new TableControllerImpl(
+            this.tableController = new TableControllerImpl(
                     game.getTurnManager(), table, tablePanel);
 
             final SuspicionController suspicionController = new SuspicionController(
@@ -283,8 +284,10 @@ public class GameController {
 }
 
     private void advanceTurn() {
-        gameView.resetForNewTurn();
         boardController.endTurn();
+        TablePanel newPanel = tableController.refreshForPlayer();
+        gameView.updateTablePanel(newPanel);
+        gameView.resetForNewTurn();
     }
 
     private Card getCurrentPlayerRoom() {
