@@ -13,7 +13,12 @@ public class StartControllerImpl implements StartController{
         
     }
 
-    // Method executed when Start is clicked
+    /**
+    * Called when the user clicks NEW GAME.
+    * Closes the start screen and opens the lobby.
+    *
+    * @param view the start screen to close
+    */
    @Override
     public void onStartClicked(StartView view) {
         view.dispose();  

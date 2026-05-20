@@ -18,7 +18,14 @@ import it.unibo.CluedoLite.view.menuview.LobbyView;
 public class LobbyControllerImpl implements LobbyController {
 
     public LobbyControllerImpl() {}
-
+     /**
+     * Called when the user clicks START PLAY.
+     * Validates character uniqueness, builds the game model,
+     * assigns players and characters, starts the game,
+     * then opens the game window.
+     *
+     * @param view the lobby view from which player and character data are read
+     */
     @Override
     public void onPlayClicked(final LobbyView view) {
         final int numPlayers = view.getNumPlayers();
@@ -26,20 +33,19 @@ public class LobbyControllerImpl implements LobbyController {
         // check se due giocatori hanno lo stesso personaggio
         for (int i = 0; i < numPlayers; i++) {
             for (int j = i + 1; j < numPlayers; j++) {
-                if (view.getSelectedCharacter(i).equals(view.getSelectedCharacter(j))) {
+                if (view.getSelectedCharacterName(i).equals(view.getSelectedCharacterName(j))) {
                     JOptionPane.showMessageDialog(view, "Two players have the same character");
                     return;
                 }
             }
         }
 
-        // crea il Game ora che si conosce il numero di giocatori
         final Game game = new GameImpl(numPlayers);
-        game.enterLobby(); // MENU → WAITING
+        game.enterLobby(); 
 
         // assign players and characters
         for (int i = 0; i < numPlayers; i++) {
-            final String selectedName = view.getSelectedCharacter(i);
+            final String selectedName = view.getSelectedCharacterName(i);
             final CreationCharacterImpl character = game.getAvailableCharacters().stream()
                     .filter(c -> c.getName().equals(selectedName))
                     .findFirst()
@@ -48,9 +54,8 @@ public class LobbyControllerImpl implements LobbyController {
             game.assignCharacterToPlayer(i, character);
         }
 
-        game.startGame(); // WAITING → IN_PROGRESS
+        game.startGame(); 
         
-        // Delega tutta la sessione di gioco al GameController
         final GameController gameController = new GameController(game);
         gameController.openGameWindow(view);
     }
