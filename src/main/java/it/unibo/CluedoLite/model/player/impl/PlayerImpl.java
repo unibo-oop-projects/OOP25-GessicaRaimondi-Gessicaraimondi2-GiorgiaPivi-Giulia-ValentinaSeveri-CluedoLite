@@ -60,9 +60,6 @@ public class PlayerImpl implements Player{
             if (card.getName().equals(character.getName()) ||
                 card.getName().equals(weapon.getName())    ||
                 card.getName().equals(room.getName())) {
-                if (!this.table.alreadyExcluded(card)) {
-                    return card;
-                }
             }
         }
         return null;
