@@ -19,6 +19,7 @@ import it.unibo.CluedoLite.controller.tablecontroller.api.TableController;
     public class TableControllerImpl implements TableController {
     private final TurnManager turnManager;
     private final Map<String, TableImpl> playerTables = new HashMap<>();
+    private final Map<String, TablePanel> playerPanels = new HashMap<>();
     private Table table;
     private TablePanel tablePanel;
 
@@ -27,6 +28,7 @@ import it.unibo.CluedoLite.controller.tablecontroller.api.TableController;
         this.table = table;
         this.tablePanel = tablePanel;
         playerTables.put(turnManager.getCurrentPlayer().getName(), (TableImpl) table);
+        playerPanels.put(turnManager.getCurrentPlayer().getName(), tablePanel);
     }
 
     /**
@@ -47,9 +49,10 @@ import it.unibo.CluedoLite.controller.tablecontroller.api.TableController;
     @Override
     public TablePanel refreshForPlayer() {
         String name = turnManager.getCurrentPlayer().getName();
-        table = playerTables.computeIfAbsent(name, 
+        table = playerTables.computeIfAbsent(name,
             k -> new TableImpl(turnManager.getCurrentPlayer().getHand()));
-        tablePanel = new TablePanel(table);
-        return tablePanel; 
+        tablePanel = playerPanels.computeIfAbsent(name,
+            k -> new TablePanel(table));
+        return tablePanel;
     }
 }
