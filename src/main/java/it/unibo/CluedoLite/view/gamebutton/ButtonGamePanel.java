@@ -33,6 +33,7 @@ public class ButtonGamePanel extends JPanel {
     private final ButtonSuspicionView suspicionButton;
     private final ButtonAccuseView    accuseButton;
     private final EndTurnButtonView   endTurnButton;
+    private final HistoryPanel historyPanel;
 
     /**
      * Creates the panel with action buttons at top and flow buttons at bottom.
@@ -74,6 +75,9 @@ public class ButtonGamePanel extends JPanel {
         topButtons.add(suspicionButton);
         topButtons.add(Box.createVerticalStrut(5));
         topButtons.add(accuseButton);
+        topButtons.add(Box.createVerticalStrut(10));
+        historyPanel = new HistoryPanel(panelWidth - 30);
+        topButtons.add(historyPanel);
         topButtons.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 0));
         add(topButtons);
 
@@ -124,4 +128,9 @@ public class ButtonGamePanel extends JPanel {
         endTurnButton.setEnabled(false);
         repaint();
     }
+
+    public void addHistoryEntry(String message) {
+        historyPanel.addEntry(message);
+    }
+
 }

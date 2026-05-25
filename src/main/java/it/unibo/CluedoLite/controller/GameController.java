@@ -120,6 +120,13 @@ public class GameController {
                         tableController.handleSuspicion(suspicion);
                         boardController.lockMovement();
                         gameView.disableActionButtons();
+
+                        final String suspect = game.getTurnManager().getCurrentPlayer().getName();
+                        if (refutation != null) {
+                            gameView.addHistoryEntry(suspect + " made a suspicion — a player showed a card");
+                        } else {
+                            gameView.addHistoryEntry(suspect + " made a suspicion — no player could refute it");
+                        }
                     },
                     game.getTurnManager()::getCurrentPlayer,
                     () -> gameView.disableActionButtons()

@@ -208,4 +208,8 @@ public class GameView extends JPanel {
         revalidate();
         repaint();
     }
+
+    public void addHistoryEntry(String message) {
+        buttonPanel.addHistoryEntry(message);
+    }
 }
