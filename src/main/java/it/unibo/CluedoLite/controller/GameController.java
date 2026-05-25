@@ -31,6 +31,7 @@ import it.unibo.CluedoLite.model.suspectnotes.impl.TableImpl;
 import it.unibo.CluedoLite.view.GameView;
 import it.unibo.CluedoLite.view.menuview.StartView;
 import it.unibo.CluedoLite.view.tableview.TablePanel;
+import javafx.stage.Window;
 
 /**
  * Central controller for a CluedoLite game session.
@@ -197,7 +198,19 @@ public class GameController {
 
             gameView.resetForNewTurn();
 
-            gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            gameFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            gameFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                    for (java.awt.Window w : java.awt.Window.getWindows()) {
+                        if (w != gameFrame && w.isVisible()) {
+                            w.dispose();
+                        }
+                    }
+                    gameFrame.dispose();
+                    System.exit(0);
+                }
+            });
             gameFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             gameFrame.add(gameView);
             gameFrame.setVisible(true);
