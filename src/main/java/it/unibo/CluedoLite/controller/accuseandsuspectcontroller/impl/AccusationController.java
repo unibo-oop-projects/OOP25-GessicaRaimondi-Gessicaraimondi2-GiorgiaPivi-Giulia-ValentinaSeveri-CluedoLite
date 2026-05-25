@@ -73,6 +73,7 @@ public class AccusationController implements InterfaceAccusation {
     @Override
     public void openAccusationView() {
         final AccuseView view = new AccuseView(characters, weapons, rooms);
+        view.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setupListeners(view);
         view.setVisible(true);
     }

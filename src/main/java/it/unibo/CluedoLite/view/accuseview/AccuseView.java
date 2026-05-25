@@ -17,7 +17,7 @@ public class AccuseView extends JFrame {
         setTitle("Make Your Accusation:");
         setSize(700, 550);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
 
         JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
