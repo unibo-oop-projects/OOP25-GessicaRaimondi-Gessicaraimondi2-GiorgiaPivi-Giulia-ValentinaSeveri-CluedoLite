@@ -32,7 +32,7 @@ public class StartView extends JFrame {
 
         // Title lable
         JLabel title = new JLabel("CLUEDO LITE", SwingConstants.CENTER);
-        title.setFont(AppColorFont.FONT_TITLE);
+        title.setFont(new Font("Serif", Font.BOLD, 60));
         title.setForeground(AppColorFont.TEXT_PRIMARY);
         gbc.gridy = 0;
         gbc.insets = new Insets(0, 0, 10, 0);
@@ -48,25 +48,32 @@ public class StartView extends JFrame {
             null,
             "CLUEDO LITE RULES:\n\n" +
             "OBJECTIVE:\n" +
-            "Find out who committed the crime, with which weapon and in which room\n\n" +
+            "Find the murderer, the weapon and the room\n\n" +
+            "SETUP:\n" +
+            "- 3 to 6 players, each choosing a unique character\n" +
+            "- One character, one weapon and one room are randomly\n" +
+            "- Automatic creation of the secret solution\n" +
+            "- Remaining cards are automatically dealt to players\n\n" +
             "TURN:\n" +
-            "1. Move to an adjacent room\n" +
+            "1. Move to an adjacent room on the board\n" +
             "2. Make a suspicion OR a final accusation\n" +
             "3. Click 'End Turn' to pass to the next player\n\n" +
-            "PLAYERS:\n" +
-            "- A game can be played by 3 to 6 players\n" +
-            "- A player can choose only one character\n" +
-            "- A character can be chosen by only one player\n\n" +
             "SUSPICION:\n" +
-            "- You can only suspect in the room where you are\n" +
+            "- Only allowed in the room where you currently are\n" +
             "- Choose a character and a weapon\n" +
-            "- Other players show a card to disprove if they have one\n\n" +
+            "- The result is recorded in your suspect notes\n\n" +
             "ACCUSATION:\n" +
-            "- Choose character, weapon AND room\n" +
-            "- Correct: you win!\n" +
-            "- Wrong: you are eliminated!\n\n" +
+            "- Choose character, weapon AND room freely\n" +
+            "- Correct: you win and the game ends for everyone!\n" +
+            "- Wrong: you are eliminated but the game continues for others\n" +
+            "- If you are the last player remaining, you must make an accusation:\n" +
+            "  correct → you win, wrong → everyone loses!\n\n" +
+            "SUSPECT NOTES:\n" +
+            "- Each player has a personal notes table\n" +
+            "- Your cards are marked automatically at the start\n" +
+            "- Revealed cards are marked automatically during the game\n\n" +
             "NOTE:\n" +
-            "You must make a suspicion or accusation before ending your turn",
+            "You must make a suspicion or accusation before ending your turn.",
             "Rules",
             JOptionPane.INFORMATION_MESSAGE
         ));
