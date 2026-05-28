@@ -1,5 +1,7 @@
 package it.unibo.CluedoLite.controller.gameboard.impl;
 
+import java.util.Objects;
+
 import it.unibo.CluedoLite.controller.gameboard.api.GameBoardController;
 import it.unibo.CluedoLite.model.gameboard.api.GameBoardModel;
 import it.unibo.CluedoLite.model.gameboard.api.Room;
@@ -7,53 +9,72 @@ import it.unibo.CluedoLite.model.player.api.Player;
 import it.unibo.CluedoLite.model.turnmanager.api.TurnManager;
 import it.unibo.CluedoLite.view.gameboard.api.Board;
 
-public class GameBoardControllerImpl implements GameBoardController {
+/**
+ * Implementation of {@link GameBoardController}.
+ * Manages player movement on the board and delegates turn advancement
+ * to the provided {@link TurnManager}.
+ */
+public final class GameBoardControllerImpl implements GameBoardController {
 
     private final GameBoardModel gb;
     private final TurnManager tm;
     private Board view;
 
-    /** Stanza in cui il giocatore si trovava a inizio turno. Null al primissimo turno. */
+    /** Room the current player occupied at the start of their turn. Null on the very first turn. */
     private Room turnStartRoom;
 
-    /** True dopo che il giocatore ha fatto sospetto o accusa: blocca il movimento. */
+    /** True after the player has made a suggestion or accusation: blocks further movement. */
     private boolean movementLocked;
 
+    /**
+     * Creates a new {@code GameBoardControllerImpl}.
+     *
+     * @param gb the game board model
+     * @param tm the turn manager
+     */
     public GameBoardControllerImpl(final GameBoardModel gb, final TurnManager tm) {
-        this.gb = gb;
-        this.tm = tm;
-        this.turnStartRoom   = null;
-        this.movementLocked  = false;
-    }
-
-    @Override
-    public void setView(final Board v) {
-        this.view = v;
+        this.gb = Objects.requireNonNull(gb, "gb must not be null");
+        this.tm = Objects.requireNonNull(tm, "tm must not be null");
+        this.turnStartRoom = null;
+        this.movementLocked = false;
     }
 
     /**
-     * Muove il giocatore corrente nella stanza {@code r}, rispettando queste regole:
-     * <ul>
-     *   <li>Se il movimento è bloccato (sospetto/accusa già fatti) non fa nulla.</li>
-     *   <li>Se il giocatore è eliminato non fa nulla.</li>
-     *   <li>Al primissimo turno (nessuna posizione) può scegliere qualsiasi stanza
-     *       e quella diventa la {@code turnStartRoom}.</li>
-     *   <li>Nei turni successivi può muoversi liberamente solo nella stanza di
-     *       partenza del turno e nelle sue due adiacenti.</li>
-     * </ul>
+     * {@inheritDoc}
+     */
+    @Override
+    public void setView(final Board v) {
+        this.view = Objects.requireNonNull(v, "view must not be null");
+    }
+
+    /**
+     * Moves the current player to room {@code r}, following these rules:
+     *
+     *   If movement is locked (suggestion/accusation already made) does nothing.
+     *   If the player is eliminated does nothing.
+     *   On the very first turn (no position yet) any room is valid
+     *       and becomes the {@code turnStartRoom}.
+     *   On subsequent turns the player may only move to the turn-start room
+     *       or one of its two adjacent rooms.
      */
     @Override
     public void move(final Room r) {
-        if (r == null) return;
+        if (r == null) {
+            return;
+        }
 
         final Player currentPlayer = tm.getCurrentPlayer();
 
-        if (currentPlayer.isEliminated()) return;
-        if (movementLocked) return;
+        if (currentPlayer.isEliminated()) {
+            return;
+        }
+        if (movementLocked) {
+            return;
+        }
 
         final Room currentPos = gb.getPlayerPosition(currentPlayer);
 
-        // primo turno assoluto: nessuna posizione, qualsiasi stanza è valida
+        // First absolute turn: no position yet, any room is valid
         if (currentPos == null) {
             gb.setPlayerPosition(currentPlayer, r);
             turnStartRoom = r;
@@ -61,43 +82,57 @@ public class GameBoardControllerImpl implements GameBoardController {
             return;
         }
 
-        // fissa la stanza di partenza al primo movimento del turno
+        // Lock the starting room on the player's first move of the turn
         if (turnStartRoom == null) {
             turnStartRoom = currentPos;
         }
 
-        // può muoversi solo nella stanza di partenza o nelle sue adiacenti
+        // Only the start room or its adjacent rooms are reachable
         if (r.equals(turnStartRoom) || turnStartRoom.getAdjacent().contains(r)) {
             gb.setPlayerPosition(currentPlayer, r);
             view.repaint();
         }
-        // click su stanza non consentita: silenzioso, il giocatore riprova
+        // Click on a disallowed room: silent, player may try again
     }
 
-    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void lockMovement() {
         movementLocked = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Player currentPlayer() {
         return tm.getCurrentPlayer();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Room getRoomByName(final String name) {
         return gb.getRoomByName(name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Room getCurrentRoomOf(final Player p) {
         return gb.getPlayerPosition(p);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void endTurn() {
-        turnStartRoom  = null;
+        turnStartRoom = null;
         movementLocked = false;
         tm.nextTurn();
         view.repaint();

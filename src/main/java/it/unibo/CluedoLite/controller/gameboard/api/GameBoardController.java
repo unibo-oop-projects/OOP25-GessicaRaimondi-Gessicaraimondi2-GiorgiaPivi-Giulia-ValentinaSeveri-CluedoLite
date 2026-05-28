@@ -4,6 +4,10 @@ import it.unibo.CluedoLite.model.gameboard.api.Room;
 import it.unibo.CluedoLite.model.player.api.Player;
 import it.unibo.CluedoLite.view.gameboard.api.Board;
 
+/**
+ * Controller for the game board.
+ * Manages player movement and turn progression.
+ */
 public interface GameBoardController {
 
     /**
@@ -23,8 +27,8 @@ public interface GameBoardController {
     void move(Room r);
 
     /**
-     * Blocca il movimento del giocatore corrente per il resto del turno.
-     * Chiamato da {@code GameController} dopo sospetto o accusa.
+     * Locks the current player's movement for the rest of the turn.
+     * Called by {@code GameController} after a suggestion or accusation.
      */
     void lockMovement();
 
