@@ -1,5 +1,7 @@
 package it.unibo.cluedolite.model.accuseandsuspect.api;
 
+import it.unibo.cluedolite.model.accuseandsuspect.impl.Suspicion;
+
 /**
  * Interface for the accusation manager in CluedoLite.
  * 
@@ -15,5 +17,5 @@ public interface InterfaceAccuseManager {
      * @param suspicion the accusation to verify
      * @return {@code true} if the accusation is correct, {@code false} otherwise
      */
-    boolean checkAccuse(InterfaceSuspicion suspicion);
+    boolean checkAccuse(Suspicion suspicion);
 }

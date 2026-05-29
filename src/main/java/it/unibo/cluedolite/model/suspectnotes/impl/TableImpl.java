@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unibo.cluedolite.model.creationcards.impl.*;
-import it.unibo.cluedolite.model.gamesetup.impl.*;
 import it.unibo.cluedolite.model.suspectnotes.api.*;
+import it.unibo.cluedolite.model.gamesetup.impl.*;
 
 
 public class TableImpl implements Table{

@@ -12,7 +12,7 @@ public interface InterfaceSuspicion {
      * Returns the suspected character.
      * @return the character card suspected by the player.
      */
-    Card getCharacter();
+    Card getCharacters();
 
     /**
      * Returns the suspected weapon.

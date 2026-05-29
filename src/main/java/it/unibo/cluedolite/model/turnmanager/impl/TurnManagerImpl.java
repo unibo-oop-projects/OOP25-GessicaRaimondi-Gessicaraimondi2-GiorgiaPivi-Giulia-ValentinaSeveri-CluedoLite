@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import it.unibo.cluedolite.model.accuseandsuspect.api.InterfaceSuspicion;
+import it.unibo.cluedolite.model.accuseandsuspect.impl.Suspicion;
 import it.unibo.cluedolite.model.creationcards.impl.Card;
 import it.unibo.cluedolite.model.player.api.Player;
 import it.unibo.cluedolite.model.turnmanager.api.TurnManager;
@@ -69,13 +69,13 @@ public class TurnManagerImpl implements TurnManager{
      * {@inheritDoc}
      */
     @Override
-    public Optional<Card> checkSuspicion(InterfaceSuspicion suspicion) {
+    public Optional<Card> checkSuspicion(Suspicion suspicion) {
         final int suspectIndex = currentIndex;
 
         for (int i = 1; i < players.size(); i++) {
             final Player p = players.get((suspectIndex + i) % players.size());
             final Optional<Card> cardToShow = p.findMatchingCard(
-                suspicion.getCharacter(), suspicion.getWeapon(), suspicion.getRoom());
+                suspicion.getCharacters(), suspicion.getWeapon(), suspicion.getRoom());
 
             if (cardToShow.isPresent()) {
                 this.shownBy = players.indexOf(p) + 1;

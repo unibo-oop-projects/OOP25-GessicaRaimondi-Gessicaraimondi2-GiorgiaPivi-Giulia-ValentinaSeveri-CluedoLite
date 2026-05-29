@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import it.unibo.cluedolite.model.gameboard.api.GameBoardModel;
 import it.unibo.cluedolite.model.gameboard.api.Room;
+import it.unibo.cluedolite.model.gameboard.api.GameBoardModel;
 import it.unibo.cluedolite.model.player.api.Player;
 
 /**

@@ -5,29 +5,24 @@ import javax.swing.JOptionPane;
 import it.unibo.cluedolite.controller.buttonflowcontroller.api.ResetButtonController;
 import it.unibo.cluedolite.model.gameflow.api.Game;
 
+
 /**
- * Implementation of {@link ResetButtonController} that handles the reset action.
- * When triggered, it shows a confirmation dialog and, if confirmed,
- * resets and restarts the game with the same set of players.
+ * Controller for the RESET button
+ * Restarts the game with the same players
  */
 public class ResetButtonControllerImpl implements ResetButtonController {
 
     private final Game game;
-     /**
-     * Constructs a new {@code ResetButtonControllerImpl}.
-     *
-     * @param game the game model used to invoke reset and start logic
+
+    /**
+     * Creates the controller with the game model
      */
     public ResetButtonControllerImpl(final Game game) {
         this.game = game;
     }
 
     /**
-     * Handles the reset button click event.
-     * Displays a YES/NO confirmation dialog; if confirmed, calls
-     * {@link Game#resetGame()} followed by {@link Game#startGame()}.
-     *
-     * @return {@code true} if the user confirmed the reset, {@code false} otherwise
+     * Called when the user clicks RESET
      */
     @Override
     public boolean onResetClicked() {
@@ -37,7 +32,7 @@ public class ResetButtonControllerImpl implements ResetButtonController {
             "Reset",
             JOptionPane.YES_NO_OPTION
         );
-        if (confirm == JOptionPane.YES_OPTION) {   
+        if (confirm == JOptionPane.YES_OPTION){   
             game.resetGame();
             game.startGame();
             return true;
