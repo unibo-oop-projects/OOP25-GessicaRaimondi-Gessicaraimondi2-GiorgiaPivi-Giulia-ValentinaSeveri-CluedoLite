@@ -1,6 +1,8 @@
 package it.unibo.samplejavafx;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -9,19 +11,27 @@ import it.unibo.cluedolite.model.creationcards.impl.CardType;
 import it.unibo.cluedolite.model.gamesetup.impl.Deck;
 import it.unibo.cluedolite.model.gamesetup.impl.SecretSolution;
 
+/**
+ * Test class that verifies the correct generation of the secret solution in CluedoLite.
+ * Checks that the solution contains exactly one card of each type and that
+ * the selected cards are removed from the remaining deck.
+ */
 public class TestSecretSolution {
 
+    /**
+    * Tests that the secret solution is generated correctly,
+    * containing exactly one character, one weapon, and one room card,
+    * and that those cards are removed from the remaining deck.
+    */
     @Test
     public void testSecretSolutionGeneration() {
-        List<Card> cards = Deck.getAllCards(); // 21 carte
+        List<Card> cards = Deck.getAllCards();
 
-        SecretSolution secretSolution = new SecretSolution(cards); // rimuove 3 carte da cards
+        SecretSolution secretSolution = new SecretSolution(cards);
         List<Card> sol = secretSolution.getSolution();
 
-        // 1. La soluzione deve contenere esattamente 3 carte
         assertEquals(3, sol.size());
 
-        // 2. La soluzione deve contenere 1 personaggio, 1 arma e 1 stanza
         boolean hasCharacter = sol.stream().anyMatch(c -> c.getType() == CardType.CHARACTER);
         boolean hasWeapon    = sol.stream().anyMatch(c -> c.getType() == CardType.WEAPON);
         boolean hasRoom      = sol.stream().anyMatch(c -> c.getType() == CardType.ROOM);
@@ -30,12 +40,10 @@ public class TestSecretSolution {
         assertTrue(hasWeapon);
         assertTrue(hasRoom);
 
-        // 3. Le carte della soluzione non devono essere nel mazzo rimanente
         for (Card c : sol) {
             assertFalse(cards.contains(c));
         }
 
-        // 4. Il mazzo deve avere 18 carte (21 - 3)
         assertEquals(18, cards.size());
     }
 }

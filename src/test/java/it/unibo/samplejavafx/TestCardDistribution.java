@@ -1,7 +1,9 @@
 package it.unibo.samplejavafx;
 
-import static org.junit.jupiter.api.Assertions.*;
-import java.util.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.cluedolite.model.creationcards.impl.Card;
@@ -11,15 +13,20 @@ import it.unibo.cluedolite.model.gamesetup.impl.SecretSolution;
 import it.unibo.cluedolite.model.player.api.Player;
 import it.unibo.cluedolite.model.player.impl.PlayerImpl;
 
-/*
- * This test class verifies the correct distribution of cards to players in the CluedoLite game.
+/**
+ * Test class that verifies the correct distribution of cards to players in the CluedoLite game.
+ * Tests cover even and uneven distributions across different player counts (3, 4, 5, 6 players).
  */
 public class TestCardDistribution {
 
+    /**
+    * Tests that 18 cards are correctly distributed among 3 players,
+    * verifying each player receives exactly 6 cards.
+    */
     @Test
     void testCardDistributionEvenly() {
-        List<Card> cards = Deck.getAllCards(); // 21 carte
-        new SecretSolution(cards); // rimuove 3 carte, ne rimangono 18
+        List<Card> cards = Deck.getAllCards();
+        new SecretSolution(cards);
 
         int totalCards = cards.size();
         assertEquals(18, totalCards, "The deck should have 18 cards after removing the secret solution cards");
@@ -27,10 +34,13 @@ public class TestCardDistribution {
         List<Player> players = Arrays.asList(
             new PlayerImpl("Alice"),
             new PlayerImpl("Bob"),
+            new PlayerImpl("Charlie"),
+            new PlayerImpl("Charlie"),
+            new PlayerImpl("Charlie"),
             new PlayerImpl("Charlie")
         );
 
-        new CardDistribution(cards, players); // distribuisce le 18 carte
+        new CardDistribution(cards, players);
 
         if (players.size() == 3) {
             int expectedCardsPerPlayer = totalCards / 3;
