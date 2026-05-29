@@ -1,6 +1,14 @@
 package it.unibo.cluedolite.view.endgameview;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
 
 import it.unibo.cluedolite.controller.buttonflowcontroller.api.QuitButtonController;
 import it.unibo.cluedolite.controller.buttonflowcontroller.api.ResetButtonController;
@@ -8,13 +16,23 @@ import it.unibo.cluedolite.view.AppColorFont;
 import it.unibo.cluedolite.view.buttonflowview.QuitButtonView;
 import it.unibo.cluedolite.view.buttonflowview.ResetButtonView;
 
-import java.awt.*;
-
+/**
+ * View displayed when a player wins the game in CluedoLite.
+ * Shows a fullscreen victory message with reset and quit buttons,
+ * allowing the player to start a new game or exit the application.
+ */
 public class VictoryView extends JFrame {
 
+    private static final long serialVersionUID = 1L;
+    
     private static final int WINDOW_WIDTH = 700;
     private static final int WINDOW_HEIGHT = 400;
 
+    /**
+    * Constructs and displays the victory screen.
+    * @param resetController the controller handling the reset button action
+    * @param quitController  the controller handling the quit button action
+    */
     public VictoryView(final ResetButtonController resetController, final QuitButtonController quitController) {
         setTitle("Victory!");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
