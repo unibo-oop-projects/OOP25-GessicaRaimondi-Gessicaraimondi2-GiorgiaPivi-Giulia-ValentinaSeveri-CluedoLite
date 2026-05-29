@@ -125,12 +125,12 @@ public class GameController {
                 final String suspect = game.getTurnManager().getCurrentPlayer().getName();
                 if (refutation.isPresent()) {
                     gameView.addHistoryEntry(suspect + " made a suspicion: ["
-                        + suspicion.getCharacters() + ", " + suspicion.getWeapon()
+                        + suspicion.getCharacter() + ", " + suspicion.getWeapon()
                         + ", " + suspicion.getRoom() + "] — player "
                         + game.getTurnManager().getShownBy() + " showed a card");
                 } else {
                     gameView.addHistoryEntry(suspect + " made a suspicion: ["
-                        + suspicion.getCharacters() + ", " + suspicion.getWeapon()
+                        + suspicion.getCharacter() + ", " + suspicion.getWeapon()
                         + ", " + suspicion.getRoom() + "] — no player could refute it");
                 }
             },

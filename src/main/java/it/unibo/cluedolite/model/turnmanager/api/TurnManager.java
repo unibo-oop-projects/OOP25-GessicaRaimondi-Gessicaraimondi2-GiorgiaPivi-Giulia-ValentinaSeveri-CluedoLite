@@ -2,7 +2,7 @@ package it.unibo.cluedolite.model.turnmanager.api;
 
 import java.util.Optional;
 
-import it.unibo.cluedolite.model.accuseandsuspect.impl.Suspicion;
+import it.unibo.cluedolite.model.accuseandsuspect.api.InterfaceSuspicion;
 import it.unibo.cluedolite.model.creationcards.impl.Card;
 import it.unibo.cluedolite.model.player.api.Player;
 
@@ -49,7 +49,7 @@ import it.unibo.cluedolite.model.player.api.Player;
      * @return an Optional containing the card shown by the first player who
      *         can respond, or empty if no one can refute the suspicion
      */
-    Optional<Card> checkSuspicion(Suspicion suspicion);
+    Optional<Card> checkSuspicion(InterfaceSuspicion suspicion);
 
     /**
      * Returns the number of the player who has shown a card in response to the suspicion.

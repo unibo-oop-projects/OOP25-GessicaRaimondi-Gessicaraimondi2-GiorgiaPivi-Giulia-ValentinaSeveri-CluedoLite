@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import it.unibo.cluedolite.controller.tablecontroller.api.TableController;
-import it.unibo.cluedolite.model.accuseandsuspect.impl.Suspicion;
+import it.unibo.cluedolite.model.accuseandsuspect.api.InterfaceSuspicion;
 import it.unibo.cluedolite.model.creationcards.impl.Card;
 import it.unibo.cluedolite.model.suspectnotes.api.Table;
 import it.unibo.cluedolite.model.suspectnotes.impl.TableImpl;
@@ -35,7 +35,7 @@ import it.unibo.cluedolite.view.tableview.TablePanel;
      * {@inheritDoc}
      */
     @Override
-    public void handleSuspicion(Suspicion suspicion, Optional<Card> shownCard) {
+    public void handleSuspicion(InterfaceSuspicion suspicion, Optional<Card> shownCard) {
         shownCard.ifPresent(c -> {
             table.updateTable(c);
             tablePanel.refresh(c);

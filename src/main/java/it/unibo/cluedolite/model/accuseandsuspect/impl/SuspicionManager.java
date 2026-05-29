@@ -1,6 +1,7 @@
 package it.unibo.cluedolite.model.accuseandsuspect.impl;
 
 import it.unibo.cluedolite.model.accuseandsuspect.api.InterfaceSuspicionManager;
+import it.unibo.cluedolite.model.accuseandsuspect.api.InterfaceSuspicion;
 import it.unibo.cluedolite.model.creationcards.impl.Card;
 import it.unibo.cluedolite.model.player.api.Player;
 
@@ -33,13 +34,11 @@ public class SuspicionManager implements InterfaceSuspicionManager {
      * @return a new {@link Suspicion} object if the room is valid, {@code null} otherwise
      */
     @Override
-    public Suspicion makeSuspicion(Player player, Card character, Card weapon, Card room) {
-        // A suspicion can only be made if the player is currently in a room
+    public InterfaceSuspicion makeSuspicion(Player player, Card character, Card weapon, Card room) {
         if (room == null) {
-            System.out.println("The player is not in a room and cannot make a suspicion.");
-            return null;
+           throw new IllegalStateException("The player is not in a room and cannot make a suspicion.");
         }
-        // Create and return the Suspicion with the chosen character, weapon, and current room
+
         return new Suspicion(character, weapon, room);
     }
 }

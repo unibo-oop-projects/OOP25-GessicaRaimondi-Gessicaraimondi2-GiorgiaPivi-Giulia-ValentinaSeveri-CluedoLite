@@ -6,8 +6,9 @@ import java.util.function.Supplier;
 import javax.swing.JOptionPane;
 
 import it.unibo.cluedolite.controller.accuseandsuspectcontroller.api.InterfaceSuspicionController;
-import it.unibo.cluedolite.model.accuseandsuspect.impl.Suspicion;
+import it.unibo.cluedolite.model.accuseandsuspect.api.InterfaceSuspicion;
 import it.unibo.cluedolite.model.accuseandsuspect.impl.SuspicionManager;
+import it.unibo.cluedolite.model.accuseandsuspect.impl.Suspicion;
 import it.unibo.cluedolite.model.creationcards.impl.Card;
 import it.unibo.cluedolite.model.player.api.Player;
 import it.unibo.cluedolite.view.suspicionview.SuspicionView;
@@ -33,7 +34,7 @@ import it.unibo.cluedolite.view.suspicionview.SuspicionView;
 public class SuspicionController implements InterfaceSuspicionController {
 
     private final SuspicionManager suspicionManager;
-    private final Consumer<Suspicion> suspicionCallback;
+    private final Consumer<InterfaceSuspicion> suspicionCallback;
     private final Runnable onConfirmed;
     private final Card[] characters;
     private final Card[] weapons;
@@ -59,7 +60,7 @@ public class SuspicionController implements InterfaceSuspicionController {
             final Card[] characters,
             final Card[] weapons,
             final Supplier<Card> roomSupplier,
-            final Consumer<Suspicion> suspicionCallback,
+            final Consumer<InterfaceSuspicion> suspicionCallback,
             final Supplier<Player> playerSupplier,
             final Runnable onConfirmed) {
         this.suspicionManager = suspicionManager;
@@ -125,7 +126,7 @@ public class SuspicionController implements InterfaceSuspicionController {
         final Card selectedCharacter = view.getSelectedCharacter();
         final Card selectedWeapon    = view.getSelectedWeapon();
 
-        final Suspicion suspicion = suspicionManager.makeSuspicion(
+        final InterfaceSuspicion suspicion = suspicionManager.makeSuspicion(
                 playerSupplier.get(), selectedCharacter, selectedWeapon, roomSupplier.get());
 
         if (suspicion == null) {
