@@ -23,7 +23,7 @@ public class SuspicionManager implements InterfaceSuspicionManager {
      * and the room where the player is currently located.
      *
      * The room is passed directly by the controller rather than retrieved from the board,
-     * keeping this class decoupled from the {@link it.unibo.cluedolite.model.gameboard.impl.GameBoardModelImpl}.
+     * keeping this class decoupled from the {@link it.unibo.cluedolites.model.gameboards.impl.GameBoardModelImpl}.
      *
      * @param player    the player who is making the suspicion
      * @param character the card representing the suspected character
