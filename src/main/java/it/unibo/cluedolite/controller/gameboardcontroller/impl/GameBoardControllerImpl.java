@@ -19,11 +19,7 @@ public final class GameBoardControllerImpl implements GameBoardController {
     private final GameBoardModel gb;
     private final TurnManager tm;
     private BoardView view;
-
-    /** Room the current player occupied at the start of their turn. Null on the very first turn. */
     private Room turnStartRoom;
-
-    /** True after the player has made a suggestion or accusation: blocks further movement. */
     private boolean movementLocked;
 
     /**

@@ -19,6 +19,11 @@ public final class GameBoardModelImpl implements GameBoardModel {
     private final Map<Player, Room> playerPositions = new HashMap<>();
     private final List<Room> rooms = new ArrayList<>();
 
+    /**
+     * Creates a new {@code GameBoardModelImpl}.
+     * Populates the board with the nine standard Cluedo rooms and
+     * automatically generates circular adjacencies between them.
+     */
     public GameBoardModelImpl() {
         List.of(
             "Kitchen", "Ballroom", "Conservatory",

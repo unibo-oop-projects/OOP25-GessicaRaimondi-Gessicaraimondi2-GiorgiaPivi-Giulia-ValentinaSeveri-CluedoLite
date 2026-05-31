@@ -20,6 +20,11 @@ public class TurnManagerImpl implements TurnManager {
     private boolean gameOver;
     private int shownBy;
 
+    /**
+     * Creates a new {@code TurnManagerImpl}.
+     *
+     * @param players the list of players in turn order
+     */
     public TurnManagerImpl(List<Player> players) {
             this.players=new ArrayList<>(players);
             this.currentIndex=0;
