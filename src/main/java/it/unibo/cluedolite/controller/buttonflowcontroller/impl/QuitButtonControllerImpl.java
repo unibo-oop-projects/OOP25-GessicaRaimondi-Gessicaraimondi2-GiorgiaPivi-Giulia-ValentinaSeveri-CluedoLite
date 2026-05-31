@@ -11,9 +11,8 @@ import it.unibo.cluedolite.model.gameflow.api.Game;
 import it.unibo.cluedolite.view.menuview.StartView;
 
 /**
- * Implementation of {@link QuitButtonController} that handles the quit action.
- * When triggered, it shows a confirmation dialog and, if confirmed,
- * returns to the main menu by disposing the current game window.
+ * Controller for the QUIT button.
+ * Returns to the main menu and closes the game window.
  */
 public class QuitButtonControllerImpl implements QuitButtonController {
 
@@ -21,10 +20,7 @@ public class QuitButtonControllerImpl implements QuitButtonController {
     private final Supplier<JFrame> frameSupplier;
 
     /**
-     * Constructs a new {@code QuitButtonControllerImpl}.
-     *
-     * @param game          the game model used to invoke quit logic
-     * @param frameSupplier a supplier providing the current game {@link JFrame}
+     * Creates the controller with the game model and the game window reference.
      */
     public QuitButtonControllerImpl(final Game game, final Supplier<JFrame> frameSupplier) {
         this.game = game;
@@ -32,18 +28,16 @@ public class QuitButtonControllerImpl implements QuitButtonController {
     }
 
     /**
-     * Handles the quit button click event.
-     * Displays a YES/NO confirmation dialog; if confirmed, calls
-     * {@link Game#quitToMenu()}, opens the start view, and disposes the frame.
+     * Called when the user clicks QUIT.
      */
     @Override
     public void onQuitClicked() {
         final JFrame currentFrame = frameSupplier.get();
         final int confirm = JOptionPane.showConfirmDialog(
-                currentFrame,
-                "Are you sure you want to quit to the main menu?",
-                "Quit",
-                JOptionPane.YES_NO_OPTION
+            currentFrame,
+            "Are you sure you want to quit to the main menu?",
+            "Quit",
+            JOptionPane.YES_NO_OPTION
         );
         if (confirm == JOptionPane.YES_OPTION) {
             game.quitToMenu();

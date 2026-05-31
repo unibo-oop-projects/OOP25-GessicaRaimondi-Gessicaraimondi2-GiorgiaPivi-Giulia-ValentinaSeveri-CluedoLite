@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import it.unibo.cluedolite.model.accuseandsuspect.api.InterfaceSuspicion;
+import it.unibo.cluedolite.model.accuseandsuspect.impl.Suspicion;
 import it.unibo.cluedolite.model.creationcards.impl.Card;
 import it.unibo.cluedolite.model.player.api.Player;
 import it.unibo.cluedolite.model.turnmanager.api.TurnManager;
@@ -13,23 +13,24 @@ import it.unibo.cluedolite.model.turnmanager.api.TurnManager;
  * Implementation of the {@link TurnManager} interface.
  */
 
-public class TurnManagerImpl implements TurnManager{
+public class TurnManagerImpl implements TurnManager {
 
     private final List<Player> players;
     private int currentIndex;
-    private boolean gameOver = false;
+    private boolean gameOver;
     private int shownBy;
 
-    public TurnManagerImpl(List<Player> players){
+    public TurnManagerImpl(List<Player> players) {
             this.players=new ArrayList<>(players);
             this.currentIndex=0;
+            this.gameOver = false;
     } 
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Player getCurrentPlayer(){
+    public Player getCurrentPlayer() {
         return this.players.get(this.currentIndex);
     } 
 
@@ -53,7 +54,7 @@ public class TurnManagerImpl implements TurnManager{
      * {@inheritDoc}
      */
     @Override
-    public Player nextTurn(){
+    public Player nextTurn() {
         if (this.gameOver) {
             throw new IllegalStateException("The game is over");
         }
@@ -69,13 +70,13 @@ public class TurnManagerImpl implements TurnManager{
      * {@inheritDoc}
      */
     @Override
-    public Optional<Card> checkSuspicion(InterfaceSuspicion suspicion) {
+    public Optional<Card> checkSuspicion(Suspicion suspicion) {
         final int suspectIndex = currentIndex;
 
         for (int i = 1; i < players.size(); i++) {
             final Player p = players.get((suspectIndex + i) % players.size());
             final Optional<Card> cardToShow = p.findMatchingCard(
-                suspicion.getCharacter(), suspicion.getWeapon(), suspicion.getRoom());
+                suspicion.getCharacters(), suspicion.getWeapon(), suspicion.getRoom());
 
             if (cardToShow.isPresent()) {
                 this.shownBy = players.indexOf(p) + 1;
@@ -89,7 +90,7 @@ public class TurnManagerImpl implements TurnManager{
      * {@inheritDoc}
      */
     @Override
-    public int getShownBy(){
+    public int getShownBy() {
         return this.shownBy;
     }
 } 

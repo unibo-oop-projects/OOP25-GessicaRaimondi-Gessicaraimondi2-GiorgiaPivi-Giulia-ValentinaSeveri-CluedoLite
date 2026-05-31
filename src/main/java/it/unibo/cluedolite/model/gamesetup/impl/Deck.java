@@ -5,11 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import it.unibo.cluedolite.model.creationcards.impl.Card;
-import it.unibo.cluedolite.model.creationcards.impl.CardType;
-import it.unibo.cluedolite.model.creationcards.impl.Characters;
-import it.unibo.cluedolite.model.creationcards.impl.Weapons;
-import it.unibo.cluedolite.model.creationcards.impl.Rooms;
+import it.unibo.cluedolite.model.creationcards.impl.*;
 
 /**
  * Enum representing the deck of cards in the game.
@@ -19,6 +15,7 @@ import it.unibo.cluedolite.model.creationcards.impl.Rooms;
  */
 public enum Deck {
 
+    // Characters
     MISS_SCARLETT(new Characters("Miss Scarlett")),
     COLONEL_MUSTARD(new Characters("Colonel Mustard")),
     MRS_WHITE(new Characters("Mrs. White")),
@@ -26,6 +23,7 @@ public enum Deck {
     MRS_PEACOCK(new Characters("Mrs. Peacock")),
     PROFESSOR_PLUM(new Characters("Professor Plum")),
 
+    // Weapons
     CANDLESTICK(new Weapons("Candlestick")),
     DAGGER(new Weapons("Dagger")),
     LEAD_PIPE(new Weapons("Lead Pipe")),
@@ -33,6 +31,7 @@ public enum Deck {
     ROPE(new Weapons("Rope")),
     WRENCH(new Weapons("Wrench")),
 
+    // Rooms
     KITCHEN(new Rooms("Kitchen")),
     BALLROOM(new Rooms("Ballroom")),
     CONSERVATORY(new Rooms("Conservatory")),
@@ -102,6 +101,6 @@ public enum Deck {
         return Arrays.stream(values())
                 .filter(d -> d.getType() == type)
                 .map(Deck::getCard)
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toList());
     }
 }

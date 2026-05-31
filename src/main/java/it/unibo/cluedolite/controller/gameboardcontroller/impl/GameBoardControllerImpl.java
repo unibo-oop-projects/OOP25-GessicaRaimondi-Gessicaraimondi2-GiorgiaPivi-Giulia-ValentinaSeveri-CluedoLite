@@ -48,14 +48,7 @@ public final class GameBoardControllerImpl implements GameBoardController {
     }
 
     /**
-     * Moves the current player to room {@code r}, following these rules:
-     *
-     *   If movement is locked (suggestion/accusation already made) does nothing.
-     *   If the player is eliminated does nothing.
-     *   On the very first turn (no position yet) any room is valid
-     *       and becomes the {@code turnStartRoom}.
-     *   On subsequent turns the player may only move to the turn-start room
-     *       or one of its two adjacent rooms.
+     * {@inheritDoc}
      */
     @Override
     public void move(final Room r) {
@@ -68,13 +61,13 @@ public final class GameBoardControllerImpl implements GameBoardController {
         if (currentPlayer.isEliminated()) {
             return;
         }
+
         if (movementLocked) {
             return;
         }
 
         final Room currentPos = gb.getPlayerPosition(currentPlayer);
 
-        // First absolute turn: no position yet, any room is valid
         if (currentPos == null) {
             gb.setPlayerPosition(currentPlayer, r);
             turnStartRoom = r;
@@ -82,17 +75,14 @@ public final class GameBoardControllerImpl implements GameBoardController {
             return;
         }
 
-        // Lock the starting room on the player's first move of the turn
         if (turnStartRoom == null) {
             turnStartRoom = currentPos;
         }
 
-        // Only the start room or its adjacent rooms are reachable
         if (r.equals(turnStartRoom) || turnStartRoom.getAdjacent().contains(r)) {
             gb.setPlayerPosition(currentPlayer, r);
             view.repaint();
         }
-        // Click on a disallowed room: silent, player may try again
     }
 
     /**

@@ -1,6 +1,8 @@
 package it.unibo.cluedolite.view.gameboardview.impl;
 
 import java.awt.Rectangle;
+import java.util.Arrays;
+import java.util.Optional;
 
 public enum RoomView {
 
@@ -27,15 +29,26 @@ public enum RoomView {
         this.imagePath = imagePath;
     }
 
-    //per cast da Room a RoomView
-    public static RoomView fromName(String name) {
-        for (RoomView rv : values()) {
-            if (rv.name.equalsIgnoreCase(name)) return rv;
+    /**
+     * Returns the RoomView matching the given name (case-insensitive),
+     * or an empty Optional if none matches.
+     *
+     * @param name the room name to look up
+     * @return an Optional containing the matching RoomView, or empty
+     */
+    public static Optional<RoomView> fromName(final String name) {
+        return Arrays.stream(values())
+            .filter(rv -> rv.name.equalsIgnoreCase(name))
+            .findFirst();
         }
-        return null;
-    }
 
-    //Per sapere se il punto cliccato è dentro la stanza
+    /**
+     * Returns the pixel rectangle for this room given the panel dimensions.
+     *
+     * @param panelW panel width in pixels
+     * @param panelH panel height in pixels
+     * @return the bounding Rectangle of this room
+     */
     public Rectangle toRect(int panelW, int panelH) {
         return new Rectangle(
             (int)(x * panelW),

@@ -1,18 +1,11 @@
 package it.unibo.cluedolite.view.suspicionview;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import javax.swing.*;
 
 import it.unibo.cluedolite.model.creationcards.impl.Card;
 import it.unibo.cluedolite.view.AppColorFont;
+
+import java.awt.*;
 
 /**
  * This class represents the Swing VIEW for the suspicion phase of the CluedoLite game.
@@ -33,7 +26,7 @@ public class SuspicionView extends JFrame {
     private final JComboBox<Card> characterBox;
     private final JComboBox<Card> weaponBox;
     private final JTextField roomField;
-    private final JButton confirmButton;
+    private JButton confirmButton;
 
     /**
      * Constructs the suspicion view and initializes all its components.
@@ -54,6 +47,7 @@ public class SuspicionView extends JFrame {
         panel.setBackground(AppColorFont.BACKGROUND_DARK);
         add(panel, BorderLayout.CENTER);
 
+        // Row 1: character selection
         JLabel charLabel = new JLabel("Choose the Character:");
         charLabel.setForeground(AppColorFont.TEXT_PRIMARY);
         charLabel.setFont(AppColorFont.FONT_LABEL);
@@ -64,6 +58,7 @@ public class SuspicionView extends JFrame {
         characterBox.setFont(AppColorFont.FONT_DROPDOWN);
         panel.add(characterBox);
 
+        // Row 2: weapon selection
         JLabel weapLabel = new JLabel("Choose the Weapon:");
         weapLabel.setForeground(AppColorFont.TEXT_PRIMARY);
         weapLabel.setFont(AppColorFont.FONT_LABEL);
@@ -74,6 +69,7 @@ public class SuspicionView extends JFrame {
         weaponBox.setFont(AppColorFont.FONT_DROPDOWN);
         panel.add(weaponBox);
 
+        // Row 3: room display (read-only)
         JLabel roomLabel = new JLabel("The Room is:");
         roomLabel.setForeground(AppColorFont.TEXT_PRIMARY);
         roomLabel.setFont(AppColorFont.FONT_LABEL);
@@ -85,6 +81,7 @@ public class SuspicionView extends JFrame {
         roomField.setFont(AppColorFont.FONT_DROPDOWN);
         panel.add(roomField);
 
+        // Confirm button
         confirmButton = new JButton("Confirm your Suspicion");
         confirmButton.setBackground(AppColorFont.BUTTON_BACKGROUND);
         confirmButton.setForeground(AppColorFont.BUTTON_FOREGROUND);
@@ -100,27 +97,7 @@ public class SuspicionView extends JFrame {
         setResizable(false);
     }
 
-    /**
-    * Returns the character card selected by the player.
-    * @return the selected character {@link Card}
-    */
-    public Card getSelectedCharacter() { 
-        return (Card) characterBox.getSelectedItem(); 
-    }
-
-    /**
-    * Returns the weapon card selected by the player.
-    * @return the selected weapon {@link Card}
-    */
-    public Card getSelectedWeapon() { 
-        return (Card) weaponBox.getSelectedItem(); 
-    }
-
-    /**
-    * Returns the confirm button so the controller can attach the action listener.
-    * @return the confirm {@link JButton}
-    */
-    public JButton getConfirmButton() { 
-        return confirmButton; 
-    }
+    public Card getSelectedCharacter() { return (Card) characterBox.getSelectedItem(); }
+    public Card getSelectedWeapon()    { return (Card) weaponBox.getSelectedItem(); }
+    public JButton getConfirmButton()  { return confirmButton; }
 }
