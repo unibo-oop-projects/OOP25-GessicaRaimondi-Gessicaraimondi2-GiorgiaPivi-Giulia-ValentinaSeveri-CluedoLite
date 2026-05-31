@@ -13,23 +13,24 @@ import it.unibo.cluedolite.model.turnmanager.api.TurnManager;
  * Implementation of the {@link TurnManager} interface.
  */
 
-public class TurnManagerImpl implements TurnManager{
+public class TurnManagerImpl implements TurnManager {
 
     private final List<Player> players;
     private int currentIndex;
-    private boolean gameOver = false;
+    private boolean gameOver;
     private int shownBy;
 
-    public TurnManagerImpl(List<Player> players){
+    public TurnManagerImpl(List<Player> players) {
             this.players=new ArrayList<>(players);
             this.currentIndex=0;
+            this.gameOver = false;
     } 
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Player getCurrentPlayer(){
+    public Player getCurrentPlayer() {
         return this.players.get(this.currentIndex);
     } 
 
@@ -53,7 +54,7 @@ public class TurnManagerImpl implements TurnManager{
      * {@inheritDoc}
      */
     @Override
-    public Player nextTurn(){
+    public Player nextTurn() {
         if (this.gameOver) {
             throw new IllegalStateException("The game is over");
         }
@@ -89,7 +90,7 @@ public class TurnManagerImpl implements TurnManager{
      * {@inheritDoc}
      */
     @Override
-    public int getShownBy(){
+    public int getShownBy() {
         return this.shownBy;
     }
 } 
