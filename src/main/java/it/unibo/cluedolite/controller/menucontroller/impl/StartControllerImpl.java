@@ -12,6 +12,7 @@ public class StartControllerImpl implements StartController{
     public StartControllerImpl() {
         
     }
+
     /**
     * Called when the user clicks NEW GAME.
     * Closes the start screen and opens the lobby.

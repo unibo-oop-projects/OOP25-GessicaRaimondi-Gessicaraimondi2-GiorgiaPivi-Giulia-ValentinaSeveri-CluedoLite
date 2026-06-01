@@ -4,56 +4,86 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.unibo.cluedolite.model.creationcards.impl.*;
-import it.unibo.cluedolite.model.gamesetup.impl.*;
 import it.unibo.cluedolite.model.suspectnotes.api.*;
+import it.unibo.cluedolite.model.gamesetup.impl.*;
 
+/**
+ * Implementation of {@link Table}.
+ * Tracks the state of each card in the suspect notes,
+ * grouping them by type.
+ */
+public class TableImpl implements Table {
 
-public class TableImpl implements Table{
-    private final List<BoxImpl> rooms = new ArrayList<>();
-    private final List<BoxImpl> characters = new ArrayList<>();
-    private final List<BoxImpl> weapons = new ArrayList<>();
+    private final List<Box> rooms = new ArrayList<>();
+    private final List<Box> characters = new ArrayList<>();
+    private final List<Box> weapons = new ArrayList<>();
 
-    // Builds the suspect notes table by creating a Box for each card and grouping them by type
-    public TableImpl(List<Card> hand){
-        for (Card name : Deck.getAllCards()) {      
-            BoxImpl box = new BoxImpl(name);   
-            searchType(name).add(box);
+    /**
+     * Creates a new {@link TableImpl}, populating it with all cards
+     * and initializing it based on the player's hand.
+     *
+     * @param hand the list of cards in the player's hand
+     */
+    public TableImpl(final List<Card> hand) {
+        for (final Card name : Deck.getAllCards()) {
+            getListByType(name).add(new BoxImpl(name));
         }
         initializeTable(hand);
     }
 
-    // Updates the table based on the player's hand
-    public void initializeTable(List<Card> hand){   
-        for(Card name : hand){           
-            searchType(name).stream()
-            .filter(box -> box.getCard().equals(name))
-            .forEach(BoxImpl::excludeCard);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void initializeTable(final List<Card> hand) {
+        for (final Card name : hand) {
+            getListByType(name).stream()
+                .filter(box -> box.getCard().equals(name))
+                .forEach(Box::excludeCard);
         }
     }
 
-    // Returns the list corresponding to the card's type (characters, weapons, or rooms).
-    public List<BoxImpl> searchType(Card name){
-        if(name instanceof Characters){
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Box> searchType(final Card name) {
+        return List.copyOf(getListByType(name));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean alreadyExcluded(final Card name) {
+        return getListByType(name).stream()
+            .filter(box -> box.getCard().equals(name))
+            .anyMatch(box -> box.getState().equals(State.EXCLUDED));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateTable(final Card name) {
+        getListByType(name).stream()
+            .filter(box -> box.getCard().equals(name))
+            .forEach(Box::excludeCard);
+    }
+
+    /**
+     * Returns the mutable internal list corresponding to the card's type.
+     *
+     * @param name the card whose type determines the list to return
+     * @return the mutable internal {@link List} of {@link Box}
+     */
+    private List<Box> getListByType(final Card name) {
+        if (name instanceof Characters) {
             return characters;
-        }else if(name instanceof Weapons){
+        } else if (name instanceof Weapons) {
             return weapons;
-        }else{
+        } else {
             return rooms;
         }
-    }
-
-    // Checks whether the given card is already marked as EXCLUDED in the table.
-    // Returns true if the card is already present with state EXCLUDED.
-    public boolean alreadyExcluded(Card name){
-        return searchType(name).stream()
-                        .filter(box -> box.getCard().equals(name))
-                        .anyMatch(box -> box.getState().equals(State.EXCLUDED));
-    }
-    
-    // Excludes the box corresponding to the given card in the table
-    public void updateTable(Card name){
-        searchType(name).stream()
-        .filter(box -> box.getCard().equals(name))
-        .forEach(box -> box.excludeCard());
     }
 }

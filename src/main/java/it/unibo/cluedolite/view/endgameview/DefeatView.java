@@ -1,30 +1,13 @@
 package it.unibo.cluedolite.view.endgameview;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.Timer;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.GridBagLayout;
+import javax.swing.*;
 
 import it.unibo.cluedolite.view.AppColorFont;
 
-/**
- * View displayed when the player loses the game in CluedoLite.
- * Shows a fullscreen defeat message that closes automatically after 3 seconds.
- */
+import java.awt.*;
+
 public class DefeatView extends JFrame {
 
-    private static final long serialVersionUID = 1L;
-
-    /**
-    * Constructs and displays the defeat screen.
-    * The window closes automatically after 3 seconds.
-    */
     public DefeatView() {
         setTitle("Defeat");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -56,11 +39,11 @@ public class DefeatView extends JFrame {
         innerPanel.add(titleLabel);
         innerPanel.add(subtitleLabel);
         outerPanel.add(innerPanel);
-        rootPanel.add(outerPanel, BorderLayout.CENTER);
+        rootPanel.add(outerPanel, BorderLayout.CENTER); // ← collegare outerPanel a rootPanel
 
-        add(rootPanel);
+        add(rootPanel);         // ← aggiungere rootPanel al frame
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setVisible(true);
+        setVisible(true);       // ← rendere visibile
 
         final Timer timer = new Timer(3000, e -> dispose());
         timer.setRepeats(false);

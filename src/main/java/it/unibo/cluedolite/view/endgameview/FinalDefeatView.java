@@ -1,15 +1,6 @@
 package it.unibo.cluedolite.view.endgameview;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
+import javax.swing.*;
 
 import it.unibo.cluedolite.controller.buttonflowcontroller.api.QuitButtonController;
 import it.unibo.cluedolite.controller.buttonflowcontroller.api.ResetButtonController;
@@ -17,20 +8,10 @@ import it.unibo.cluedolite.view.AppColorFont;
 import it.unibo.cluedolite.view.buttonflowview.QuitButtonView;
 import it.unibo.cluedolite.view.buttonflowview.ResetButtonView;
 
-/**
- * View displayed when all players have been eliminated in CluedoLite.
- * Shows a fullscreen defeat message with reset and quit buttons,
- * allowing the player to start a new game or exit the application.
- */
+import java.awt.*;
+
 public class FinalDefeatView extends JFrame {
 
-    private static final long serialVersionUID = 1L;
-
-    /**
-    * Constructs and displays the final defeat screen.
-    * @param resetController the controller handling the reset button action
-    * @param quitController  the controller handling the quit button action
-    */
     public FinalDefeatView(final ResetButtonController resetController,
                            final QuitButtonController quitController) {
         setTitle("Defeat");
