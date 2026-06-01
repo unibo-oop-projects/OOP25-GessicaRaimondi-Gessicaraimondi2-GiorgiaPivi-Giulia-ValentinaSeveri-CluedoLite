@@ -26,11 +26,20 @@ public class FinalDefeatView extends JFrame {
 
     private static final long serialVersionUID = 1L;
 
+    private static final int BORDER_THICKNESS = 6;
+    private static final float TITLE_FONT_SIZE = 72f;
+    private static final int INNER_BORDER_TB = 30;
+    private static final int INNER_BORDER_LR = 40;
+    private static final int SUBTITLE_TOP_BORDER = 20;
+    private static final int BUTTON_HGAP = 20;
+    private static final int BUTTON_VGAP = 10;
+
     /**
-    * Constructs and displays the final defeat screen.
-    * @param resetController the controller handling the reset button action
-    * @param quitController  the controller handling the quit button action
-    */
+     * Constructs and displays the final defeat screen.
+     *
+     * @param resetController the controller handling the reset button action
+     * @param quitController  the controller handling the quit button action
+     */
     public FinalDefeatView(final ResetButtonController resetController,
                            final QuitButtonController quitController) {
         setTitle("Defeat");
@@ -40,7 +49,7 @@ public class FinalDefeatView extends JFrame {
 
         final JPanel rootPanel = new JPanel(new BorderLayout());
         rootPanel.setBackground(AppColorFont.BACKGROUND_DARK);
-        rootPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 6));
+        rootPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, BORDER_THICKNESS));
 
         final JPanel outerPanel = new JPanel(new GridBagLayout());
         outerPanel.setBackground(AppColorFont.BACKGROUND_DARK);
@@ -48,24 +57,25 @@ public class FinalDefeatView extends JFrame {
         final JPanel innerPanel = new JPanel();
         innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
         innerPanel.setBackground(AppColorFont.BACKGROUND_DARK);
-        innerPanel.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
+        innerPanel.setBorder(BorderFactory.createEmptyBorder(
+                INNER_BORDER_TB, INNER_BORDER_LR, INNER_BORDER_TB, INNER_BORDER_LR));
 
         final JLabel titleLabel = new JLabel("LOSER :(");
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        titleLabel.setFont(AppColorFont.FONT_TITLE.deriveFont(72f));
+        titleLabel.setFont(AppColorFont.FONT_TITLE.deriveFont(TITLE_FONT_SIZE));
         titleLabel.setForeground(Color.BLACK);
 
         final JLabel subtitleLabel = new JLabel("Nobody won...");
         subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         subtitleLabel.setFont(AppColorFont.FONT_LABEL);
         subtitleLabel.setForeground(AppColorFont.TEXT_SECONDARY);
-        subtitleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+        subtitleLabel.setBorder(BorderFactory.createEmptyBorder(SUBTITLE_TOP_BORDER, 0, 0, 0));
 
         innerPanel.add(titleLabel);
         innerPanel.add(subtitleLabel);
         outerPanel.add(innerPanel);
 
-        final JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        final JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, BUTTON_HGAP, BUTTON_VGAP));
         buttonsPanel.setBackground(AppColorFont.BACKGROUND_DARK);
 
         final ResetButtonView resetBtn = new ResetButtonView(resetController);
