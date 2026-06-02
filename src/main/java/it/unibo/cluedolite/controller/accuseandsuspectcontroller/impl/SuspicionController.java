@@ -7,18 +7,29 @@ import javax.swing.JOptionPane;
 
 import it.unibo.cluedolite.controller.accuseandsuspectcontroller.api.InterfaceSuspicionController;
 import it.unibo.cluedolite.model.accuseandsuspect.api.InterfaceSuspicion;
-import it.unibo.cluedolite.model.accuseandsuspect.impl.Suspicion;
 import it.unibo.cluedolite.model.accuseandsuspect.impl.SuspicionManager;
+import it.unibo.cluedolite.model.accuseandsuspect.impl.Suspicion;
 import it.unibo.cluedolite.model.creationcards.impl.Card;
 import it.unibo.cluedolite.model.player.api.Player;
 import it.unibo.cluedolite.view.suspicionview.SuspicionView;
 
 /**
  * Controller for the suspicion phase of the CluedoLite game.
- * Acts as the bridge between {@link SuspicionView} and {@link SuspicionManager},
- * following the MVC pattern. Opens the suspicion view lazily, reads the player's
- * selections, passes them to the model and delivers the result via a callback.
- * A second callback notifies the game when the suspicion is confirmed.
+ *
+ * <p>Acts as the bridge between {@link SuspicionView} and {@link SuspicionManager},
+ * following the MVC pattern. Responsibilities:
+ * <ul>
+ *   <li>Stores the data needed to open the suspicion view.</li>
+ *   <li>Creates {@link SuspicionView} lazily when the player clicks the suspicion button.</li>
+ *   <li>Attaches the confirm listener to the view.</li>
+ *   <li>Reads the player's selections and passes them to the model.</li>
+ *   <li>Delivers the resulting {@link Suspicion} via a callback.</li>
+ *   <li>Notifies the game that an action has been confirmed via a second callback,
+ *       so that the action buttons can be disabled immediately.</li>
+ * </ul>
+ *
+ * <p>The use of {@link Consumer} and {@link Runnable} callbacks keeps this controller
+ * fully decoupled from the rest of the game flow.
  */
 public class SuspicionController implements InterfaceSuspicionController {
 
@@ -95,8 +106,17 @@ public class SuspicionController implements InterfaceSuspicionController {
 
     /**
      * Handles the confirmation of the suspicion.
-     * Disables the confirm button, reads the player's selections,
-     * passes them to the model and delivers the result via callback.
+     *
+     * <p>Flow:
+     * <ol>
+     *   <li>Disables the confirm button immediately to prevent double-clicks.</li>
+     *   <li>Notifies the game view via {@code onConfirmed} to disable action buttons.</li>
+     *   <li>Reads the selected character and weapon from the view.</li>
+     *   <li>Passes them together with the current room to the model.</li>
+     *   <li>If the model returns {@code null} (player not in a room), re-enables
+     *       the button and shows an error dialog.</li>
+     *   <li>Otherwise, delivers the {@link Suspicion} via the callback and closes the view.</li>
+     * </ol>
      *
      * @param view the {@link SuspicionView} instance that triggered the confirmation
      */

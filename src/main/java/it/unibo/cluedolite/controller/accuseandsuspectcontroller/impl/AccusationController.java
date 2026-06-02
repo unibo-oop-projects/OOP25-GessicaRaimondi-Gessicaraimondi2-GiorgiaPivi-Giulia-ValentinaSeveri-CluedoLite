@@ -5,22 +5,32 @@ import java.util.function.Consumer;
 import javax.swing.JFrame;
 
 import it.unibo.cluedolite.controller.accuseandsuspectcontroller.api.InterfaceAccusation;
-import it.unibo.cluedolite.model.accuseandsuspect.api.InterfaceSuspicion;
-import it.unibo.cluedolite.model.accuseandsuspect.api.InterfaceAccuseManager;
+import it.unibo.cluedolite.model.accuseandsuspect.impl.AccuseManager;
 import it.unibo.cluedolite.model.accuseandsuspect.impl.Suspicion;
 import it.unibo.cluedolite.model.creationcards.impl.Card;
 import it.unibo.cluedolite.view.accuseview.AccuseView;
 
 /**
  * Controller for the accusation phase of the CluedoLite game.
- * Acts as the bridge between {@link AccuseView} and {@link AccuseManager},
- * following the MVC pattern. Opens the accusation view lazily, reads the player's
- * selections, checks them against the secret solution, and delivers the result
- * via a callback. A second callback notifies the game when the accusation is confirmed.
+ *
+ * <p>Acts as the bridge between {@link AccuseView} and {@link AccuseManager},
+ * following the MVC pattern. Responsibilities:
+ * <ul>
+ *   <li>Stores the data needed to open the accusation view.</li>
+ *   <li>Creates {@link AccuseView} lazily when the player clicks the accusation button.</li>
+ *   <li>Attaches the confirm listener to the view.</li>
+ *   <li>Reads the player's selections, checks them against the secret solution,
+ *       and delivers the boolean result via a callback.</li>
+ *   <li>Notifies the game that an action has been confirmed via a second callback,
+ *       so that the action buttons can be disabled immediately.</li>
+ * </ul>
+ *
+ * <p>The use of {@link Consumer} and {@link Runnable} callbacks keeps this controller
+ * fully decoupled from the rest of the game flow.
  */
 public class AccusationController implements InterfaceAccusation {
 
-    private final InterfaceAccuseManager accuseManager;
+    private final AccuseManager accuseManager;
     private final Consumer<Boolean> accusationResultCallback;
     private final Runnable onConfirmed;
     private final Card[] characters;
@@ -41,7 +51,7 @@ public class AccusationController implements InterfaceAccusation {
      *                                  confirmed, used to disable action buttons in the game view
      */
     public AccusationController(
-            final InterfaceAccuseManager accuseManager,
+            final AccuseManager accuseManager,
             final Card[] characters,
             final Card[] weapons,
             final Card[] rooms,
@@ -56,12 +66,24 @@ public class AccusationController implements InterfaceAccusation {
     }
 
     /**
-     * Opens the accusation view.
+     * Opens the accusation view in normal mode (closeable).
      * Each call creates a fresh {@link AccuseView} instance, avoiding stale references
      * if the window is opened more than once per session.
      */
     @Override
     public void openAccusationView() {
+        final AccuseView view = new AccuseView(characters, weapons, rooms);
+        view.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setupListeners(view);
+        view.setVisible(true);
+    }
+
+    /**
+     * Opens the accusation view in forced mode (not closeable).
+     * Used when the last remaining player must submit a final accusation
+     * before the game can end.
+     */
+    public void openForcedAccusationView() {
         final AccuseView view = new AccuseView(characters, weapons, rooms);
         view.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setupListeners(view);
@@ -79,12 +101,20 @@ public class AccusationController implements InterfaceAccusation {
     }
 
     /**
-    * Handles the confirmation of the accusation.
-    * Disables the confirm button, reads the player's selections,
-    * checks them against the secret solution and delivers the result via callback.
-    *
-    * @param view the {@link AccuseView} instance that triggered the confirmation
-    */
+     * Handles the confirmation of the accusation.
+     *
+     * <p>Flow:
+     * <ol>
+     *   <li>Disables the confirm button immediately to prevent double-clicks.</li>
+     *   <li>Notifies the game view via {@code onConfirmed} to disable action buttons.</li>
+     *   <li>Reads the player's selections from the view.</li>
+     *   <li>Builds a {@link Suspicion} and checks it against the secret solution.</li>
+     *   <li>Passes the result to the main controller via the callback.</li>
+     *   <li>Closes the accusation window.</li>
+     * </ol>
+     *
+     * @param view the {@link AccuseView} instance that triggered the confirmation
+     */
     private void handleConfirm(final AccuseView view) {
         view.getConfirmButton().setEnabled(false);
         onConfirmed.run();
@@ -93,7 +123,7 @@ public class AccusationController implements InterfaceAccusation {
         final Card selectedWeapon    = view.getSelectedWeapon();
         final Card selectedRoom      = view.getSelectedRoom();
 
-        final InterfaceSuspicion suspicion = new Suspicion(selectedCharacter, selectedWeapon, selectedRoom);
+        final Suspicion suspicion = new Suspicion(selectedCharacter, selectedWeapon, selectedRoom);
         final boolean result = accuseManager.checkAccuse(suspicion);
 
         accusationResultCallback.accept(result);

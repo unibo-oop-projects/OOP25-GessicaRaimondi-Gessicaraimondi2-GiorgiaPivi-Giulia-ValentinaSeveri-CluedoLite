@@ -12,18 +12,28 @@ import it.unibo.cluedolite.model.suspectnotes.impl.TableImpl;
 import it.unibo.cluedolite.model.turnmanager.api.TurnManager;
 import it.unibo.cluedolite.view.tableview.TablePanel;
 
-/*
- * Controller responsible for managing the suspicion phase.
- * It coordinates the model and the view when a suspicion is made.
+/**
+ * Implementation of {@link TableController}.
+ * Manages the suspect notes table for each player,
+ * coordinating the model and the view during the suspicion phase.
  */
-    public class TableControllerImpl implements TableController {
+public class TableControllerImpl implements TableController {
+
     private final TurnManager turnManager;
     private final Map<String, TableImpl> playerTables = new HashMap<>();
     private final Map<String, TablePanel> playerPanels = new HashMap<>();
     private Table table;
     private TablePanel tablePanel;
 
-    public TableControllerImpl(TurnManager turnManager, Table table, TablePanel tablePanel) {
+    /**
+     * Creates a new {@link TableControllerImpl} for the given turn manager,
+     * table and panel, registering them for the current player.
+     *
+     * @param turnManager the {@link TurnManager} managing the current turn
+     * @param table       the {@link Table} representing the suspect notes
+     * @param tablePanel  the {@link TablePanel} displaying the suspect notes
+     */
+    public TableControllerImpl(final TurnManager turnManager, final Table table, final TablePanel tablePanel) {
         this.turnManager = turnManager;
         this.table = table;
         this.tablePanel = tablePanel;
@@ -35,7 +45,7 @@ import it.unibo.cluedolite.view.tableview.TablePanel;
      * {@inheritDoc}
      */
     @Override
-    public void handleSuspicion(InterfaceSuspicion suspicion, Optional<Card> shownCard) {
+    public void handleSuspicion(final InterfaceSuspicion suspicion, final Optional<Card> shownCard) {
         shownCard.ifPresent(c -> {
             table.updateTable(c);
             tablePanel.refresh(c);
@@ -47,7 +57,7 @@ import it.unibo.cluedolite.view.tableview.TablePanel;
      */
     @Override
     public TablePanel refreshForPlayer() {
-        String name = turnManager.getCurrentPlayer().getName();
+        final String name = turnManager.getCurrentPlayer().getName();
         table = playerTables.computeIfAbsent(name,
             k -> new TableImpl(turnManager.getCurrentPlayer().getHand()));
         tablePanel = playerPanels.computeIfAbsent(name,

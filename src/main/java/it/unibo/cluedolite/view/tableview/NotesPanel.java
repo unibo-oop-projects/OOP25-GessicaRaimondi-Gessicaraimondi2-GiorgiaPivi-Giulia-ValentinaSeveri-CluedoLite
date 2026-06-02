@@ -1,6 +1,7 @@
 package it.unibo.cluedolite.view.tableview;
 
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
@@ -15,33 +16,48 @@ import javax.swing.JTextArea;
 
 import it.unibo.cluedolite.view.AppColorFont;
 
-import java.awt.Toolkit;
-
-/*
-* Represents a scrollable notepad panel where the player can write personal notes.
-*/
+/**
+ * Scrollable notepad panel where the player can write personal notes.
+ * The panel can be collapsed and expanded by clicking the title label.
+ */
 public class NotesPanel extends JPanel {
-    private JTextArea textArea;
-    private JScrollPane scrollPane;
-    private JLabel titleLabel;
 
-    // Builds the collapsible notepad with a title label and a scrollable text area.
+    private static final long serialVersionUID = 1L;
+    private static final int TITLE_HEIGHT = 30;
+    private static final int NOTES_HEIGHT = 150;
+    private static final double SCREEN_WIDTH_RATIO = 0.25;
+    private static final double SCREEN_HEIGHT_RATIO = 0.15;
+    private static final int TITLE_BORDER = 4;
+    private static final int TITLE_BORDER_LEFT = 8;
+    private static final int BORDER_THICKNESS = 1;
+    private static final String PLACEHOLDER = "Click to write...";
+    private static final String TITLE_COLLAPSED = "▶ Notes";
+    private static final String TITLE_EXPANDED = "▼ Notes";
+
+    private final JTextArea textArea;
+    private final JScrollPane scrollPane;
+    private final JLabel titleLabel;
+
+    /**
+     * Creates a new {@link NotesPanel} with a collapsible title
+     * and a scrollable text area for personal notes.
+     */
     public NotesPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(AppColorFont.BACKGROUND_LIGHT);
 
-        titleLabel = new JLabel("▶ Notes");
+        titleLabel = new JLabel(TITLE_COLLAPSED);
         titleLabel.setFont(AppColorFont.FONT_BODY);
         titleLabel.setForeground(AppColorFont.ACCENT_SECONDARY);
         titleLabel.setBackground(AppColorFont.BACKGROUND_LIGHT);
         titleLabel.setOpaque(true);
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 0));
-        titleLabel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(TITLE_BORDER, TITLE_BORDER_LEFT, TITLE_BORDER, 0));
+        titleLabel.setMaximumSize(new Dimension(Integer.MAX_VALUE, TITLE_HEIGHT));
         titleLabel.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(final MouseEvent e) {
                 scrollPane.setVisible(!scrollPane.isVisible());
-                titleLabel.setText((scrollPane.isVisible() ? "▼ " : "▶ ") + "Notes");
+                titleLabel.setText(scrollPane.isVisible() ? TITLE_EXPANDED : TITLE_COLLAPSED);
                 revalidate();
                 repaint();
             }
@@ -54,45 +70,49 @@ public class NotesPanel extends JPanel {
         textArea.setCaretColor(AppColorFont.TEXT_PRIMARY);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setText("Click to write...");
+        textArea.setText(PLACEHOLDER);
         textArea.setFocusable(false);
-        textArea.addMouseListener(new MouseAdapter() { // Enables focus and clears the placeholder text on first click
+        textArea.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(final MouseEvent e) {
                 textArea.setFocusable(true);
                 textArea.requestFocusInWindow();
-                if (textArea.getText().equals("Click to write...")) { // removes placeholder if not yet edited
+                if (PLACEHOLDER.equals(textArea.getText())) {
                     textArea.setText("");
                 }
             }
         });
-        textArea.addFocusListener(new FocusAdapter() { // Restores the placeholder text and disables focus when the text area is left empty
+        textArea.addFocusListener(new FocusAdapter() {
             @Override
-            public void focusLost(FocusEvent e) {
-                if (textArea.getText().isEmpty()) { // only if the user didn't write anything
-                    textArea.setText("Click to write...");
+            public void focusLost(final FocusEvent e) {
+                if (textArea.getText().isEmpty()) {
+                    textArea.setText(PLACEHOLDER);
                     textArea.setForeground(AppColorFont.ACCENT_SECONDARY);
                     textArea.setFocusable(false);
                 }
             }
         });
 
-        // Wraps the text area in a scroll pane
         scrollPane = new JScrollPane(textArea);
-        scrollPane.setPreferredSize(new Dimension(480, 150));
-        scrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
-        scrollPane.setBorder(BorderFactory.createLineBorder(AppColorFont.ACCENT_SECONDARY, 1));
+        scrollPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, NOTES_HEIGHT));
+        scrollPane.setBorder(BorderFactory.createLineBorder(AppColorFont.ACCENT_SECONDARY, BORDER_THICKNESS));
         scrollPane.setViewportBorder(null);
         scrollPane.setVisible(false);
-        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        scrollPane.setPreferredSize(new Dimension((int)(screen.width * 0.25), (int)(screen.height * 0.15)));
+        final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        scrollPane.setPreferredSize(new Dimension(
+            (int) (screen.width * SCREEN_WIDTH_RATIO),
+            (int) (screen.height * SCREEN_HEIGHT_RATIO)
+        ));
 
         add(titleLabel);
         add(scrollPane);
     }
 
+    /**
+     * Resets the notes panel to its initial collapsed state.
+     */
     public void reset() {
         scrollPane.setVisible(false);
-        titleLabel.setText("▶ Notes");
+        titleLabel.setText(TITLE_COLLAPSED);
     }
 }
