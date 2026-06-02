@@ -1,36 +1,19 @@
 package it.unibo.cluedolite.view.accuseview;
 
+import javax.swing.*;
+
 import it.unibo.cluedolite.model.creationcards.impl.Card;
 import it.unibo.cluedolite.view.AppColorFont;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 
-/**
- * View for the accusation phase of the CluedoLite game.
- * Displays a dialog allowing the player to select a character, a weapon, and a room
- * to make a formal accusation. The confirm button triggers the accusation logic.
- */
 public class AccuseView extends JFrame {
 
     private final JComboBox<Card> characterBox;
     private final JComboBox<Card> weaponBox;
     private final JComboBox<Card> roomBox;
-    private final JButton confirmButton;
+    private JButton confirmButton;
 
-    /**
-    * Constructs the AccuseView with the given arrays of cards.
-    * @param characters array of character cards to display
-    * @param weapons    array of weapon cards to display
-    * @param room       array of room cards to display
-    */
     public AccuseView(Card[] characters, Card[] weapons, Card[] room) {
 
         setTitle("Make Your Accusation:");
@@ -43,6 +26,7 @@ public class AccuseView extends JFrame {
         panel.setBackground(AppColorFont.BACKGROUND_DARK);
         add(panel, BorderLayout.CENTER);
 
+        // Row 1: character selection
         JLabel charLabel = new JLabel("Choose the Character:");
         charLabel.setForeground(AppColorFont.TEXT_PRIMARY);
         charLabel.setFont(AppColorFont.FONT_LABEL);
@@ -53,6 +37,7 @@ public class AccuseView extends JFrame {
         characterBox.setFont(AppColorFont.FONT_DROPDOWN);
         panel.add(characterBox);
 
+        // Row 2: weapon selection
         JLabel weapLabel = new JLabel("Choose the Weapon:");
         weapLabel.setForeground(AppColorFont.TEXT_PRIMARY);
         weapLabel.setFont(AppColorFont.FONT_LABEL);
@@ -63,6 +48,7 @@ public class AccuseView extends JFrame {
         weaponBox.setFont(AppColorFont.FONT_DROPDOWN);
         panel.add(weaponBox);
 
+        // Row 3: room selection
         JLabel roomLabel = new JLabel("Choose the Room:");
         roomLabel.setForeground(AppColorFont.TEXT_PRIMARY);
         roomLabel.setFont(AppColorFont.FONT_LABEL);
@@ -73,6 +59,7 @@ public class AccuseView extends JFrame {
         roomBox.setFont(AppColorFont.FONT_DROPDOWN);
         panel.add(roomBox);
 
+        // Confirm button
         confirmButton = new JButton("Confirm your Accusation");
         confirmButton.setBackground(AppColorFont.BUTTON_BACKGROUND);
         confirmButton.setForeground(AppColorFont.BUTTON_FOREGROUND);
@@ -87,35 +74,8 @@ public class AccuseView extends JFrame {
         setResizable(false);
     }
 
-    /**
-    * Returns the character card selected by the player.
-    * @return the selected character {@link Card}
-    */
-    public Card getSelectedCharacter() { 
-        return (Card) characterBox.getSelectedItem(); 
-    }
-
-    /**
-    * Returns the weapon card selected by the player.
-    * @return the selected weapon {@link Card}
-    */
-    public Card getSelectedWeapon() { 
-        return (Card) weaponBox.getSelectedItem(); 
-    }
-     
-    /**
-    * Returns the room card selected by the player.
-    * @return the selected room {@link Card}
-    */
-    public Card getSelectedRoom() { 
-        return (Card) roomBox.getSelectedItem(); 
-    }
-
-    /**
-    * Returns the confirm button so the controller can attach the action listener.
-    * @return the confirm {@link JButton}
-    */
-    public JButton getConfirmButton() { 
-        return confirmButton; 
-    }
+    public Card getSelectedCharacter() { return (Card) characterBox.getSelectedItem(); }
+    public Card getSelectedWeapon()    { return (Card) weaponBox.getSelectedItem(); }
+    public Card getSelectedRoom()      { return (Card) roomBox.getSelectedItem(); }
+    public JButton getConfirmButton()  { return confirmButton; }
 }

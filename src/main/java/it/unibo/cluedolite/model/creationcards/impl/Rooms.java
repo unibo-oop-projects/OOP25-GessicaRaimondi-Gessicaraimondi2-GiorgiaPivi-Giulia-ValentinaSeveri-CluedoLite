@@ -1,15 +1,9 @@
 package it.unibo.cluedolite.model.creationcards.impl;
 
-/**
- * Represents a room card in the CluedoLite game.
- * Extends {@link Card} and returns {@link CardType#ROOM} as its type.
+/*
+* Class representing a room card in the game, inherits from Card
  */
-public class Rooms extends Card { 
-
-    /**
-    * Constructs a Rooms card with the given name.
-    * @param name the name of the room
-    */
+public class Rooms extends Card{ 
      public Rooms(String name) {
          super(name);
     }
