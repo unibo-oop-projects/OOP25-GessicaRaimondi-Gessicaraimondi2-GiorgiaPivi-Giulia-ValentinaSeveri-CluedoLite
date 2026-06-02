@@ -6,13 +6,17 @@ import it.unibo.cluedolite.controller.buttonflowcontroller.api.ResetButtonContro
 import it.unibo.cluedolite.view.AppColorFont;
 
 /**
- * Button that resets the game with the same players
+ * A styled button that resets the current game while keeping the same players.
+ * Delegates the reset action to the provided {@link ResetButtonController}.
  */
 public class ResetButtonView extends JButton {
 
+    private static final long serialVersionUID = 1L;
+
     /**
-     * Creates the RESET button
-     * @param controller the controller that handles the reset action
+     * Constructs the RESET button and registers the reset action listener.
+     *
+     * @param controller the {@link ResetButtonController} that handles the reset action
      */
     public ResetButtonView(final ResetButtonController controller) {
         setText("RESET");
