@@ -1,9 +1,15 @@
 package it.unibo.cluedolite.model.creationcards.impl;
 
-/*
-* Class representing a character card in the game, inherits from Card
+/**
+ * Represents a character card in the CluedoLite game.
+ * Extends {@link Card} and returns {@link CardType#CHARACTER} as its type.
  */
-public class Characters extends Card{ 
+public class Characters extends Card { 
+
+    /**
+    * Constructs a Characters card with the given name.
+    * @param name the name of the character
+    */
     public Characters(String name) {
         super(name);
     }

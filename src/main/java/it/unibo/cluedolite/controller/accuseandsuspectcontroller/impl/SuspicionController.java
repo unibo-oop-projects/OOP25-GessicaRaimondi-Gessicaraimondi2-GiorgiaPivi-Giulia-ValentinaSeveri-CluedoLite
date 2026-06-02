@@ -23,7 +23,7 @@ import it.unibo.cluedolite.view.suspicionview.SuspicionView;
 public class SuspicionController implements InterfaceSuspicionController {
 
     private final SuspicionManager suspicionManager;
-    private final Consumer<Suspicion> suspicionCallback;
+    private final Consumer<InterfaceSuspicion> suspicionCallback;
     private final Runnable onConfirmed;
     private final Card[] characters;
     private final Card[] weapons;
@@ -49,7 +49,7 @@ public class SuspicionController implements InterfaceSuspicionController {
             final Card[] characters,
             final Card[] weapons,
             final Supplier<Card> roomSupplier,
-            final Consumer<Suspicion> suspicionCallback,
+            final Consumer<InterfaceSuspicion> suspicionCallback,
             final Supplier<Player> playerSupplier,
             final Runnable onConfirmed) {
         this.suspicionManager = suspicionManager;
@@ -93,7 +93,6 @@ public class SuspicionController implements InterfaceSuspicionController {
         view.getConfirmButton().addActionListener(e -> handleConfirm(view));
     }
 
-
     /**
      * Handles the confirmation of the suspicion.
      * Disables the confirm button, reads the player's selections,
@@ -105,9 +104,9 @@ public class SuspicionController implements InterfaceSuspicionController {
         view.getConfirmButton().setEnabled(false);
 
         final Card selectedCharacter = view.getSelectedCharacter();
-        final Card selectedWeapon = view.getSelectedWeapon();
+        final Card selectedWeapon    = view.getSelectedWeapon();
 
-        final Suspicion suspicion = suspicionManager.makeSuspicion(
+        final InterfaceSuspicion suspicion = suspicionManager.makeSuspicion(
                 playerSupplier.get(), selectedCharacter, selectedWeapon, roomSupplier.get());
 
         if (suspicion == null) {

@@ -1,11 +1,10 @@
 package it.unibo.cluedolite.model.suspectnotes.api;
 
-/**
- * Represents the possible states of a card in the suspect notes.
+/*
+ * Enum representing the possible states of a card in the suspect notes (POSSIBLE or EXCLUDED)
  */
+
 public enum State {
-    /** The card is still a possible suspect. */
     POSSIBLE,
-    /** The card has been excluded from suspicion. */
     EXCLUDED
 }

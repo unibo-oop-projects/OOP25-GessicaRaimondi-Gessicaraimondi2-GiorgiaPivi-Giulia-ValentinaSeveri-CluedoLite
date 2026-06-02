@@ -1,6 +1,7 @@
 package it.unibo.cluedolite.view.accuseview;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 import it.unibo.cluedolite.controller.accuseandsuspectcontroller.api.InterfaceAccusation;
 import it.unibo.cluedolite.view.AppColorFont;
@@ -24,7 +25,7 @@ public class ButtonAccuseView extends JPanel {
     /**
      * Constructs the panel containing the accusation button.
      *
-     * @param controller the {@link InterfaceAccusation} that handles the accusation phase.
+     * @param controller the {@link InterfaceAccusation} controller that handles the accusation phase.
      */
     public ButtonAccuseView(InterfaceAccusation controller) {
 
@@ -44,6 +45,7 @@ public class ButtonAccuseView extends JPanel {
     /**
      * Enables or disables both the panel and the inner button.
      * Overridden because setEnabled on a JPanel does not propagate to children.
+     * @param enabled {@code true} to enable the button, {@code false} to disable it
      */
     @Override
     public void setEnabled(final boolean enabled) {

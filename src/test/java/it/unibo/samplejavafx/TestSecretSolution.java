@@ -18,35 +18,32 @@ import it.unibo.cluedolite.model.gamesetup.impl.SecretSolution;
  */
 public class TestSecretSolution {
 
-    private static final int SOLUTION_SIZE = 3;
-    private static final int REMAINING_CARDS = 18;
-
     /**
-     * Tests that the secret solution is generated correctly,
-     * containing exactly one character, one weapon, and one room card,
-     * and that those cards are removed from the remaining deck.
-     */
+    * Tests that the secret solution is generated correctly,
+    * containing exactly one character, one weapon, and one room card,
+    * and that those cards are removed from the remaining deck.
+    */
     @Test
     public void testSecretSolutionGeneration() {
-        final List<Card> cards = Deck.getAllCards();
+        List<Card> cards = Deck.getAllCards();
 
-        final SecretSolution secretSolution = new SecretSolution(cards);
-        final List<Card> sol = secretSolution.getSolution();
+        SecretSolution secretSolution = new SecretSolution(cards);
+        List<Card> sol = secretSolution.getSolution();
 
-        assertEquals(SOLUTION_SIZE, sol.size());
+        assertEquals(3, sol.size());
 
-        final boolean hasCharacter = sol.stream().anyMatch(c -> c.getType() == CardType.CHARACTER);
-        final boolean hasWeapon = sol.stream().anyMatch(c -> c.getType() == CardType.WEAPON);
-        final boolean hasRoom = sol.stream().anyMatch(c -> c.getType() == CardType.ROOM);
+        boolean hasCharacter = sol.stream().anyMatch(c -> c.getType() == CardType.CHARACTER);
+        boolean hasWeapon    = sol.stream().anyMatch(c -> c.getType() == CardType.WEAPON);
+        boolean hasRoom      = sol.stream().anyMatch(c -> c.getType() == CardType.ROOM);
 
         assertTrue(hasCharacter);
         assertTrue(hasWeapon);
         assertTrue(hasRoom);
 
-        for (final Card c : sol) {
+        for (Card c : sol) {
             assertFalse(cards.contains(c));
         }
 
-        assertEquals(REMAINING_CARDS, cards.size());
+        assertEquals(18, cards.size());
     }
 }

@@ -1,47 +1,33 @@
 package it.unibo.cluedolite.view.gameboardview.impl;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 
-import it.unibo.cluedolite.model.gameboard.api.Room;
 import it.unibo.cluedolite.controller.gameboardcontroller.api.GameBoardController;
+import it.unibo.cluedolite.model.gameboard.api.Room;
 import it.unibo.cluedolite.model.player.api.Player;
 import it.unibo.cluedolite.view.gameboardview.api.BoardView;
 
-/**
- * Swing panel that renders the Cluedo Lite game board,
- * including rooms, player tokens, and the center label.
- */
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+
+
 public class BoardViewImpl extends JPanel implements BoardView{
-    private final List<Player> players;
+    private List<Player> players = new ArrayList<>();
     private Image backgroundImg;
-    private final Map<RoomView, Image> roomImages = new HashMap<>();
-    private final GameBoardController controller;
+    private Map<RoomView, Image> roomImages = new HashMap<>();
+    private GameBoardController controller;
 
     public BoardViewImpl(List<Player> p, GameBoardController c){
         this.controller=c;
-        this.players=new ArrayList<>(p);
-
         try {
             backgroundImg = ImageIO.read(new File("src/main/resources/images/floor.png"));
         } catch(IOException e) {
@@ -55,6 +41,8 @@ public class BoardViewImpl extends JPanel implements BoardView{
                 e.printStackTrace();
             }
         }
+
+        this.players=p;
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -73,7 +61,7 @@ public class BoardViewImpl extends JPanel implements BoardView{
      */
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+        super.paintComponent(g); //pulisce il pannello prima di ridisegnare 
         Graphics2D g2 = (Graphics2D) g;
         g2.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), null);
         drawRooms(g2);
@@ -88,13 +76,14 @@ public class BoardViewImpl extends JPanel implements BoardView{
      */
     private void drawRooms(Graphics2D g2){
         for(RoomView r : RoomView.values()){
+            
             int x = (int)(r.x * getWidth());
             int y = (int)(r.y * getHeight());
             int w = (int)(r.width * getWidth());
             int h = (int)(r.height * getHeight());
             
-            g2.setColor(Color.PINK);//??
-            g2.fillRect(x, y, w, h); 
+            g2.setColor(Color.PINK);
+            g2.fillRect(x, y, w, h); //colora l'interno
 
             Image img = roomImages.get(r);
             if(img != null) {
@@ -106,12 +95,15 @@ public class BoardViewImpl extends JPanel implements BoardView{
             int tx = x + (w - fm.stringWidth(r.name)) / 2;
             int ty = y + fm.getAscent() + 5;
 
+            // sfondo semitrasparente dietro il nome
             g2.setColor(new Color(0, 0, 0, 100));
             g2.fillRect(x, y, w, fm.getHeight() + 8);
 
+            // ombra testo
             g2.setColor(new Color(0, 0, 0, 150));
             g2.drawString(r.name, tx + 2, ty + 2);
 
+            // testo bianco
             g2.setColor(Color.WHITE);
             g2.drawString(r.name, tx, ty);
         }
@@ -128,27 +120,34 @@ public class BoardViewImpl extends JPanel implements BoardView{
         g2.setFont(new Font("Serif", Font.BOLD, (int)(getWidth() * 0.05)));
         FontMetrics fm = g2.getFontMetrics();
 
+        // Prima riga - "Cluedo"
         int cluedoX = r.x + (r.width - fm.stringWidth("CLUEDO")) / 2;
         int cluedoY = r.y + (r.height / 2);
-
-        g2.setColor(new Color(0, 0, 0, 150));
+        // ombra
+        g2.setColor(new Color(0, 0, 0, 150)); // nero semitrasparente
         g2.drawString("CLUEDO", cluedoX + 2, cluedoY + 2);
+
+        // testo vero
         g2.setColor(Color.WHITE);
         g2.drawString("CLUEDO", cluedoX, cluedoY);
 
+        // Seconda riga - "Lite" con font più piccolo
         g2.setFont(new Font("Serif", Font.BOLD, (int)(getWidth() * 0.03)));
         fm = g2.getFontMetrics();
         int liteX = r.x + (r.width - fm.stringWidth("Lite")) / 2;
         int liteY = cluedoY + fm.getHeight();
-        
-        g2.setColor(new Color(0, 0, 0, 150)); 
+        // ombra
+        g2.setColor(new Color(0, 0, 0, 150)); // nero semitrasparente
         g2.drawString("Lite", liteX + 2, liteY + 2);
+
+        // testo vero
         g2.setColor(Color.WHITE);
         g2.drawString("Lite", liteX, liteY);
     }
 
     /**
      * Draws a colored token for each player on the board.
+     * Players not yet placed are shown below the center area.
      *
      * @param g2 the 2D graphics context used for rendering
      */
@@ -166,17 +165,20 @@ public class BoardViewImpl extends JPanel implements BoardView{
                 drawToken(g2, p, x, y, size);
                 centerIndex++;
             } else {
-                final List<Player> inRoom = players.stream()
-                    .filter(o -> currentRoom.equals(controller.getCurrentRoomOf(o)))
-                    .toList();
-                final int roomIndex = inRoom.indexOf(p);
-
-                RoomView.fromName(currentRoom.getName()).ifPresent(rv -> {
-                    final int cx = (int) (rv.x * getWidth()) + padding;
-                    final int cy = (int) (rv.y * getHeight()) + (int) (rv.height * getHeight()) / 2;
-                    drawToken(g2, p, cx + (roomIndex % 2) * (size + padding),
-                              cy + (roomIndex / 2) * (size + padding), size);
-                });
+                RoomView r = RoomView.fromName(currentRoom.getName());
+                int roomIndex = 0;
+                int count = 0;
+                for (Player other : players) {
+                    if (controller.getCurrentRoomOf(other) == currentRoom) {
+                        if (other == p) roomIndex = count;
+                        count++;
+                    }
+                }
+                int cx = (int)(r.x * getWidth()) + padding;
+                int cy = (int)(r.y * getHeight()) + (int)(r.height * getHeight()) / 2;
+                int x = cx + (roomIndex % 2) * (size + padding);
+                int y = cy + (roomIndex / 2) * (size + padding);
+                drawToken(g2, p, x, y, size);
             }
 
         }
@@ -189,10 +191,13 @@ public class BoardViewImpl extends JPanel implements BoardView{
      * @param p the point clicked by the user
      */
     private void handleClick(Point p) {
-         Arrays.stream(RoomView.values())
-              .filter(r -> r.toRect(getWidth(), getHeight()).contains(p))
-              .findFirst()
-              .ifPresent(r -> controller.move(controller.getRoomByName(r.name)));
+
+        for (RoomView r : RoomView.values()) {
+             if (r.toRect(getWidth(), getHeight()).contains(p)) {
+                controller.move(controller.getRoomByName(r.name));
+                return;
+            }
+        }
     }
 
     /**
@@ -209,7 +214,8 @@ public class BoardViewImpl extends JPanel implements BoardView{
     }
 
     /**
-     * The active player is highlighted with a black border and a label.
+     * Draws a single player token as a colored circle.
+     * The active player is highlighted with a black border.
      *
      * @param g2   the 2D graphics context used for rendering
      * @param p    the player whose token is being drawn
@@ -218,44 +224,40 @@ public class BoardViewImpl extends JPanel implements BoardView{
      * @param size the diameter of the token in pixels
      */
     private void drawToken(Graphics2D g2, Player p, int x, int y, int size) {
-        final String raw = p.getCharacter().getColor();
-        try {
-            g2.setColor(raw.startsWith("#") ? Color.decode(raw) : parseNamedColor(raw));
-        } catch (NumberFormatException e) {
-            g2.setColor(Color.GRAY);
-        }
-        g2.fillOval(x, y, size, size);
-
-        if (p.equals(controller.currentPlayer())) {
-            g2.setColor(Color.BLACK);
-            g2.setStroke(new BasicStroke(3f));
-            g2.drawOval(x, y, size, size);
-
-            g2.setFont(new Font("Serif", Font.BOLD, 14));
-            FontMetrics fm = g2.getFontMetrics();
-            String label = "Player " + (players.indexOf(p) + 1);
-            int lw = fm.stringWidth(label) + 8;
-            int lh = fm.getHeight() + 4;
-            int lx = x + (size - lw) / 2;
-            int ly = y - lh - 4;
-
-            g2.setColor(new Color(0, 0, 0, 180));
-            g2.fillRoundRect(lx, ly, lw, lh, 6, 6);
-
-            g2.setColor(Color.WHITE);
-            g2.setStroke(new BasicStroke(1f));
-            g2.drawRoundRect(lx, ly, lw, lh, 6, 6);
-
-            g2.drawString(label, lx + 4, ly + fm.getAscent() + 2);
-        }
+    final String raw = p.getCharacter().getColor();
+    try {
+        g2.setColor(raw.startsWith("#") ? Color.decode(raw) : parseNamedColor(raw));
+    } catch (NumberFormatException e) {
+        g2.setColor(Color.GRAY);
     }
+    g2.fillOval(x, y, size, size);
+    if (p == controller.currentPlayer()) {
+        g2.setColor(Color.BLACK);
+        g2.setStroke(new BasicStroke(3f));
+        g2.drawOval(x, y, size, size);
 
-    /**
-     * Resolves a named color string to a Color object.
-     *
-     * @param name the color name
-     * @return the corresponding Color, or gray if unrecognized
-     */
+        g2.setFont(new Font("Serif", Font.BOLD, 14));
+        FontMetrics fm = g2.getFontMetrics();
+        String label = "Player " + (players.indexOf(p) + 1);
+        int lw = fm.stringWidth(label) + 8;
+        int lh = fm.getHeight() + 4;
+        int lx = x + (size - lw) / 2;
+        int ly = y - lh - 4;
+
+        // sfondo scuro
+        g2.setColor(new Color(0, 0, 0, 180));
+        g2.fillRoundRect(lx, ly, lw, lh, 6, 6);
+
+        // bordo bianco
+        g2.setColor(Color.WHITE);
+        g2.setStroke(new BasicStroke(1f));
+        g2.drawRoundRect(lx, ly, lw, lh, 6, 6);
+
+        // testo
+        g2.drawString(label, lx + 4, ly + fm.getAscent() + 2);
+    }
+}
+
     private Color parseNamedColor(final String name) {
         return switch (name.toUpperCase()) {
             case "RED"    -> new Color(178, 34, 34);

@@ -5,15 +5,15 @@ import java.util.function.Consumer;
 import javax.swing.JFrame;
 
 import it.unibo.cluedolite.controller.accuseandsuspectcontroller.api.InterfaceAccusation;
-import it.unibo.cluedolite.model.accuseandsuspect.api.InterfaceAccuseManager;
 import it.unibo.cluedolite.model.accuseandsuspect.api.InterfaceSuspicion;
+import it.unibo.cluedolite.model.accuseandsuspect.api.InterfaceAccuseManager;
 import it.unibo.cluedolite.model.accuseandsuspect.impl.Suspicion;
 import it.unibo.cluedolite.model.creationcards.impl.Card;
 import it.unibo.cluedolite.view.accuseview.AccuseView;
 
 /**
  * Controller for the accusation phase of the CluedoLite game.
- * Acts as the bridge between {@link AccuseView} and {@link InterfaceAccuseManager},
+ * Acts as the bridge between {@link AccuseView} and {@link AccuseManager},
  * following the MVC pattern. Opens the accusation view lazily, reads the player's
  * selections, checks them against the secret solution, and delivers the result
  * via a callback. A second callback notifies the game when the accusation is confirmed.
@@ -79,12 +79,12 @@ public class AccusationController implements InterfaceAccusation {
     }
 
     /**
-     * Handles the confirmation of the accusation.
-     * Disables the confirm button, reads the player's selections,
-     * checks them against the secret solution and delivers the result via callback.
-     *
-     * @param view the {@link AccuseView} instance that triggered the confirmation
-     */
+    * Handles the confirmation of the accusation.
+    * Disables the confirm button, reads the player's selections,
+    * checks them against the secret solution and delivers the result via callback.
+    *
+    * @param view the {@link AccuseView} instance that triggered the confirmation
+    */
     private void handleConfirm(final AccuseView view) {
         view.getConfirmButton().setEnabled(false);
         onConfirmed.run();

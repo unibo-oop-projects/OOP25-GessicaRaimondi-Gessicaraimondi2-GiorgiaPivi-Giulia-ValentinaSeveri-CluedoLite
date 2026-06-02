@@ -3,8 +3,7 @@ package it.unibo.cluedolite.controller.accuseandsuspectcontroller.api;
 /**
  * Interface for the suspicion controller in CluedoLite.
  * Defines the contract for opening the suspicion view,
- * used by external components such as
- * {@link it.unibo.cluedolite.view.suspicionview.ButtonSuspicionView}.
+ * used by external components such as {@link it.unibo.cluedolite.view.suspicionview.ButtonSuspicionView}.
  */
 public interface InterfaceSuspicionController {
 

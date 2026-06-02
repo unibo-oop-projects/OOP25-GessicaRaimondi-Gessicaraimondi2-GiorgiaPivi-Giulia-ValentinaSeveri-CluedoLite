@@ -1,6 +1,5 @@
 package it.unibo.cluedolite.model.accuseandsuspect.api;
 
-import it.unibo.cluedolite.model.accuseandsuspect.impl.Suspicion;
 import it.unibo.cluedolite.model.creationcards.impl.Card;
 import it.unibo.cluedolite.model.player.api.Player;
 
@@ -16,7 +15,7 @@ public interface InterfaceSuspicionManager {
      * @param player the player making the suspicion.
      * @param character the suspected character.
      * @param weapon the suspected weapon.
-     * @return a Suspicion object, or null if the player is not in a room.
+     * @return a {@link InterfaceSuspicion} object representing the suspicion
      */
-    Suspicion makeSuspicion(Player player, Card character, Card weapon, Card room);
+    InterfaceSuspicion makeSuspicion(Player player, Card character, Card weapon, Card room);
 }

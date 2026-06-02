@@ -3,10 +3,10 @@ package it.unibo.cluedolite.model.gameflow.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.unibo.cluedolite.model.gameflow.api.GameState;
 import it.unibo.cluedolite.model.gameboard.api.GameBoardModel;
 import it.unibo.cluedolite.model.gameboard.impl.GameBoardModelImpl;
 import it.unibo.cluedolite.model.gameflow.api.Game;
+import it.unibo.cluedolite.model.gameflow.api.GameState;
 import it.unibo.cluedolite.model.player.api.Player;
 import it.unibo.cluedolite.model.player.impl.CreationCharacterImpl;
 import it.unibo.cluedolite.model.turnmanager.api.TurnManager;
