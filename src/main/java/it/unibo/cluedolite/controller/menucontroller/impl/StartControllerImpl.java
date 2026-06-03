@@ -13,8 +13,7 @@ public class StartControllerImpl implements StartController {
     /**
      * Constructs a new {@code StartControllerImpl}.
      */
-    public StartControllerImpl() {
-    }
+    public StartControllerImpl() { }
 
     /**
      * Handles the new game button click event.

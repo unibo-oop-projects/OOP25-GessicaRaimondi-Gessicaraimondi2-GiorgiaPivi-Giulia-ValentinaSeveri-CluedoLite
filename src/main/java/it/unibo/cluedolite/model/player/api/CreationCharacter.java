@@ -23,8 +23,9 @@ public interface CreationCharacter {
     /**
      * Returns a string representation of this character,
      * typically including name and color.
-     *
+     * 
      * @return a string representation of this character
      */
+    @Override
     String toString();
 }

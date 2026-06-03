@@ -13,7 +13,8 @@ import it.unibo.cluedolite.model.gameflow.api.Game;
 public class ResetButtonControllerImpl implements ResetButtonController {
 
     private final Game game;
-     /**
+
+    /**
      * Constructs a new {@code ResetButtonControllerImpl}.
      *
      * @param game the game model used to invoke reset and start logic
@@ -37,11 +38,13 @@ public class ResetButtonControllerImpl implements ResetButtonController {
             "Reset",
             JOptionPane.YES_NO_OPTION
         );
-        if (confirm == JOptionPane.YES_OPTION) {   
+
+        if (confirm == JOptionPane.YES_OPTION) {
             game.resetGame();
             game.startGame();
             return true;
         }
+
         return false;
     }
 }

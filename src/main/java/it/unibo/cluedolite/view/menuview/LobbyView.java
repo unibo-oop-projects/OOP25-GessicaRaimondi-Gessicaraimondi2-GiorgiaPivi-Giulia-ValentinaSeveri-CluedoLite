@@ -1,24 +1,40 @@
 package it.unibo.cluedolite.view.menuview;
 
-import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import it.unibo.cluedolite.controller.menucontroller.api.LobbyController;
 import it.unibo.cluedolite.view.AppColorFont;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-
-/*
+/**
  * Lobby screen where players select their characters before the game starts.
  * Shows a dropdown for the number of players, one row per player with a character
  * dropdown, and a START PLAY button.
  */
-public class LobbyView extends JFrame {
+public final class LobbyView extends JFrame {
 
-    private JComboBox<Integer> numPlayersBox; // menu for the number of player
-    private JPanel playersPanel;
-    private List<JComboBox<String>> characterBoxes; //list of player 
+    private static final long serialVersionUID = 1L;
+    private static final int BUTTON_WIDTH = 300;
+    private static final int BUTTON_HEIGHT = 60;
+    private static final int INSET_SMALL = 10;
+    private static final int INSET_MEDIUM = 20;
+    private static final int LABEL_WIDTH = 70;
+    private static final int LABEL_HEIGHT = 20;
+    private static final int MIN_PLAYERS = 3;
+    private static final int MAX_PLAYERS = 6;
 
     private static final String[] CHARACTERS = {
         "Miss Scarlet [Red]",
@@ -29,34 +45,37 @@ public class LobbyView extends JFrame {
         "Professor Plum [Purple]",
     };
 
+    private final JComboBox<Integer> numPlayersBox;
+    private final JPanel playersPanel;
+    private final List<JComboBox<String>> characterBoxes;
+
     /**
-     * Creates and displays the lobby screen.
+     * Constructs and displays the lobby screen.
      *
-     * @param controller the controller notified when START PLAY is clicked
+     * @param controller the {@link LobbyController} notified when START PLAY is clicked
      */
     public LobbyView(final LobbyController controller) {
         setTitle("Cluedo Lite - Lobby");
         setResizable(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         getContentPane().setBackground(AppColorFont.BACKGROUND_MEDIUM);
-
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setExtendedState(MAXIMIZED_BOTH);
 
         characterBoxes = new ArrayList<>();
+        playersPanel = new JPanel();
 
         setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
+        final GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(10, 20, 10, 20);
+        gbc.insets = new Insets(INSET_SMALL, INSET_MEDIUM, INSET_SMALL, INSET_MEDIUM);
 
-        // Numero giocatori
-        JPanel numPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        final JPanel numPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         numPanel.setBackground(AppColorFont.BACKGROUND_MEDIUM);
-        JLabel numLabel = new JLabel("Select Players:");
+        final JLabel numLabel = new JLabel("Select Players:");
         numLabel.setFont(AppColorFont.FONT_LABEL);
         numLabel.setForeground(AppColorFont.TEXT_PRIMARY);
-        numPlayersBox = new JComboBox<>(new Integer[]{3, 4, 5, 6});
+        numPlayersBox = new JComboBox<>(new Integer[]{MIN_PLAYERS, MIN_PLAYERS + 1, MAX_PLAYERS - 1, MAX_PLAYERS});
         numPlayersBox.setBackground(AppColorFont.DROPDOWN_BACKGROUND);
         numPlayersBox.setForeground(AppColorFont.DROPDOWN_FOREGROUND);
         numPlayersBox.setFont(AppColorFont.FONT_DROPDOWN);
@@ -65,62 +84,56 @@ public class LobbyView extends JFrame {
         gbc.gridy = 1;
         add(numPanel, gbc);
 
-        // Pannello giocatori
-        playersPanel = new JPanel();
         playersPanel.setLayout(new BoxLayout(playersPanel, BoxLayout.Y_AXIS));
         playersPanel.setBackground(AppColorFont.BACKGROUND_MEDIUM);
         gbc.gridy = 2;
         add(playersPanel, gbc);
 
-        // Bottone START PLAY
-        final JButton StartButton = new JButton("START PLAY");
-        StartButton.setFont(AppColorFont.FONT_BUTTON);
-        StartButton.setBackground(AppColorFont.BUTTON_BACKGROUND);
-        StartButton.setForeground(AppColorFont.BUTTON_FOREGROUND);
-        StartButton.setPreferredSize(new Dimension(300, 60));
-        StartButton.setFocusPainted(false);
-        StartButton.setBorderPainted(false);
-        StartButton.addActionListener(e -> controller.onPlayClicked(this));
+        final JButton startButton = new JButton("START PLAY");
+        startButton.setFont(AppColorFont.FONT_BUTTON);
+        startButton.setBackground(AppColorFont.BUTTON_BACKGROUND);
+        startButton.setForeground(AppColorFont.BUTTON_FOREGROUND);
+        startButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
+        startButton.setFocusPainted(false);
+        startButton.setBorderPainted(false);
+        startButton.addActionListener(e -> controller.onPlayClicked(this));
         gbc.gridy = 3;
-        gbc.insets = new Insets(20, 20, 20, 20);
-        add(StartButton, gbc);
+        gbc.insets = new Insets(INSET_MEDIUM, INSET_MEDIUM, INSET_MEDIUM, INSET_MEDIUM);
+        add(startButton, gbc);
 
-        // Aggiorna righe quando cambia il numero
         numPlayersBox.addActionListener(e -> updatePlayersPanel());
-
-        
         updatePlayersPanel();
 
         setVisible(true);
     }
 
-    /*
-     * Updates the players panel based on the selected number of players.
+    /**
+     * Updates the players panel based on the currently selected number of players.
+     * Rebuilds all player rows and character dropdowns.
      */
     private void updatePlayersPanel() {
         playersPanel.removeAll();
         characterBoxes.clear();
 
-        int num = (int) numPlayersBox.getSelectedItem();
+        final int num = (int) numPlayersBox.getSelectedItem();
 
         for (int i = 0; i < num; i++) {
-            JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            final JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT));
             row.setBackground(AppColorFont.BACKGROUND_DARK);
             row.setBorder(BorderFactory.createLineBorder(AppColorFont.BORDER, 1));
 
-            JLabel playerLabel = new JLabel("Player " + (i + 1));
+            final JLabel playerLabel = new JLabel("Player " + (i + 1));
             playerLabel.setFont(AppColorFont.FONT_BODY);
             playerLabel.setForeground(AppColorFont.TEXT_PRIMARY);
-            playerLabel.setPreferredSize(new Dimension(70, 20));
+            playerLabel.setPreferredSize(new Dimension(LABEL_WIDTH, LABEL_HEIGHT));
 
-            JComboBox<String> characterBox = new JComboBox<>(CHARACTERS);
+            final JComboBox<String> characterBox = new JComboBox<>(CHARACTERS);
             characterBox.setBackground(AppColorFont.DROPDOWN_BACKGROUND);
             characterBox.setForeground(AppColorFont.DROPDOWN_FOREGROUND);
             characterBox.setFont(AppColorFont.FONT_DROPDOWN);
 
             row.add(playerLabel);
             row.add(characterBox);
-
             characterBoxes.add(characterBox);
             playersPanel.add(row);
         }
@@ -153,7 +166,7 @@ public class LobbyView extends JFrame {
     /**
      * Returns the number-of-players dropdown.
      *
-     * @return the dropdown controlling the player count
+     * @return the {@link JComboBox} controlling the player count
      */
     public JComboBox<Integer> getNumPlayersBox() {
         return numPlayersBox;

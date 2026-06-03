@@ -1,6 +1,9 @@
 package it.unibo.samplejavafx;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.cluedolite.model.gameflow.impl.GameImpl;
@@ -10,132 +13,143 @@ import it.unibo.cluedolite.model.player.impl.PlayerImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Unit tests for the GameImpl class.
+ */
 public class GameTest {
 
-    /*
-     * Tests that the game is created correctly with a valid number of players
+    private static final int TOTAL_CHARACTERS = 6;
+    private static final int INVALID_PLAYER_COUNT = 7;
+    private static final String PLAYER_NAME_ANNA = "Anna";
+    private static final String PLAYER_NAME_CHIARA = "Chiara";
+    private static final String PLAYER_NAME_SARA = "Sara";
+
+    /**
+     * Tests that the game is created correctly with a valid number of players.
      */
     @Test
     public void testValidNumberOfPlayers() {
         assertDoesNotThrow(() -> new GameImpl(3));
     }
 
+    /**
+     * Tests that the game is created correctly with a valid number of players.
+     */
     @Test
     public void testInvalidNumberOfPlayers() {
         assertThrows(IllegalArgumentException.class, () -> new GameImpl(2));
-        assertThrows(IllegalArgumentException.class, () -> new GameImpl(7));
+        assertThrows(IllegalArgumentException.class, () -> new GameImpl(INVALID_PLAYER_COUNT));
     }
 
-    /*
-     * Tests that the available characters list contains exactly 6 characters
+    /**
+     * Tests that the available characters list contains exactly 6 characters.
      */
     @Test
     public void testAvailableCharactersCount() {
-        GameImpl game = new GameImpl(3);
-        assertEquals(6, game.getAvailableCharacters().size());
+        final GameImpl game = new GameImpl(3);
+        assertEquals(TOTAL_CHARACTERS, game.getAvailableCharacters().size());
     }
 
-    /*
-     * Tests that a player can be correctly inserted into the game
+    /**
+     * Tests that a player can be correctly inserted into the game.
      */
     @Test
     public void testSetPlayerCorrectly() {
-        GameImpl game = new GameImpl(3);
-        PlayerImpl p = new PlayerImpl("Anna");
+        final GameImpl game = new GameImpl(3);
+        final PlayerImpl p = new PlayerImpl(PLAYER_NAME_ANNA);
         game.setPlayer(0, p);
         assertEquals(p, game.getPlayers().get(0));
     }
 
-    /*
-     * Tests that setting a player out of bounds throws an exception
+    /**
+     * Tests that setting a player out of bounds throws an exception.
      */
     @Test
     public void testSetPlayerOutOfBounds() {
-        GameImpl game = new GameImpl(3);
+        final GameImpl game = new GameImpl(3);
         assertThrows(IndexOutOfBoundsException.class, () -> game.setPlayer(3, new PlayerImpl("Test")));
     }
 
-    /*
-     * Tests that assigning a character to a valid player works correctly
+    /**
+     * Tests that assigning a character to a valid player works correctly.
      */
     @Test
     public void testAssignCharacterCorrectly() {
-        GameImpl game = new GameImpl(3);
+        final GameImpl game = new GameImpl(3);
 
-        PlayerImpl p1 = new PlayerImpl("Anna");
+        final PlayerImpl p1 = new PlayerImpl(PLAYER_NAME_ANNA);
         game.setPlayer(0, p1);
 
-        CreationCharacterImpl c = game.getAvailableCharacters().get(0);
+        final CreationCharacterImpl c = game.getAvailableCharacters().get(0);
         game.assignCharacterToPlayer(0, c);
 
         assertEquals(c, p1.getCharacter());
     }
 
-    /*
-     * Tests that assigning a character to a null player throws an exception
+    /**
+     * Tests that assigning a character to a null player throws an exception.
      */
     @Test
     public void testAssignCharacterToNullPlayer() {
-        GameImpl game = new GameImpl(3);
-        CreationCharacterImpl c = game.getAvailableCharacters().get(0);
+        final GameImpl game = new GameImpl(3);
+        final CreationCharacterImpl c = game.getAvailableCharacters().get(0);
 
         assertThrows(IllegalStateException.class, () -> game.assignCharacterToPlayer(0, c));
     }
 
-    /*
-     * Tests that a character cannot be assigned twice
+    /**
+     * Tests that a character cannot be assigned twice.
      */
     @Test
     public void testAssignDuplicateCharacter() {
-        GameImpl game = new GameImpl(3);
+        final GameImpl game = new GameImpl(3);
 
-        PlayerImpl p1 = new PlayerImpl("Anna");
-        PlayerImpl p2 = new PlayerImpl("Chiara");
+        final PlayerImpl p1 = new PlayerImpl(PLAYER_NAME_ANNA);
+        final PlayerImpl p2 = new PlayerImpl(PLAYER_NAME_CHIARA);
 
         game.setPlayer(0, p1);
         game.setPlayer(1, p2);
 
-        CreationCharacterImpl c = game.getAvailableCharacters().get(0);
+        final CreationCharacterImpl c = game.getAvailableCharacters().get(0);
 
         game.assignCharacterToPlayer(0, c);
 
         assertThrows(IllegalArgumentException.class, () -> game.assignCharacterToPlayer(1, c));
     }
 
-    /* 
-     * Tests that an assigned character is removed from the list of available characters
-    */
+    /**
+     * Tests that an assigned character is removed from the list of available characters.
+     */
     @Test
     public void testCharacterIsRemovedFromAvailableList() {
-        GameImpl game = new GameImpl(3);
+        final GameImpl game = new GameImpl(3);
 
-        PlayerImpl p1 = new PlayerImpl("Anna");
+        final PlayerImpl p1 = new PlayerImpl(PLAYER_NAME_ANNA);
         game.setPlayer(0, p1);
 
-        CreationCharacterImpl c = game.getAvailableCharacters().get(0);
+        final CreationCharacterImpl c = game.getAvailableCharacters().get(0);
 
         game.assignCharacterToPlayer(0, c);
 
         assertFalse(game.getAvailableCharacters().contains(c));
     }
 
-    /*
-     * Tests that players are added, characters assigned, and duplicates prevented
+    /**
+     * Tests that players are added, characters assigned, and duplicates prevented.
      */
     @Test
     public void testGameSetupAndCharacterAssignment() {
-        GameImpl game = new GameImpl(3);
+        final GameImpl game = new GameImpl(3);
 
-        PlayerImpl p1 = new PlayerImpl("Anna");
-        PlayerImpl p2 = new PlayerImpl("Chiara");
-        PlayerImpl p3 = new PlayerImpl("Sara");
+        final PlayerImpl p1 = new PlayerImpl(PLAYER_NAME_ANNA);
+        final PlayerImpl p2 = new PlayerImpl(PLAYER_NAME_CHIARA);
+        final PlayerImpl p3 = new PlayerImpl(PLAYER_NAME_SARA);
 
         game.setPlayer(0, p1);
         game.setPlayer(1, p2);
         game.setPlayer(2, p3);
 
-        // Make a copy of the original list before assignments
-        List<CreationCharacterImpl> characters = new ArrayList<>(game.getAvailableCharacters());
+        final List<CreationCharacterImpl> characters = new ArrayList<>(game.getAvailableCharacters());
 
         game.assignCharacterToPlayer(0, characters.get(0)); 
         game.assignCharacterToPlayer(1, characters.get(1)); 

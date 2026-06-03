@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import it.unibo.cluedolite.model.creationcards.impl.Card;
-import it.unibo.cluedolite.model.player.impl.CreationCharacterImpl;
 
 /**
  * Defines the contract for a player in the CluedoLite game.
@@ -18,7 +17,7 @@ public interface Player {
      *
      * @param character the character chosen by the player
      */
-    void chooseCharacter(CreationCharacterImpl character);
+    void chooseCharacter(CreationCharacter character);
 
     /**
      * Returns the character chosen by this player.

@@ -27,6 +27,7 @@ public class CreationCharacterImpl extends Characters implements CreationCharact
      *
      * @return the character's color
      */
+    @Override
     public String getColor() {
         return color;
     }

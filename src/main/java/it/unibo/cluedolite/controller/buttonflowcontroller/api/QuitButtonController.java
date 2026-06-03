@@ -5,6 +5,7 @@ package it.unibo.cluedolite.controller.buttonflowcontroller.api;
  * Implementations are responsible for handling the user's request
  * to exit the current game and return to the main menu.
  */
+@FunctionalInterface
 public interface QuitButtonController {
 
     /**

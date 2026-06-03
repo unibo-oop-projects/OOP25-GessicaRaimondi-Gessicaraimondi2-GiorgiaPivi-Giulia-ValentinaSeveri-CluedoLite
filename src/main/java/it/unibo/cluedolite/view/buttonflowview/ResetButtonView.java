@@ -9,7 +9,7 @@ import it.unibo.cluedolite.view.AppColorFont;
  * A styled button that resets the current game while keeping the same players.
  * Delegates the reset action to the provided {@link ResetButtonController}.
  */
-public class ResetButtonView extends JButton {
+public final class ResetButtonView extends JButton {
 
     private static final long serialVersionUID = 1L;
 

@@ -9,7 +9,7 @@ import it.unibo.cluedolite.view.AppColorFont;
  * A styled button that quits the current game and returns to the main menu.
  * Delegates the quit action to the provided {@link QuitButtonController}.
  */
-public class QuitButtonView extends JButton {
+public final class QuitButtonView extends JButton {
 
     private static final long serialVersionUID = 1L;
 

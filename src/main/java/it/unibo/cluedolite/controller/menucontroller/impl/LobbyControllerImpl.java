@@ -20,8 +20,7 @@ public class LobbyControllerImpl implements LobbyController {
     /**
      * Constructs a new {@code LobbyControllerImpl}.
      */
-    public LobbyControllerImpl() {
-    }
+    public LobbyControllerImpl() { }
 
     /**
      * Handles the play button click event.

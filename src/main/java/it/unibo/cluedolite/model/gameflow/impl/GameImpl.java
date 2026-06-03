@@ -17,7 +17,10 @@ import it.unibo.cluedolite.model.turnmanager.impl.TurnManagerImpl;
  * Handles player setup, character assignment, game state transitions,
  * board initialization, and turn management.
  */
-public class GameImpl implements Game {
+public final class GameImpl implements Game {
+
+    private static final int MIN_PLAYERS = 3;
+    private static final int MAX_PLAYERS = 6;
 
     private static final List<CreationCharacterImpl> DEFAULT_CHARACTERS = List.of(
         new CreationCharacterImpl("Miss Scarlet", "RED"),
@@ -41,7 +44,7 @@ public class GameImpl implements Game {
      * @throws IllegalArgumentException if {@code numPlayers} is not between 3 and 6
      */
     public GameImpl(final int numPlayers) {
-        if (numPlayers < 3 || numPlayers > 6) {
+        if (numPlayers < MIN_PLAYERS || numPlayers > MAX_PLAYERS) {
             throw new IllegalArgumentException("Number of players must be between 3 and 6");
         }
         this.players = new ArrayList<>(numPlayers);

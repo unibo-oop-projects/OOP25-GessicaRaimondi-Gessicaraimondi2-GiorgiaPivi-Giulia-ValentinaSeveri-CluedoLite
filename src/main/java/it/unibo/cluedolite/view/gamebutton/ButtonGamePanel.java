@@ -26,15 +26,18 @@ import it.unibo.cluedolite.view.suspicionview.ButtonSuspicionView;
  * while the end turn, reset, and quit buttons are anchored at the bottom.
  * All controllers are injected externally; this panel is responsible for layout only.
  */
-public class ButtonGamePanel extends JPanel {
+public final class ButtonGamePanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
-
     private static final int BUTTON_WIDTH = 300;
     private static final int BUTTON_HEIGHT = 55;
     private static final int SMALL_BUTTON_WIDTH = 150;
     private static final int SMALL_BUTTON_HEIGHT = 40;
     private static final float SMALL_FONT_SIZE = 13f;
+    private static final int STRUT_SMALL = 5;
+    private static final int HISTORY_PADDING = 30;
+    private static final int BORDER_PADDING = 15;
+    private static final int STRUT_MEDIUM = 10;
 
     private final ButtonSuspicionView suspicionButton;
     private final ButtonAccuseView accuseButton;
@@ -79,12 +82,12 @@ public class ButtonGamePanel extends JPanel {
         accuseButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
 
         topButtons.add(suspicionButton);
-        topButtons.add(Box.createVerticalStrut(5));
+        topButtons.add(Box.createVerticalStrut(STRUT_SMALL));
         topButtons.add(accuseButton);
-        topButtons.add(Box.createVerticalStrut(10));
-        historyPanel = new HistoryPanel(panelWidth - 30);
+        topButtons.add(Box.createVerticalStrut(STRUT_MEDIUM));
+        historyPanel = new HistoryPanel(panelWidth - HISTORY_PADDING);
         topButtons.add(historyPanel);
-        topButtons.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 0));
+        topButtons.setBorder(BorderFactory.createEmptyBorder(STRUT_MEDIUM, BORDER_PADDING, 0, 0));
         add(topButtons);
 
         add(Box.createVerticalGlue());
@@ -105,9 +108,9 @@ public class ButtonGamePanel extends JPanel {
         quitButton.setFont(AppColorFont.FONT_BUTTON.deriveFont(SMALL_FONT_SIZE));
 
         add(endTurnButton);
-        add(Box.createVerticalStrut(10));
+        add(Box.createVerticalStrut(STRUT_MEDIUM));
         add(resetButton);
-        add(Box.createVerticalStrut(10));
+        add(Box.createVerticalStrut(STRUT_MEDIUM));
         add(quitButton);
     }
 
@@ -141,4 +144,5 @@ public class ButtonGamePanel extends JPanel {
     public void addHistoryEntry(final String message) {
         historyPanel.addEntry(message);
     }
+
 }

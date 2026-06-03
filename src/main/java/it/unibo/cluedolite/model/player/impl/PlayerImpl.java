@@ -36,8 +36,8 @@ public class PlayerImpl implements Player {
      * {@inheritDoc}
      */
     @Override
-    public void chooseCharacter(final CreationCharacterImpl character) {
-        this.character = character;
+    public void chooseCharacter(final CreationCharacter selectedcharacter) {
+        this.character = selectedcharacter;
     }
 
     /**
@@ -76,11 +76,11 @@ public class PlayerImpl implements Player {
      * {@inheritDoc}
      */
     @Override
-    public Optional<Card> findMatchingCard(final Card character, final Card weapon, final Card room) {
+    public Optional<Card> findMatchingCard(final Card characterCard, final Card weapon, final Card room) {
         final List<Card> shuffled = new ArrayList<>(hand);
         Collections.shuffle(shuffled);
         return shuffled.stream()
-                .filter(c -> c.getName().equals(character.getName())
+                .filter(c -> c.getName().equals(characterCard.getName())
                         || c.getName().equals(weapon.getName())
                         || c.getName().equals(room.getName()))
                 .findFirst();
@@ -108,6 +108,7 @@ public class PlayerImpl implements Player {
     @Override
     public void restore() {
         this.eliminated = false;
+        this.character = null;
     }
 
     /**
