@@ -1,0 +1,31 @@
+@startuml
+interface InterfaceAccuseManager {
+    +checkAccuse(suspicion: InterfaceSuspicion): boolean
+}
+
+class AccuseManager {
+    -secretSolution: InterfaceSecretSolution
+    +checkAccuse(suspicion: InterfaceSuspicion): boolean
+}
+
+class AccusationController {
+    -accuseManager: InterfaceAccuseManager
+    -accusationResultCallback: Consumer<Boolean>
+    +openAccusationView(): void
+}
+
+class VictoryView {
+}
+
+class DefeatView {
+}
+
+class FinalDefeatView {
+}
+
+AccuseManager ..|> InterfaceAccuseManager
+AccusationController --> InterfaceAccuseManager : uses
+AccusationController ..> VictoryView : opens if true
+AccusationController ..> DefeatView : opens if false
+AccusationController ..> FinalDefeatView : opens if last player
+@enduml

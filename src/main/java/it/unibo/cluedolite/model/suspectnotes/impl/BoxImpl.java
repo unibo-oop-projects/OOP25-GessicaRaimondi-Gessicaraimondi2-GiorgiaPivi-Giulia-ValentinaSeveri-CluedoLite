@@ -1,7 +1,8 @@
 package it.unibo.cluedolite.model.suspectnotes.impl;
 
-import it.unibo.cluedolite.model.suspectnotes.api.*;
 import it.unibo.cluedolite.model.creationcards.impl.Card;
+import it.unibo.cluedolite.model.suspectnotes.api.State;
+import it.unibo.cluedolite.model.suspectnotes.api.Box;
 
 /**
  * Implementation of {@link Box}.

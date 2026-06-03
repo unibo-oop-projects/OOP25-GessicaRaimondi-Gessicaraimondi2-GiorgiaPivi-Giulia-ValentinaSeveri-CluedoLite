@@ -3,9 +3,13 @@ package it.unibo.cluedolite.model.suspectnotes.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.unibo.cluedolite.model.creationcards.impl.*;
-import it.unibo.cluedolite.model.suspectnotes.api.*;
-import it.unibo.cluedolite.model.gamesetup.impl.*;
+import it.unibo.cluedolite.model.creationcards.impl.Card;
+import it.unibo.cluedolite.model.creationcards.impl.Characters;
+import it.unibo.cluedolite.model.creationcards.impl.Weapons;
+import it.unibo.cluedolite.model.gamesetup.impl.Deck;
+import it.unibo.cluedolite.model.suspectnotes.api.Box;
+import it.unibo.cluedolite.model.suspectnotes.api.State;
+import it.unibo.cluedolite.model.suspectnotes.api.Table;
 
 /**
  * Implementation of {@link Table}.

@@ -1,14 +1,17 @@
 package it.unibo.cluedolite.controller;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.Optional;
+import java.util.function.Supplier;
+
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+
 
 import it.unibo.cluedolite.controller.accuseandsuspectcontroller.impl.AccusationController;
 import it.unibo.cluedolite.controller.accuseandsuspectcontroller.impl.SuspicionController;
@@ -33,6 +36,7 @@ import it.unibo.cluedolite.view.GameView;
 import it.unibo.cluedolite.view.menuview.StartView;
 import it.unibo.cluedolite.view.tableview.TablePanel;
 
+
 /**
  * Central controller for a CluedoLite game session.
  *
@@ -40,12 +44,12 @@ import it.unibo.cluedolite.view.tableview.TablePanel;
  * <ol>
  *   <li>Player moves on the board (once per turn).</li>
  *   <li>Player makes a suspicion or accusation (mandatory before ending turn).</li>
- *   <li>Player clicks "Fine turno" to advance.</li>
+ *   <li>Player clicks "End turn" to advance.</li>
  * </ol>
  */
 public class GameController {
 
-    // Fixed for the whole session
+
     private final Game game;
     private final Card[] characters;
     private final Card[] weapons;
@@ -53,12 +57,13 @@ public class GameController {
     private SecretSolution secretSolution;
     private AccuseManager accuseManager;
 
-    // Rebuilt on each reset
+
     private JFrame gameFrame;
     private GameBoardControllerImpl boardController;
     private GameView gameView;
     private AccusationController accusationController;
     private TableControllerImpl tableController;
+
 
     /**
      * Constructs a {@link GameController} for the given game session.
@@ -68,16 +73,15 @@ public class GameController {
     public GameController(final Game game) {
         this.game = game;
 
+
         this.characters = Deck.getCardsByType(CardType.CHARACTER).toArray(new Card[0]);
         this.weapons    = Deck.getCardsByType(CardType.WEAPON).toArray(new Card[0]);
         this.rooms      = Deck.getCardsByType(CardType.ROOM).toArray(new Card[0]);
 
+
         initSession();
     }
 
-    // -----------------------------------------------------------------------
-    // Public API
-    // -----------------------------------------------------------------------
 
     /**
      * Builds and displays the main game window.
@@ -88,19 +92,20 @@ public class GameController {
     public void openGameWindow(final JFrame previousWindow) {
         final JFrame oldFrame = gameFrame;
 
+
         try {
             boardController = new GameBoardControllerImpl(
                     game.getGameBoard(), game.getTurnManager());
 
-            System.out.println("[DEBUG] Mano giocatore: "
-                    + game.getTurnManager().getCurrentPlayer().getHand());
 
             final TableImpl table = new TableImpl(
                     game.getTurnManager().getCurrentPlayer().getHand());
             final TablePanel tablePanel = new TablePanel(table);
 
+
             this.tableController = new TableControllerImpl(
                     game.getTurnManager(), table, tablePanel);
+
 
         final SuspicionController suspicionController = new SuspicionController(
             new SuspicionManager(),
@@ -112,31 +117,33 @@ public class GameController {
                 if (refutation.isPresent()) {
                     JOptionPane.showMessageDialog(null,
                             "A player show the card: " + refutation.get().getName(),
-                            "Sospect refuted", JOptionPane.INFORMATION_MESSAGE);
+                            "Suspicion refuted", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null,
                             "No player can refute the suspicion!",
-                            "Unrefuted suspect", JOptionPane.WARNING_MESSAGE);
+                            "Unrefuted suspicion", JOptionPane.WARNING_MESSAGE);
                 }
                 tableController.handleSuspicion(suspicion, refutation);
                 boardController.lockMovement();
                 gameView.disableActionButtons();
 
+
                 final String suspect = game.getTurnManager().getCurrentPlayer().getName();
                 if (refutation.isPresent()) {
                     gameView.addHistoryEntry(suspect + " made a suspicion: ["
-                        + suspicion.getCharacters() + ", " + suspicion.getWeapon()
+                        + suspicion.getCharacter() + ", " + suspicion.getWeapon()
                         + ", " + suspicion.getRoom() + "] — player "
                         + game.getTurnManager().getShownBy() + " showed a card");
                 } else {
                     gameView.addHistoryEntry(suspect + " made a suspicion: ["
-                        + suspicion.getCharacters() + ", " + suspicion.getWeapon()
+                        + suspicion.getCharacter() + ", " + suspicion.getWeapon()
                         + ", " + suspicion.getRoom() + "] — no player could refute it");
                 }
             },
             game.getTurnManager()::getCurrentPlayer,
             () -> gameView.disableActionButtons()
         );
+
 
         this.accusationController = new AccusationController(
             accuseManager,
@@ -147,12 +154,14 @@ public class GameController {
             () -> gameView.disableActionButtons()
         );
 
+
             final EndTurnControllerImpl endTurnController = new EndTurnControllerImpl(() -> {
                 if (game.getTurnManager().isGameOver()) {
                     return;
                 }
                 advanceTurn();
             });
+
 
             final ResetButtonControllerImpl resetController =
                     new ResetButtonControllerImpl(game) {
@@ -171,7 +180,9 @@ public class GameController {
                         }
                     };
 
+
             gameFrame = new JFrame("Cluedo Lite");
+
 
             final QuitButtonControllerImpl quitController =
                     new QuitButtonControllerImpl(game, () -> gameFrame) {
@@ -188,6 +199,7 @@ public class GameController {
                         }
                     };
 
+
             gameView = new GameView(
                     game,
                     boardController,
@@ -201,13 +213,15 @@ public class GameController {
                     this::quitControllerFor
             );
 
+
             gameView.resetForNewTurn();
+
 
             gameFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             gameFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                    for (java.awt.Window w : java.awt.Window.getWindows()) {
+                @Override
+                public void windowClosing(final java.awt.event.WindowEvent e) {
+                    for (final java.awt.Window w : java.awt.Window.getWindows()) {
                         if (w != gameFrame && w.isVisible()) {
                             w.dispose();
                         }
@@ -220,6 +234,7 @@ public class GameController {
             gameFrame.add(gameView);
             gameFrame.setVisible(true);
 
+
             if (previousWindow != null) {
                 previousWindow.dispose();
             }
@@ -227,17 +242,14 @@ public class GameController {
                 oldFrame.dispose();
             }
 
+
         } catch (final Exception e) {
-            e.printStackTrace();
             JOptionPane.showMessageDialog(null,
                     "Error opening the game window: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // -----------------------------------------------------------------------
-    // Game-event handlers
-    // -----------------------------------------------------------------------
 
     /**
      * Handles the result of an accusation.
@@ -250,6 +262,7 @@ public class GameController {
             gameView.showVictory();
         } else {
             game.getTurnManager().getCurrentPlayer().eliminate();
+
 
             if (countActivePlayers() == 1) {
                 game.getTurnManager().nextTurn();
@@ -265,6 +278,7 @@ public class GameController {
         }
     }
 
+
     /**
      * Resets the game to its initial state and reopens the game window.
      */
@@ -274,6 +288,7 @@ public class GameController {
         initSession();
         openGameWindow(null);
     }
+
 
     /**
      * Quits the current game session and returns to the main menu.
@@ -290,9 +305,6 @@ public class GameController {
         });
     }
 
-    // -----------------------------------------------------------------------
-    // Private helpers
-    // -----------------------------------------------------------------------
 
     /**
      * Factory that creates a {@link QuitButtonController} bound to a specific frame.
@@ -326,6 +338,10 @@ public class GameController {
         };
     }
 
+
+    /**
+     * Advances the turn to the next player and updates the view accordingly.
+     */
     private void advanceTurn() {
         boardController.endTurn();
         final TablePanel newPanel = tableController.refreshForPlayer();
@@ -333,17 +349,27 @@ public class GameController {
         gameView.resetForNewTurn();
     }
 
+
+    /**
+     * Returns the {@link Card} corresponding to the current player's room,
+     * or {@code null} if the player is not in any room.
+     *
+     * @return the room card, or {@code null}
+     */
     private Card getCurrentPlayerRoom() {
         if (boardController == null) {
             return null;
         }
 
+
         final var currentRoom = boardController.getCurrentRoomOf(
                 game.getTurnManager().getCurrentPlayer());
+
 
         if (currentRoom == null) {
             return null;
         }
+
 
         for (final Card card : rooms) {
             if (card.getName().equals(currentRoom.getName())) {
@@ -353,11 +379,18 @@ public class GameController {
         return null;
     }
 
+
+    /**
+     * Returns the number of players that have not been eliminated.
+     *
+     * @return the count of active players
+     */
     private long countActivePlayers() {
         return game.getPlayers().stream()
                 .filter(p -> !p.isEliminated())
                 .count();
     }
+
 
     /**
      * Re-initialises the secret solution, accusation manager, and card distribution.
@@ -370,10 +403,13 @@ public class GameController {
         allCards.addAll(List.of(weapons));
         allCards.addAll(List.of(rooms));
 
+
         game.getPlayers().forEach(Player::clearHand);
+
 
         this.secretSolution = new SecretSolution(allCards);
         this.accuseManager  = new AccuseManager(secretSolution);
+
 
         Collections.shuffle(allCards);
         new CardDistribution(allCards, game.getPlayers());
