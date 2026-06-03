@@ -1,56 +1,98 @@
 package it.unibo.cluedolite.view.gameboardview.impl;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.JPanel;
 
 import it.unibo.cluedolite.controller.gameboardcontroller.api.GameBoardController;
 import it.unibo.cluedolite.model.gameboard.api.Room;
 import it.unibo.cluedolite.model.player.api.Player;
 import it.unibo.cluedolite.view.gameboardview.api.BoardView;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
+/**
+ * Swing panel that renders the Cluedo Lite game board,
+ * including rooms, player tokens, and the center label.
+ */
+public class BoardViewImpl extends JPanel implements BoardView {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-public class BoardViewImpl extends JPanel implements BoardView{
-    private List<Player> players = new ArrayList<>();
-    private Image backgroundImg;
-    private Map<RoomView, Image> roomImages = new HashMap<>();
-    private GameBoardController controller;
+    private static final Logger LOGGER              = Logger.getLogger(BoardViewImpl.class.getName());
+    private static final String FONT_NAME           = "Serif";
+    private static final double TOKEN_SIZE_RATIO    = 0.025;
+    private static final double PADDING_RATIO       = 0.01;
+    private static final double CENTER_W_RATIO      = 0.20;
+    private static final double CENTER_H_RATIO      = 0.15;
+    private static final double TITLE_FONT_RATIO    = 0.05;
+    private static final double ROOM_FONT_RATIO     = 0.018;
+    private static final double SUBTITLE_FONT_RATIO = 0.03;
+    private static final int    LABEL_FONT_SIZE     = 14;
+    private static final int    LABEL_ARC           = 6;
+    private static final int    LABEL_PAD           = 4;
+    private static final int    SHADOW_OFFSET       = 2;
+    private static final int    ROOM_NAME_TOP_PAD   = 8;
+    private static final float  TOKEN_BORDER_STROKE = 3f;
+    private static final Color  SHADOW_COLOR        = new Color(0, 0, 0, 150);
+    private static final Color  ROOM_BG_COLOR       = new Color(0, 0, 0, 100);
+    private static final Color  LABEL_BG_COLOR      = new Color(0, 0, 0, 180);
 
-    public BoardViewImpl(List<Player> p, GameBoardController c){
-        this.controller=c;
+    private transient final List<Player> players;
+    private transient final GameBoardController controller;
+    private transient Image backgroundImg;
+    private transient final Map<RoomView, Image> roomImages = new EnumMap<>(RoomView.class);
+
+    /**
+     * Constructs the board view, loading images and registering the mouse listener.
+     *
+     * @param p the list of players in the game
+     * @param c the game board controller
+     */
+    public BoardViewImpl(final List<Player> p, final GameBoardController c) {
+        this.controller = c;
+        this.players = new ArrayList<>(p);
+
         try {
             backgroundImg = ImageIO.read(new File("src/main/resources/images/floor.png"));
-        } catch(IOException e) {
-            e.printStackTrace();
+        } catch (final IOException e) {
+            LOGGER.log(Level.WARNING, "Failed to load background image", e);
         }
 
-        for(RoomView r : RoomView.values()) {
+        for (final RoomView r : RoomView.values()) {
             try {
-                roomImages.put(r, ImageIO.read(new File(r.imagePath)));
-            } catch(IOException e) {
-                e.printStackTrace();
+                roomImages.put(r, ImageIO.read(new File(r.getImagePath())));
+            } catch (final IOException e) {
+                LOGGER.log(Level.WARNING, "Failed to load image for room: " + r.name, e);
             }
         }
-
-        this.players=p;
 
         addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(final MouseEvent e) {
                 handleClick(e.getPoint());
             }
         });
-
     }
 
     /**
@@ -60,9 +102,9 @@ public class BoardViewImpl extends JPanel implements BoardView{
      * @param g the graphics context provided by Swing
      */
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g); //pulisce il pannello prima di ridisegnare 
-        Graphics2D g2 = (Graphics2D) g;
+    protected void paintComponent(final Graphics g) {
+        super.paintComponent(g);
+        final Graphics2D g2 = (Graphics2D) g;
         g2.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), null);
         drawRooms(g2);
         drawCenter(g2);
@@ -74,36 +116,32 @@ public class BoardViewImpl extends JPanel implements BoardView{
      *
      * @param g2 the 2D graphics context used for rendering
      */
-    private void drawRooms(Graphics2D g2){
-        for(RoomView r : RoomView.values()){
-            
-            int x = (int)(r.x * getWidth());
-            int y = (int)(r.y * getHeight());
-            int w = (int)(r.width * getWidth());
-            int h = (int)(r.height * getHeight());
-            
-            g2.setColor(Color.PINK);
-            g2.fillRect(x, y, w, h); //colora l'interno
+    private void drawRooms(final Graphics2D g2) {
+        for (final RoomView r : RoomView.values()) {
+            final int x = (int) (r.x * getWidth());
+            final int y = (int) (r.y * getHeight());
+            final int w = (int) (r.width * getWidth());
+            final int h = (int) (r.height * getHeight());
 
-            Image img = roomImages.get(r);
-            if(img != null) {
+            g2.setColor(Color.PINK);
+            g2.fillRect(x, y, w, h);
+
+            final Image img = roomImages.get(r);
+            if (img != null) {
                 g2.drawImage(img, x, y, w, h, null);
             }
 
-            g2.setFont(new Font("Serif", Font.BOLD, (int)(getWidth() * 0.018)));
-            FontMetrics fm = g2.getFontMetrics();
-            int tx = x + (w - fm.stringWidth(r.name)) / 2;
-            int ty = y + fm.getAscent() + 5;
+            g2.setFont(new Font(FONT_NAME, Font.BOLD, (int) (getWidth() * ROOM_FONT_RATIO)));
+            final FontMetrics fm = g2.getFontMetrics();
+            final int tx = x + (w - fm.stringWidth(r.name)) / 2;
+            final int ty = y + fm.getAscent() + LABEL_PAD + 1;
 
-            // sfondo semitrasparente dietro il nome
-            g2.setColor(new Color(0, 0, 0, 100));
-            g2.fillRect(x, y, w, fm.getHeight() + 8);
+            g2.setColor(ROOM_BG_COLOR);
+            g2.fillRect(x, y, w, fm.getHeight() + ROOM_NAME_TOP_PAD);
 
-            // ombra testo
-            g2.setColor(new Color(0, 0, 0, 150));
-            g2.drawString(r.name, tx + 2, ty + 2);
+            g2.setColor(SHADOW_COLOR);
+            g2.drawString(r.name, tx + SHADOW_OFFSET, ty + SHADOW_OFFSET);
 
-            // testo bianco
             g2.setColor(Color.WHITE);
             g2.drawString(r.name, tx, ty);
         }
@@ -114,33 +152,27 @@ public class BoardViewImpl extends JPanel implements BoardView{
      *
      * @param g2 the 2D graphics context used for rendering
      */
-    private void drawCenter(Graphics2D g2){
-        Rectangle r = getCenterRect();
+    private void drawCenter(final Graphics2D g2) {
+        final Rectangle r = getCenterRect();
 
-        g2.setFont(new Font("Serif", Font.BOLD, (int)(getWidth() * 0.05)));
+        g2.setFont(new Font(FONT_NAME, Font.BOLD, (int) (getWidth() * TITLE_FONT_RATIO)));
         FontMetrics fm = g2.getFontMetrics();
 
-        // Prima riga - "Cluedo"
-        int cluedoX = r.x + (r.width - fm.stringWidth("CLUEDO")) / 2;
-        int cluedoY = r.y + (r.height / 2);
-        // ombra
-        g2.setColor(new Color(0, 0, 0, 150)); // nero semitrasparente
-        g2.drawString("CLUEDO", cluedoX + 2, cluedoY + 2);
+        final int cluedoX = r.x + (r.width - fm.stringWidth("CLUEDO")) / 2;
+        final int cluedoY = r.y + (r.height / 2);
 
-        // testo vero
+        g2.setColor(SHADOW_COLOR);
+        g2.drawString("CLUEDO", cluedoX + SHADOW_OFFSET, cluedoY + SHADOW_OFFSET);
         g2.setColor(Color.WHITE);
         g2.drawString("CLUEDO", cluedoX, cluedoY);
 
-        // Seconda riga - "Lite" con font più piccolo
-        g2.setFont(new Font("Serif", Font.BOLD, (int)(getWidth() * 0.03)));
+        g2.setFont(new Font(FONT_NAME, Font.BOLD, (int) (getWidth() * SUBTITLE_FONT_RATIO)));
         fm = g2.getFontMetrics();
-        int liteX = r.x + (r.width - fm.stringWidth("Lite")) / 2;
-        int liteY = cluedoY + fm.getHeight();
-        // ombra
-        g2.setColor(new Color(0, 0, 0, 150)); // nero semitrasparente
-        g2.drawString("Lite", liteX + 2, liteY + 2);
+        final int liteX = r.x + (r.width - fm.stringWidth("Lite")) / 2;
+        final int liteY = cluedoY + fm.getHeight();
 
-        // testo vero
+        g2.setColor(SHADOW_COLOR);
+        g2.drawString("Lite", liteX + SHADOW_OFFSET, liteY + SHADOW_OFFSET);
         g2.setColor(Color.WHITE);
         g2.drawString("Lite", liteX, liteY);
     }
@@ -151,36 +183,39 @@ public class BoardViewImpl extends JPanel implements BoardView{
      *
      * @param g2 the 2D graphics context used for rendering
      */
-    private void drawPlayers(Graphics2D g2){
-        int size = (int)(Math.min(getWidth(), getHeight()) * 0.025);
-        int padding = (int)(getWidth() * 0.01);
+    private void drawPlayers(final Graphics2D g2) {
+        final int size    = (int) (Math.min(getWidth(), getHeight()) * TOKEN_SIZE_RATIO);
+        final int padding = (int) (getWidth() * PADDING_RATIO);
         int centerIndex = 0;
 
-        for(Player p: players){
-            Room currentRoom = controller.getCurrentRoomOf(p);
+        for (final Player p : players) {
+            final Room currentRoom = controller.getCurrentRoomOf(p);
             if (currentRoom == null) {
-                Rectangle cr = getCenterRect();
-                int x = cr.x + padding + centerIndex * (size + padding);
-                int y = cr.y + cr.height + padding;
+                final Rectangle cr = getCenterRect();
+                final int x = cr.x + padding + centerIndex * (size + padding);
+                final int y = cr.y + cr.height + padding;
                 drawToken(g2, p, x, y, size);
                 centerIndex++;
             } else {
-                RoomView r = RoomView.fromName(currentRoom.getName());
+                final RoomView rv = RoomView.fromName(currentRoom.getName());
+                if (rv == null) {
+                    continue;
+                }
                 int roomIndex = 0;
                 int count = 0;
-                for (Player other : players) {
-                    if (controller.getCurrentRoomOf(other) == currentRoom) {
-                        if (other == p) roomIndex = count;
+                for (final Player other : players) {
+                    if (currentRoom.equals(controller.getCurrentRoomOf(other))) {
+                        if (other.equals(p)) {
+                            roomIndex = count;
+                        }
                         count++;
                     }
                 }
-                int cx = (int)(r.x * getWidth()) + padding;
-                int cy = (int)(r.y * getHeight()) + (int)(r.height * getHeight()) / 2;
-                int x = cx + (roomIndex % 2) * (size + padding);
-                int y = cy + (roomIndex / 2) * (size + padding);
-                drawToken(g2, p, x, y, size);
+                final int cx = (int) (rv.x * getWidth()) + padding;
+                final int cy = (int) (rv.y * getHeight()) + (int) (rv.height * getHeight()) / 2;
+                drawToken(g2, p, cx + roomIndex % 2 * (size + padding),
+                          cy + roomIndex / 2 * (size + padding), size);
             }
-
         }
     }
 
@@ -190,10 +225,9 @@ public class BoardViewImpl extends JPanel implements BoardView{
      *
      * @param p the point clicked by the user
      */
-    private void handleClick(Point p) {
-
-        for (RoomView r : RoomView.values()) {
-             if (r.toRect(getWidth(), getHeight()).contains(p)) {
+    private void handleClick(final Point p) {
+        for (final RoomView r : RoomView.values()) {
+            if (r.toRect(getWidth(), getHeight()).contains(p)) {
                 controller.move(controller.getRoomByName(r.name));
                 return;
             }
@@ -206,16 +240,16 @@ public class BoardViewImpl extends JPanel implements BoardView{
      * @return the center rectangle
      */
     private Rectangle getCenterRect() {
-        int w = (int)(getWidth() * 0.20);
-        int h = (int)(getHeight() * 0.15);
-        int x = (getWidth() - w) / 2;
-        int y = (getHeight() - h) / 2;
+        final int w = (int) (getWidth() * CENTER_W_RATIO);
+        final int h = (int) (getHeight() * CENTER_H_RATIO);
+        final int x = (getWidth() - w) / 2;
+        final int y = (getHeight() - h) / 2;
         return new Rectangle(x, y, w, h);
     }
 
     /**
      * Draws a single player token as a colored circle.
-     * The active player is highlighted with a black border.
+     * The active player is highlighted with a black border and name label.
      *
      * @param g2   the 2D graphics context used for rendering
      * @param p    the player whose token is being drawn
@@ -223,43 +257,46 @@ public class BoardViewImpl extends JPanel implements BoardView{
      * @param y    the y coordinate of the token
      * @param size the diameter of the token in pixels
      */
-    private void drawToken(Graphics2D g2, Player p, int x, int y, int size) {
-    final String raw = p.getCharacter().getColor();
-    try {
-        g2.setColor(raw.startsWith("#") ? Color.decode(raw) : parseNamedColor(raw));
-    } catch (NumberFormatException e) {
-        g2.setColor(Color.GRAY);
+    private void drawToken(final Graphics2D g2, final Player p,
+                           final int x, final int y, final int size) {
+        final String raw = p.getCharacter().getColor();
+        try {
+            g2.setColor(raw.startsWith("#") ? Color.decode(raw) : parseNamedColor(raw));
+        } catch (final NumberFormatException e) {
+            g2.setColor(Color.GRAY);
+        }
+        g2.fillOval(x, y, size, size);
+
+        if (p.equals(controller.currentPlayer())) {
+            g2.setColor(Color.BLACK);
+            g2.setStroke(new BasicStroke(TOKEN_BORDER_STROKE));
+            g2.drawOval(x, y, size, size);
+
+            g2.setFont(new Font(FONT_NAME, Font.BOLD, LABEL_FONT_SIZE));
+            final FontMetrics fm = g2.getFontMetrics();
+            final String label = "Player " + (players.indexOf(p) + 1);
+            final int lw = fm.stringWidth(label) + LABEL_PAD * 2;
+            final int lh = fm.getHeight() + LABEL_PAD;
+            final int lx = x + (size - lw) / 2;
+            final int ly = y - lh - LABEL_PAD;
+
+            g2.setColor(LABEL_BG_COLOR);
+            g2.fillRoundRect(lx, ly, lw, lh, LABEL_ARC, LABEL_ARC);
+            g2.setColor(Color.WHITE);
+            g2.setStroke(new BasicStroke(1f));
+            g2.drawRoundRect(lx, ly, lw, lh, LABEL_ARC, LABEL_ARC);
+            g2.drawString(label, lx + LABEL_PAD, ly + fm.getAscent() + SHADOW_OFFSET);
+        }
     }
-    g2.fillOval(x, y, size, size);
-    if (p == controller.currentPlayer()) {
-        g2.setColor(Color.BLACK);
-        g2.setStroke(new BasicStroke(3f));
-        g2.drawOval(x, y, size, size);
 
-        g2.setFont(new Font("Serif", Font.BOLD, 14));
-        FontMetrics fm = g2.getFontMetrics();
-        String label = "Player " + (players.indexOf(p) + 1);
-        int lw = fm.stringWidth(label) + 8;
-        int lh = fm.getHeight() + 4;
-        int lx = x + (size - lw) / 2;
-        int ly = y - lh - 4;
-
-        // sfondo scuro
-        g2.setColor(new Color(0, 0, 0, 180));
-        g2.fillRoundRect(lx, ly, lw, lh, 6, 6);
-
-        // bordo bianco
-        g2.setColor(Color.WHITE);
-        g2.setStroke(new BasicStroke(1f));
-        g2.drawRoundRect(lx, ly, lw, lh, 6, 6);
-
-        // testo
-        g2.drawString(label, lx + 4, ly + fm.getAscent() + 2);
-    }
-}
-
+    /**
+     * Resolves a named color string to a Color object.
+     *
+     * @param name the color name
+     * @return the corresponding Color, or gray if unrecognized
+     */
     private Color parseNamedColor(final String name) {
-        return switch (name.toUpperCase()) {
+        return switch (name.toUpperCase(Locale.ROOT)) {
             case "RED"    -> new Color(178, 34, 34);
             case "GREEN"  -> new Color(34, 139, 34);
             case "BLUE"   -> new Color(30, 144, 255);
@@ -270,13 +307,5 @@ public class BoardViewImpl extends JPanel implements BoardView{
             case "ORANGE" -> new Color(255, 140, 0);
             default       -> Color.GRAY;
         };
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void wrongRoomSelected(){
-        JOptionPane.showMessageDialog(this, "You can not move in this room", "ERROR", JOptionPane.WARNING_MESSAGE);
     }
 }

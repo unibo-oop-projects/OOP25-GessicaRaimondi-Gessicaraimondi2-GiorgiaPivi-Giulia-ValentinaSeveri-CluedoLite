@@ -28,11 +28,6 @@ public class TestGameBoardController {
             repaintCalled = true;
         }
  
-        @Override
-        public void wrongRoomSelected() {
-            wrongRoomCalled = true;
-        }
- 
         public void reset() {
             repaintCalled = false;
             wrongRoomCalled = false;
