@@ -3,6 +3,7 @@ package it.unibo.cluedolite.controller.endturnbuttoncontroller.api;
 /**
  * Controller for the end turn action.
  */
+@FunctionalInterface
 public interface EndTurnController {
 
     /**

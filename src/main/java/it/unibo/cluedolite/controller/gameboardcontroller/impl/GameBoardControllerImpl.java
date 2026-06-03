@@ -14,6 +14,7 @@ import it.unibo.cluedolite.view.gameboardview.api.BoardView;
  * Manages player movement on the board and delegates turn advancement
  * to the provided {@link TurnManager}.
  */
+@SuppressWarnings("PMD.ExposeInternalRepresentation")
 public final class GameBoardControllerImpl implements GameBoardController {
 
     private final GameBoardModel gb;
@@ -45,7 +46,6 @@ public final class GameBoardControllerImpl implements GameBoardController {
 
     /**
      * Moves the current player to room {@code r}, following these rules:
-     *
      *   If movement is locked (suggestion/accusation already made) does nothing.
      *   On the very first turn (no position yet) any room is valid
      *       and becomes the {@code turnStartRoom}.

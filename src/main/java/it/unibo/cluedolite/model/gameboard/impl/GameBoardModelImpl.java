@@ -86,9 +86,6 @@ public final class GameBoardModelImpl implements GameBoardModel {
     @Override
     public boolean canMoveTo(final Player p, final Room target) {
         final Room current = playerPositions.get(p);
-        if (current == null) {
-            return true;
-        }
-        return current.getAdjacent().contains(target);
+        return current == null || current.getAdjacent().contains(target);
     }
 }

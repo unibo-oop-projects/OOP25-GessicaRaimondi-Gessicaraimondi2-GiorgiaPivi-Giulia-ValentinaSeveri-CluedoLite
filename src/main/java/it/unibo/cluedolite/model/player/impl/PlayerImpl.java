@@ -69,7 +69,7 @@ public class PlayerImpl implements Player {
      */
     @Override
     public List<AbstractCard> getHand() {
-        return hand;
+        return List.copyOf(hand);
     }
 
     /**

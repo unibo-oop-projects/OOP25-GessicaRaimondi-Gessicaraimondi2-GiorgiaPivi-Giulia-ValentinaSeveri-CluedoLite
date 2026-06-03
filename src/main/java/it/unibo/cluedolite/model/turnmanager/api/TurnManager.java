@@ -7,10 +7,10 @@ import it.unibo.cluedolite.model.creationcards.impl.AbstractCard;
 import it.unibo.cluedolite.model.player.api.Player;
 
 /**
- * Interface rapresenting the logic of the class that manages the turn order of players in the game.
+ * Interface rapresenting the logic of the class that manages 
+ * the turn order of players in the game.
  */
-
- public interface TurnManager {
+public interface TurnManager {
 
     /**
      * Returns the player whose turn it currently is.
