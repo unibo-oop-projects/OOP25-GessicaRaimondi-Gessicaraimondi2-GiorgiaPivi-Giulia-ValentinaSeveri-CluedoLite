@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Unit tests for the GameFlow logic.
  */
-public class GameFlowTest {
+class GameFlowTest {
 
     private static final int TOTAL_CHARACTERS = 6;
 
@@ -61,7 +61,7 @@ public class GameFlowTest {
     @Test
     void testEnterLobbynotFromMenuthrows() {
         game.enterLobby(); 
-        assertThrows(IllegalStateException.class, () -> game.enterLobby());
+        assertThrows(IllegalStateException.class, game::enterLobby);
     }
 
     /**
@@ -90,7 +90,7 @@ public class GameFlowTest {
     void testStartGamenotAllAssignedthrows() {
         game.enterLobby();
         game.setPlayer(0, p1); 
-        assertThrows(IllegalStateException.class, () -> game.startGame());
+        assertThrows(IllegalStateException.class, game::startGame);
     }
 
     /**
@@ -98,7 +98,7 @@ public class GameFlowTest {
      */
     @Test
     void testStartGamenotFromWaitingthrows() {
-        assertThrows(IllegalStateException.class, () -> game.startGame());
+        assertThrows(IllegalStateException.class, game::startGame);
     }
 
     /**
@@ -165,6 +165,6 @@ public class GameFlowTest {
      */
     @Test
     void testResetGamenotInProgressthrows() {
-        assertThrows(IllegalStateException.class, () -> game.resetGame());
+        assertThrows(IllegalStateException.class, game::resetGame);
     }
 }

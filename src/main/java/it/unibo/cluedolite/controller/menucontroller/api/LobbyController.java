@@ -7,6 +7,7 @@ import it.unibo.cluedolite.view.menuview.LobbyView;
  * Manages the interactions of the lobby screen and handles
  * character assignment before the game starts.
  */
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface LobbyController {
 
     /**

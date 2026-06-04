@@ -1,8 +1,10 @@
 package it.unibo.cluedolite.model.gameflow.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.cluedolite.model.gameboard.api.GameBoardModel;
 import it.unibo.cluedolite.model.gameboard.impl.GameBoardModelImpl;
 import it.unibo.cluedolite.model.gameflow.api.Game;
@@ -57,12 +59,12 @@ public final class GameImpl implements Game {
 
     @Override
     public List<Player> getPlayers() {
-        return players;
+        return Collections.unmodifiableList(players);
     }
 
     @Override
     public List<CreationCharacterImpl> getAvailableCharacters() {
-        return availableCharacters;
+        return List.copyOf(availableCharacters);
     }
 
     @Override
@@ -147,6 +149,10 @@ public final class GameImpl implements Game {
         this.state = GameState.WAITING;
     }
 
+    @SuppressFBWarnings(
+        value = "EI_EXPOSE_REP",
+        justification = "Intentional: caller needs direct reference to interact with the board"
+    )
     @Override
     public GameBoardModel getGameBoard() {
         return gameBoard;

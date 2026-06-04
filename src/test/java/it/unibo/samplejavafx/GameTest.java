@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Unit tests for the GameImpl class.
  */
-public class GameTest {
+class GameTest {
 
     private static final int TOTAL_CHARACTERS = 6;
     private static final int INVALID_PLAYER_COUNT = 7;
@@ -28,7 +28,7 @@ public class GameTest {
      * Tests that the game is created correctly with a valid number of players.
      */
     @Test
-    public void testValidNumberOfPlayers() {
+    void testValidNumberOfPlayers() {
         assertDoesNotThrow(() -> new GameImpl(3));
     }
 
@@ -36,7 +36,7 @@ public class GameTest {
      * Tests that the game is created correctly with a valid number of players.
      */
     @Test
-    public void testInvalidNumberOfPlayers() {
+    void testInvalidNumberOfPlayers() {
         assertThrows(IllegalArgumentException.class, () -> new GameImpl(2));
         assertThrows(IllegalArgumentException.class, () -> new GameImpl(INVALID_PLAYER_COUNT));
     }
@@ -45,7 +45,7 @@ public class GameTest {
      * Tests that the available characters list contains exactly 6 characters.
      */
     @Test
-    public void testAvailableCharactersCount() {
+    void testAvailableCharactersCount() {
         final GameImpl game = new GameImpl(3);
         assertEquals(TOTAL_CHARACTERS, game.getAvailableCharacters().size());
     }
@@ -54,7 +54,7 @@ public class GameTest {
      * Tests that a player can be correctly inserted into the game.
      */
     @Test
-    public void testSetPlayerCorrectly() {
+    void testSetPlayerCorrectly() {
         final GameImpl game = new GameImpl(3);
         final PlayerImpl p = new PlayerImpl(PLAYER_NAME_ANNA);
         game.setPlayer(0, p);
@@ -65,7 +65,7 @@ public class GameTest {
      * Tests that setting a player out of bounds throws an exception.
      */
     @Test
-    public void testSetPlayerOutOfBounds() {
+    void testSetPlayerOutOfBounds() {
         final GameImpl game = new GameImpl(3);
         assertThrows(IndexOutOfBoundsException.class, () -> game.setPlayer(3, new PlayerImpl("Test")));
     }
@@ -74,7 +74,7 @@ public class GameTest {
      * Tests that assigning a character to a valid player works correctly.
      */
     @Test
-    public void testAssignCharacterCorrectly() {
+    void testAssignCharacterCorrectly() {
         final GameImpl game = new GameImpl(3);
 
         final PlayerImpl p1 = new PlayerImpl(PLAYER_NAME_ANNA);
@@ -90,7 +90,7 @@ public class GameTest {
      * Tests that assigning a character to a null player throws an exception.
      */
     @Test
-    public void testAssignCharacterToNullPlayer() {
+    void testAssignCharacterToNullPlayer() {
         final GameImpl game = new GameImpl(3);
         final CreationCharacterImpl c = game.getAvailableCharacters().get(0);
 
@@ -101,7 +101,7 @@ public class GameTest {
      * Tests that a character cannot be assigned twice.
      */
     @Test
-    public void testAssignDuplicateCharacter() {
+    void testAssignDuplicateCharacter() {
         final GameImpl game = new GameImpl(3);
 
         final PlayerImpl p1 = new PlayerImpl(PLAYER_NAME_ANNA);
@@ -121,7 +121,7 @@ public class GameTest {
      * Tests that an assigned character is removed from the list of available characters.
      */
     @Test
-    public void testCharacterIsRemovedFromAvailableList() {
+    void testCharacterIsRemovedFromAvailableList() {
         final GameImpl game = new GameImpl(3);
 
         final PlayerImpl p1 = new PlayerImpl(PLAYER_NAME_ANNA);
@@ -138,7 +138,7 @@ public class GameTest {
      * Tests that players are added, characters assigned, and duplicates prevented.
      */
     @Test
-    public void testGameSetupAndCharacterAssignment() {
+    void testGameSetupAndCharacterAssignment() {
         final GameImpl game = new GameImpl(3);
 
         final PlayerImpl p1 = new PlayerImpl(PLAYER_NAME_ANNA);

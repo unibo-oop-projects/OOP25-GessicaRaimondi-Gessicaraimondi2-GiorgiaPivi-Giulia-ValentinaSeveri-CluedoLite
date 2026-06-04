@@ -161,14 +161,5 @@ public final class LobbyView extends JFrame {
     public String getSelectedCharacterName(final int index) {
         final String selected = (String) characterBoxes.get(index).getSelectedItem();
         return selected.split(" \\[")[0];
-    }
-
-    /**
-     * Returns the number-of-players dropdown.
-     *
-     * @return the {@link JComboBox} controlling the player count
-     */
-    public JComboBox<Integer> getNumPlayersBox() {
-        return numPlayersBox;
-    }
+    } 
 }

@@ -6,6 +6,7 @@ import it.unibo.cluedolite.view.menuview.StartView;
  * Defines the contract for the start screen controller.
  * Handles the interactions of the main menu screen.
  */
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface StartController {
 
     /**

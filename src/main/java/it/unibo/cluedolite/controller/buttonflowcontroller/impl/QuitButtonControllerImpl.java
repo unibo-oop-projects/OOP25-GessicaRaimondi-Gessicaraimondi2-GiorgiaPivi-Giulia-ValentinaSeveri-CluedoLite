@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.cluedolite.controller.buttonflowcontroller.api.QuitButtonController;
 import it.unibo.cluedolite.controller.menucontroller.impl.StartControllerImpl;
 import it.unibo.cluedolite.model.gameflow.api.Game;
@@ -17,6 +18,10 @@ import it.unibo.cluedolite.view.menuview.StartView;
  */
 public class QuitButtonControllerImpl implements QuitButtonController {
 
+    @SuppressFBWarnings(
+        value = "EI_EXPOSE_REP2",
+        justification = "Intentional: controller must mutate game state"
+    )
     private final Game game;
     private final Supplier<JFrame> frameSupplier;
 

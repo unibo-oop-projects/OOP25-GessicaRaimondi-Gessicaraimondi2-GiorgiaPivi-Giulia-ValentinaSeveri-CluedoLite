@@ -12,24 +12,11 @@ import it.unibo.cluedolite.view.menuview.LobbyView;
 
 /**
  * Implementation of {@link LobbyController} that manages the lobby screen.
- * Handles player setup and character assignment before the game starts,
- * then transitions to the game view.
+ * This class is not designed for extension and is therefore declared final.
+ * It handles player setup, character assignment and the transition to the game view.
  */
-public class LobbyControllerImpl implements LobbyController {
+public final class LobbyControllerImpl implements LobbyController {
 
-    /**
-     * Constructs a new {@code LobbyControllerImpl}.
-     */
-    public LobbyControllerImpl() { }
-
-    /**
-     * Handles the play button click event.
-     * Validates that no two players have selected the same character,
-     * builds the game model, assigns players and characters,
-     * starts the game, and opens the game window.
-     *
-     * @param view the {@link LobbyView} from which player and character data are read
-     */
     @Override
     public void onPlayClicked(final LobbyView view) {
         final int numPlayers = view.getNumPlayers();
@@ -52,6 +39,7 @@ public class LobbyControllerImpl implements LobbyController {
                     .filter(c -> c.getName().equals(selectedName))
                     .findFirst()
                     .get();
+
             game.setPlayer(i, new PlayerImpl("Player " + (i + 1)));
             game.assignCharacterToPlayer(i, character);
         }
