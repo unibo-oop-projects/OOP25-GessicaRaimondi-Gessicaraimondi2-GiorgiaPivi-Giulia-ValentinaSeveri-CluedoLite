@@ -51,11 +51,12 @@ public class SuspicionView extends JFrame {
      * @param weapons    array of {@link AbstractCard} objects representing the available weapons
      * @param room       {@link AbstractCard} representing the room where the player is currently located
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public SuspicionView(final AbstractCard[] characters, final AbstractCard[] weapons, final AbstractCard room) {
         setTitle("Make Your Suspicion:");
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
 
         final JPanel panel = new JPanel(new GridLayout(GRID_ROWS, GRID_COLS, GRID_GAP, GRID_GAP));

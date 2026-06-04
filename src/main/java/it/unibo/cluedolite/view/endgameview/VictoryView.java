@@ -6,7 +6,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 
@@ -38,10 +37,11 @@ public class VictoryView extends JFrame {
      * @param resetController the controller handling the reset button action
      * @param quitController  the controller handling the quit button action
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public VictoryView(final ResetButtonController resetController, final QuitButtonController quitController) {
         setTitle("Victory!");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setExtendedState(MAXIMIZED_BOTH);
         setUndecorated(true);
 
         final JPanel rootPanel = new JPanel(new BorderLayout());
@@ -58,12 +58,12 @@ public class VictoryView extends JFrame {
             INNER_PADDING_V, INNER_PADDING_H, INNER_PADDING_V, INNER_PADDING_H));
 
         final JLabel titleLabel = new JLabel("WINNER :)");
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titleLabel.setAlignmentX(CENTER_ALIGNMENT);
         titleLabel.setFont(AppColorFont.FONT_TITLE.deriveFont(TITLE_FONT_SIZE));
         titleLabel.setForeground(AppColorFont.ACCENT_SECONDARY);
 
         final JLabel subtitleLabel = new JLabel("Congratulations!");
-        subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        subtitleLabel.setAlignmentX(CENTER_ALIGNMENT);
         subtitleLabel.setFont(AppColorFont.FONT_LABEL);
         subtitleLabel.setForeground(AppColorFont.TEXT_PRIMARY);
         subtitleLabel.setBorder(BorderFactory.createEmptyBorder(SUBTITLE_TOP_PADDING, 0, 0, 0));

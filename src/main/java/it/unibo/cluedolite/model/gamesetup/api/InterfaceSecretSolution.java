@@ -8,6 +8,7 @@ import it.unibo.cluedolite.model.creationcards.impl.AbstractCard;
  * Interface for the secret solution of the game.
  * The secret solution is composed of one character, one weapon and one room card.
  */
+@FunctionalInterface
 public interface InterfaceSecretSolution {
 
     /**

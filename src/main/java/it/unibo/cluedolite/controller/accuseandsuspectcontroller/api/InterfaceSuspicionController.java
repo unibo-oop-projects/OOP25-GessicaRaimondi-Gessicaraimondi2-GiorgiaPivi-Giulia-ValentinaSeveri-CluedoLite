@@ -10,6 +10,7 @@ package it.unibo.cluedolite.controller.accuseandsuspectcontroller.api;
  * internal implementation details — only openSuspicionView is part of
  * the public contract that other components (e.g. ButtonSuspicionView) depend on.
  */
+@FunctionalInterface
 public interface InterfaceSuspicionController {
 
     /**

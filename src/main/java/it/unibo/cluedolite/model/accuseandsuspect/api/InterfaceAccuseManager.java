@@ -1,11 +1,14 @@
 package it.unibo.cluedolite.model.accuseandsuspect.api;
 
+import it.unibo.cluedolite.model.accuseandsuspect.impl.Suspicion;
+
 /**
  * Interface for the accusation manager in CluedoLite.
  * 
  * <p>An accusation reuses {@link Suspicion} as its data structure,
  * since an accusation is conceptually a suspicion checked against the solution.
  */
+@FunctionalInterface
 public interface InterfaceAccuseManager {
 
     /**

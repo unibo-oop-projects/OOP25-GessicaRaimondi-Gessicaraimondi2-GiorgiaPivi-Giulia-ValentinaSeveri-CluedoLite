@@ -7,7 +7,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 
@@ -39,11 +38,12 @@ public class FinalDefeatView extends JFrame {
      * @param resetController the controller handling the reset button action
      * @param quitController  the controller handling the quit button action
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public FinalDefeatView(final ResetButtonController resetController,
                            final QuitButtonController quitController) {
         setTitle("Defeat");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setExtendedState(MAXIMIZED_BOTH);
         setUndecorated(true);
 
         final JPanel rootPanel = new JPanel(new BorderLayout());
@@ -60,12 +60,12 @@ public class FinalDefeatView extends JFrame {
             INNER_PADDING_V, INNER_PADDING_H, INNER_PADDING_V, INNER_PADDING_H));
 
         final JLabel titleLabel = new JLabel("LOSER :(");
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titleLabel.setAlignmentX(CENTER_ALIGNMENT);
         titleLabel.setFont(AppColorFont.FONT_TITLE.deriveFont(TITLE_FONT_SIZE));
         titleLabel.setForeground(Color.BLACK);
 
         final JLabel subtitleLabel = new JLabel("Nobody won...");
-        subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        subtitleLabel.setAlignmentX(CENTER_ALIGNMENT);
         subtitleLabel.setFont(AppColorFont.FONT_LABEL);
         subtitleLabel.setForeground(AppColorFont.TEXT_SECONDARY);
         subtitleLabel.setBorder(BorderFactory.createEmptyBorder(SUBTITLE_TOP_PADDING, 0, 0, 0));

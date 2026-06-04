@@ -9,12 +9,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.GridBagLayout;
 import java.net.URL;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 /**
@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 public class CardView extends JFrame {
 
     private static final long serialVersionUID = 1L;
-
     private static final Logger LOG = Logger.getLogger(CardView.class.getName());
     private static final int CARD_WIDTH = 500;
     private static final int CARD_HEIGHT = 600;
@@ -41,9 +40,10 @@ public class CardView extends JFrame {
      *
      * @param cardName the name of the card (e.g. "Miss Scarlett", "Revolver")
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public CardView(final String cardName) {
         setTitle(cardName);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setLocationRelativeTo(null);
@@ -56,14 +56,14 @@ public class CardView extends JFrame {
         cardPanel.setBackground(Color.WHITE);
         cardPanel.setBorder(BorderFactory.createEmptyBorder(BORDER_OUTER, BORDER_OUTER, BORDER_OUTER, BORDER_OUTER));
 
-        final JLabel nameLabel = new JLabel(cardName.toUpperCase());
-        nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        final JLabel nameLabel = new JLabel(cardName.toUpperCase(Locale.ROOT));
+        nameLabel.setAlignmentX(CENTER_ALIGNMENT);
         nameLabel.setFont(new Font("SansSerif", Font.BOLD, FONT_SIZE));
         nameLabel.setForeground(Color.BLACK);
         nameLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, BORDER_LABEL_BOTTOM, 0));
 
         final JLabel imageLabel = new JLabel();
-        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        imageLabel.setAlignmentX(CENTER_ALIGNMENT);
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         imageLabel.setPreferredSize(new Dimension(CARD_WIDTH, CARD_HEIGHT));
 
@@ -97,7 +97,7 @@ public class CardView extends JFrame {
      * @return the loaded {@link ImageIcon}, or {@code null} if not found
      */
     private ImageIcon loadCardImage(final String cardName) {
-        final String baseName = cardName.toLowerCase()
+        final String baseName = cardName.toLowerCase(Locale.ROOT)
                 .replace(" ", "")
                 .replace(".", "");
 

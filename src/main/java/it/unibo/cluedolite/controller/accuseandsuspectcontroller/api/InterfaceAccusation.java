@@ -8,6 +8,7 @@ package it.unibo.cluedolite.controller.accuseandsuspectcontroller.api;
  * accusation view and coordinate the interaction between the UI and
  * the underlying game logic.
  */
+@FunctionalInterface
 public interface InterfaceAccusation {
 
     /**

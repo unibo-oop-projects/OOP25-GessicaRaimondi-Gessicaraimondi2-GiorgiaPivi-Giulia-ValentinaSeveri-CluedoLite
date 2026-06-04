@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -18,6 +17,7 @@ import java.awt.Image;
 import java.net.URL;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.Locale;
 
 import it.unibo.cluedolite.model.creationcards.impl.AbstractCard;
 import it.unibo.cluedolite.view.AppColorFont;
@@ -54,9 +54,10 @@ public class SecretSolutionEndView extends JFrame {
      * @param solution the list of three secret cards (character, weapon, room)
      *                 whose names and images will be revealed
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public SecretSolutionEndView(final List<AbstractCard> solution) {
         setTitle("Secret Solution Revealed");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setLocationRelativeTo(null);
@@ -99,14 +100,14 @@ public class SecretSolutionEndView extends JFrame {
         cardPanel.setBorder(BorderFactory.createEmptyBorder(
             CARD_PADDING, CARD_PADDING, CARD_PADDING, CARD_PADDING));
 
-        final JLabel nameLabel = new JLabel(cardName.toUpperCase());
-        nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        final JLabel nameLabel = new JLabel(cardName.toUpperCase(Locale.ROOT));
+        nameLabel.setAlignmentX(CENTER_ALIGNMENT);
         nameLabel.setFont(CARD_NAME_FONT);
         nameLabel.setForeground(Color.BLACK);
         nameLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, NAME_BORDER_BOTTOM, 0));
 
         final JLabel imageLabel = new JLabel();
-        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        imageLabel.setAlignmentX(CENTER_ALIGNMENT);
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         imageLabel.setPreferredSize(new Dimension(CARD_WIDTH, CARD_HEIGHT));
 
@@ -123,7 +124,7 @@ public class SecretSolutionEndView extends JFrame {
         cardPanel.add(imageLabel);
 
         final JLabel typeLabelComponent = new JLabel(typeLabel);
-        typeLabelComponent.setAlignmentX(Component.CENTER_ALIGNMENT);
+        typeLabelComponent.setAlignmentX(CENTER_ALIGNMENT);
         typeLabelComponent.setFont(AppColorFont.FONT_BODY);
         typeLabelComponent.setForeground(AppColorFont.TEXT_PRIMARY);
         typeLabelComponent.setBorder(BorderFactory.createEmptyBorder(TYPE_BORDER_TOP, 0, 0, 0));
@@ -143,7 +144,7 @@ public class SecretSolutionEndView extends JFrame {
      * @return the loaded {@link ImageIcon}, or {@code null} if not found
      */
     private ImageIcon loadCardImage(final String cardName) {
-        final String baseName = cardName.toLowerCase()
+        final String baseName = cardName.toLowerCase(Locale.ROOT)
                 .replace(" ", "")
                 .replace(".", "");
 

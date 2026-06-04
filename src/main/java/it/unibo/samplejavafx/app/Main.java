@@ -13,7 +13,7 @@ import it.unibo.cluedolite.view.menuview.StartView;
 public final class Main {
 
     private Main() { }
-    
+
     /**
      * Entry point of the application.
      *

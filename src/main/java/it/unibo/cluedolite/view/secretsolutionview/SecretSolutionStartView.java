@@ -8,7 +8,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.BasicStroke;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -70,11 +69,12 @@ public class SecretSolutionStartView extends JFrame {
      * @param solution the list of three secret cards (character, weapon, room)
      *                 whose categories are shown but whose identities remain hidden
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public SecretSolutionStartView(final List<AbstractCard> solution) {
         setTitle("Secret Solution");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setExtendedState(MAXIMIZED_BOTH);
         setUndecorated(true);
         setLocationRelativeTo(null);
 
@@ -158,7 +158,7 @@ public class SecretSolutionStartView extends JFrame {
         card.setOpaque(false);
 
         final JLabel typeLabel = new JLabel(label);
-        typeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        typeLabel.setAlignmentX(CENTER_ALIGNMENT);
         typeLabel.setFont(AppColorFont.FONT_BODY);
         typeLabel.setForeground(AppColorFont.TEXT_PRIMARY);
         typeLabel.setBorder(BorderFactory.createEmptyBorder(TYPE_LABEL_BORDER_TOP, 0, 0, 0));

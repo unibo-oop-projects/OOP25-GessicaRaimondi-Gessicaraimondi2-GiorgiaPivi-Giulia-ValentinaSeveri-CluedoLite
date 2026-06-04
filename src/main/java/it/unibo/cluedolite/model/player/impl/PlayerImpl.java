@@ -76,7 +76,11 @@ public class PlayerImpl implements Player {
      * {@inheritDoc}
      */
     @Override
-    public Optional<AbstractCard> findMatchingCard(final AbstractCard characterCard, final AbstractCard weapon, final AbstractCard room) {
+    public Optional<AbstractCard> findMatchingCard(
+        final AbstractCard characterCard, 
+        final AbstractCard weapon, 
+        final AbstractCard room) {
+
         final List<AbstractCard> shuffled = new ArrayList<>(hand);
         Collections.shuffle(shuffled);
         return shuffled.stream()

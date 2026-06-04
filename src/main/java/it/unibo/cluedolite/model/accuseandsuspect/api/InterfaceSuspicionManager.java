@@ -7,6 +7,7 @@ import it.unibo.cluedolite.model.player.api.Player;
  * Interface for the suspicion manager in the CluedoLite game.
  * It handles the creation of suspicions during the game.
  */
+@FunctionalInterface
 public interface InterfaceSuspicionManager {
 
     /**

@@ -36,6 +36,7 @@ import java.util.function.Supplier;
  */
 public class GameView extends JPanel {
 
+    private static final int WINDOW_WIDTH = 520;
     private final ResetButtonController resetController;
     private final Function<Supplier<JFrame>, QuitButtonController> quitFactory;
     private final ButtonGamePanel buttonPanel;
@@ -109,7 +110,7 @@ public class GameView extends JPanel {
         final JScrollPane scrollTable = new JScrollPane(tablePanel,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollTable.setPreferredSize(new Dimension(520, screen.height));
+        scrollTable.setPreferredSize(new Dimension(WINDOW_WIDTH, screen.height));
         add(scrollTable, BorderLayout.EAST);
 
         SwingUtilities.invokeLater(() -> new SecretSolutionStartView(solution));

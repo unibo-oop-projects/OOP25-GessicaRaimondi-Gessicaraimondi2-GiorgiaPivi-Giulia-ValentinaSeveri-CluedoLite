@@ -28,6 +28,7 @@ public class AccuseView extends JFrame {
     private static final int BUTTON_HEIGHT = 80;
     private static final int BORDER_TOP = 2;
     private static final int BORDER_BOTTOM = 4;
+    private static final long serialVersionUID = 1L;
 
     private final JComboBox<AbstractCard> characterBox;
     private final JComboBox<AbstractCard> weaponBox;
@@ -41,12 +42,13 @@ public class AccuseView extends JFrame {
      * @param weapons    array of weapon cards to display
      * @param room       array of room cards to display
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public AccuseView(final AbstractCard[] characters, final AbstractCard[] weapons, final AbstractCard[] room) {
 
         setTitle("Make Your Accusation:");
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
 
         final JPanel panel = new JPanel(new GridLayout(GRID_ROWS, GRID_COLS, GRID_GAP, GRID_GAP));

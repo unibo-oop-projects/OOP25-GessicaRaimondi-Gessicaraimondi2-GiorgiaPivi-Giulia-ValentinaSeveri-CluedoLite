@@ -1,5 +1,6 @@
 package it.unibo.cluedolite.controller.accuseandsuspectcontroller.impl;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 import javax.swing.JFrame;
@@ -60,9 +61,10 @@ public class AccusationController implements InterfaceAccusation {
         this.accuseManager = accuseManager;
         this.accusationResultCallback = accusationResultCallback;
         this.onConfirmed = onConfirmed;
-        this.characters = characters;
-        this.weapons = weapons;
-        this.rooms = rooms;
+
+        this.characters = Arrays.copyOf(characters, characters.length);
+        this.weapons = Arrays.copyOf(weapons, weapons.length);
+        this.rooms = Arrays.copyOf(rooms, rooms.length);
     }
 
     /**

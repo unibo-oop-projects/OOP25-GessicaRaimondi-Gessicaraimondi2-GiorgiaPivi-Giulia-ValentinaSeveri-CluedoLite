@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.GridBagLayout;
 
 import it.unibo.cluedolite.view.AppColorFont;
@@ -31,9 +30,10 @@ public class DefeatView extends JFrame {
      * Constructs and displays the defeat screen.
      * The window closes automatically after 3 seconds.
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public DefeatView() {
         setTitle("Defeat");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setUndecorated(true);
 
         final JPanel rootPanel = new JPanel(new BorderLayout());
@@ -53,12 +53,12 @@ public class DefeatView extends JFrame {
             BORDER_HORIZONTAL));
 
         final JLabel titleLabel = new JLabel("LOSER :(");
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titleLabel.setAlignmentX(CENTER_ALIGNMENT);
         titleLabel.setFont(AppColorFont.FONT_TITLE.deriveFont(TITLE_FONT_SIZE));
         titleLabel.setForeground(Color.BLACK);
 
         final JLabel subtitleLabel = new JLabel("Try Again");
-        subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        subtitleLabel.setAlignmentX(CENTER_ALIGNMENT);
         subtitleLabel.setFont(AppColorFont.FONT_LABEL);
         subtitleLabel.setForeground(AppColorFont.TEXT_SECONDARY);
         subtitleLabel.setBorder(BorderFactory.createEmptyBorder(BORDER_SUBTITLE_TOP, 0, 0, 0));
@@ -69,7 +69,7 @@ public class DefeatView extends JFrame {
         rootPanel.add(outerPanel, BorderLayout.CENTER);
 
         add(rootPanel);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setExtendedState(MAXIMIZED_BOTH);
         setVisible(true);
 
         final Timer timer = new Timer(AUTO_CLOSE_MS, e -> dispose());

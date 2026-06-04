@@ -17,9 +17,6 @@ import it.unibo.cluedolite.model.gamesetup.api.InterfaceSecretSolution;
 public final class SecretSolution implements InterfaceSecretSolution { 
 
     private final List<AbstractCard> solution = new ArrayList<>();
-    private AbstractCard secretCharacter;
-    private AbstractCard secretWeapon;
-    private AbstractCard secretRoom;
 
     /**
      * Constructs a SecretSolution by shuffling the given cards
@@ -39,9 +36,9 @@ public final class SecretSolution implements InterfaceSecretSolution {
      * @param cards the shuffled deck of cards
      */
     private void generateSecretSolution(final List<AbstractCard> cards) {
-        secretCharacter = null;
-        secretWeapon = null;
-        secretRoom = null;
+        AbstractCard secretCharacter = null;
+        AbstractCard secretWeapon = null;
+        AbstractCard secretRoom = null;
 
         for (final AbstractCard card : cards) {
             if (card.getType() == CardType.CHARACTER && secretCharacter == null) {

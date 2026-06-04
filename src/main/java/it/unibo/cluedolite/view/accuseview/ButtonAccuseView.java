@@ -18,8 +18,10 @@ import it.unibo.cluedolite.view.AppColorFont;
  * {@link InterfaceAccusationController#openAccusationView()} when the button is pressed.
  * It does not know anything about the model, the cards, or the accusation result.
  */
+@SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
 public class ButtonAccuseView extends JPanel {
 
+    private static final long serialVersionUID = 1L;
     private final JButton accusationButton;
 
     /**

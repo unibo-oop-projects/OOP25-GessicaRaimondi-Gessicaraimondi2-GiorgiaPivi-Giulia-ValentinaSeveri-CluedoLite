@@ -17,7 +17,7 @@ import it.unibo.cluedolite.model.player.impl.PlayerImpl;
  * Test class that verifies the correct distribution of cards to players in the CluedoLite game.
  * Tests cover even and uneven distributions across different player counts (3, 4, 5, 6 players).
  */
-public class TestCardDistribution {
+class TestCardDistribution {
 
     private static final int TOTAL_CARDS = 18;
     private static final int THREE_PLAYERS = 3;

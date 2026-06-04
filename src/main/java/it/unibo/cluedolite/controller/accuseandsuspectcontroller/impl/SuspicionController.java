@@ -1,5 +1,6 @@
 package it.unibo.cluedolite.controller.accuseandsuspectcontroller.impl;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -66,8 +67,8 @@ public class SuspicionController implements InterfaceSuspicionController {
         this.suspicionManager = suspicionManager;
         this.suspicionCallback = suspicionCallback;
         this.onConfirmed = onConfirmed;
-        this.characters = characters;
-        this.weapons = weapons;
+        this.characters = Arrays.copyOf(characters, characters.length);
+        this.weapons = Arrays.copyOf(weapons, weapons.length);
         this.roomSupplier = roomSupplier;
         this.playerSupplier = playerSupplier;
     }

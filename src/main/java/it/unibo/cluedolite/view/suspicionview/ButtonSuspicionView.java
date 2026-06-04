@@ -28,6 +28,7 @@ public class ButtonSuspicionView extends JPanel {
      *
      * @param controller the {@link InterfaceSuspicionController} that handles the suspicion phase.
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public ButtonSuspicionView(final InterfaceSuspicionController controller) {
 
         setBackground(AppColorFont.PANEL_BACKGROUND);

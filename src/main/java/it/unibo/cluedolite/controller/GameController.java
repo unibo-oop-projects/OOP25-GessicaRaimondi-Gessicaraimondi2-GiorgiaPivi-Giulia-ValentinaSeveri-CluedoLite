@@ -37,7 +37,7 @@ import it.unibo.cluedolite.view.tableview.TablePanel;
 
 /**
  * Central controller for a CluedoLite game session.
- * <p>
+ *
  * <p>Turn flow:
  * <ol>
  *   <li>Player moves on the board (once per turn).</li>
@@ -62,6 +62,7 @@ public class GameController {
 
     /**
      * Constructs a {@link GameController} for the given game session.
+     * 
      * @param game the game model to control
      */
     public GameController(final Game game) {

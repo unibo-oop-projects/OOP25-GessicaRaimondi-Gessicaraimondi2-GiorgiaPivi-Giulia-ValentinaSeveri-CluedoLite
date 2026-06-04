@@ -15,10 +15,15 @@ import java.awt.Dimension;
  */
 public class HistoryPanel extends JPanel {
 
+    private static final int PANEL_HEIGHT = 300;
     private final JTextArea textArea;
 
-    /** Builds the history panel with a scrollable text area. */
-    public HistoryPanel(int width) {
+    /** 
+     * Builds the history panel with a scrollable text area. 
+     * 
+     * @param width the width of the panel
+     */
+    public HistoryPanel(final int width) {
         setLayout(new BorderLayout());
         setBackground(AppColorFont.BACKGROUND_MEDIUM);
 
@@ -33,7 +38,7 @@ public class HistoryPanel extends JPanel {
         final JScrollPane scroll = new JScrollPane(textArea,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scroll.setPreferredSize(new Dimension(width, 300));
+        scroll.setPreferredSize(new Dimension(width, PANEL_HEIGHT));
         scroll.setBorder(BorderFactory.createLineBorder(AppColorFont.BORDER, 1));
         add(scroll, BorderLayout.CENTER);
     }
@@ -43,7 +48,7 @@ public class HistoryPanel extends JPanel {
      *
      * @param message the message to append
      */
-    public void addEntry(String message) {
+    public void addEntry(final String message) {
         textArea.append("• " + message + "\n");
         textArea.setCaretPosition(textArea.getDocument().getLength());
     }

@@ -16,7 +16,7 @@ import it.unibo.cluedolite.model.gamesetup.impl.SecretSolution;
  * Checks that the solution contains exactly one card of each type and that
  * the selected cards are removed from the remaining deck.
  */
-public class TestSecretSolution {
+class TestSecretSolution {
 
     private static final int SOLUTION_SIZE = 3;
     private static final int REMAINING_CARDS = 18;

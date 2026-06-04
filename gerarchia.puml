@@ -1,31 +1,41 @@
 @startuml
-interface InterfaceAccuseManager {
-    +checkAccuse(suspicion: InterfaceSuspicion): boolean
+skinparam classAttributeIconSize 0
+
+' ============================
+'        CLASSI PRINCIPALI
+' ============================
+
+abstract class AbstractCard {
+    - name : String
+    + getName() : String
+    + getType() : CardType
+    + toString() : String
 }
 
-class AccuseManager {
-    -secretSolution: InterfaceSecretSolution
-    +checkAccuse(suspicion: InterfaceSuspicion): boolean
+class Characters {
+    + getType() : CardType
 }
 
-class AccusationController {
-    -accuseManager: InterfaceAccuseManager
-    -accusationResultCallback: Consumer<Boolean>
-    +openAccusationView(): void
+class Weapons {
+    + getType() : CardType
 }
 
-class VictoryView {
+class Rooms {
+    + getType() : CardType
 }
 
-class DefeatView {
+enum CardType {
+    CHARACTER
+    WEAPON
+    ROOM
 }
 
-class FinalDefeatView {
-}
+' ============================
+'        EREDITARIETÀ
+' ============================
 
-AccuseManager ..|> InterfaceAccuseManager
-AccusationController --> InterfaceAccuseManager : uses
-AccusationController ..> VictoryView : opens if true
-AccusationController ..> DefeatView : opens if false
-AccusationController ..> FinalDefeatView : opens if last player
+AbstractCard <|-- Characters
+AbstractCard <|-- Weapons
+AbstractCard <|-- Rooms
+
 @enduml
