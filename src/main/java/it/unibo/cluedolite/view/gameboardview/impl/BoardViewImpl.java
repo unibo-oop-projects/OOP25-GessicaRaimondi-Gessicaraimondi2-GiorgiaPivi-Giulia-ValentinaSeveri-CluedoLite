@@ -115,7 +115,7 @@ public final class BoardViewImpl extends JPanel implements BoardView {
 
         try {
             backgroundImg = ImageIO.read(
-                new File("src/main/resources/images/floor.png")
+                getClass().getResourceAsStream("/images/floor.png")
             );
         } catch (final IOException e) {
             LOGGER.log(Level.WARNING, "Failed to load background image", e);
@@ -125,7 +125,7 @@ public final class BoardViewImpl extends JPanel implements BoardView {
             try {
                 roomImages.put(
                     roomView,
-                    ImageIO.read(new File(roomView.getImagePath()))
+                    ImageIO.read(getClass().getResourceAsStream(roomView.getImagePath()))
                 );
             } catch (final IOException e) {
                 LOGGER.log(
