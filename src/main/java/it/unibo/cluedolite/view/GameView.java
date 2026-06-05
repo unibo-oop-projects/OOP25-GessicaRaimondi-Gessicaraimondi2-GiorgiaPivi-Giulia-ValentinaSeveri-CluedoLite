@@ -25,6 +25,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -34,13 +35,14 @@ import java.util.function.Supplier;
  * Layout: buttons panel (west) | board (center) | suspect table (east).
  * On startup, shows the {@link SecretSolutionStartView} for 5 seconds.
  */
-public class GameView extends JPanel {
+public final class GameView extends JPanel {
 
+    private static final long serialVersionUID = 1L;
     private static final int WINDOW_WIDTH = 520;
-    private final ResetButtonController resetController;
-    private final Function<Supplier<JFrame>, QuitButtonController> quitFactory;
+    private final transient ResetButtonController resetController;
+    private final transient Function<Supplier<JFrame>, QuitButtonController> quitFactory;
     private final ButtonGamePanel buttonPanel;
-    private final List<AbstractCard> solution;
+    private final transient List<AbstractCard> solution;
 
     /**
      * Creates a new {@link GameView} with all required controllers and panels.
@@ -71,7 +73,7 @@ public class GameView extends JPanel {
 
         this.resetController = resetController;
         this.quitFactory = quitFactory;
-        this.solution = solution;
+        this.solution = new ArrayList<>(solution);
 
         final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
         setLayout(new BorderLayout());
@@ -204,5 +206,15 @@ public class GameView extends JPanel {
      */
     public void addHistoryEntry(final String message) {
         buttonPanel.addHistoryEntry(message);
+    }
+
+    /**
+     * Prevents deserialization of this class.
+     *
+     * @param stream the object input stream
+     * @throws java.io.NotSerializableException always
+     */
+    private void readObject(final java.io.ObjectInputStream stream) throws java.io.IOException, ClassNotFoundException {
+        throw new java.io.NotSerializableException(stream.getClass().getName());
     }
 }

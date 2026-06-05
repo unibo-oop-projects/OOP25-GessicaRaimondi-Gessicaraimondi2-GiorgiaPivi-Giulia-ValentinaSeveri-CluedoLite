@@ -99,7 +99,7 @@ public class AccusationController implements InterfaceAccusation {
      * @param view the {@link AccuseView} instance to attach the listener to
      */
     private void setupListeners(final AccuseView view) {
-        view.getConfirmButton().addActionListener(e -> handleConfirm(view));
+        view.addConfirmListener(e -> handleConfirm(view));
     }
 
     /**
@@ -118,7 +118,7 @@ public class AccusationController implements InterfaceAccusation {
      * @param view the {@link AccuseView} instance that triggered the confirmation
      */
     private void handleConfirm(final AccuseView view) {
-        view.getConfirmButton().setEnabled(false);
+        view.setConfirmEnabled(false);
         onConfirmed.run();
 
         final AbstractCard selectedCharacter = view.getSelectedCharacter();

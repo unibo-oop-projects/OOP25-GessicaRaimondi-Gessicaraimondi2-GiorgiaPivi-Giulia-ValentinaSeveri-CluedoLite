@@ -59,6 +59,6 @@ public final class SecretSolution implements InterfaceSecretSolution {
 
     @Override
     public List<AbstractCard> getSolution() {
-        return solution;
+        return List.copyOf(solution);
     }
 }

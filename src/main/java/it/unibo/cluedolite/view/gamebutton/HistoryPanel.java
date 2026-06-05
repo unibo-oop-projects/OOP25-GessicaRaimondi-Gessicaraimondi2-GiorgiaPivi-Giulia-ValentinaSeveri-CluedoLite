@@ -15,6 +15,7 @@ import java.awt.Dimension;
  */
 public class HistoryPanel extends JPanel {
 
+    private static final long serialVersionUID = 1L;
     private static final int PANEL_HEIGHT = 300;
     private final JTextArea textArea;
 
@@ -23,6 +24,7 @@ public class HistoryPanel extends JPanel {
      * 
      * @param width the width of the panel
      */
+    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public HistoryPanel(final int width) {
         setLayout(new BorderLayout());
         setBackground(AppColorFont.BACKGROUND_MEDIUM);

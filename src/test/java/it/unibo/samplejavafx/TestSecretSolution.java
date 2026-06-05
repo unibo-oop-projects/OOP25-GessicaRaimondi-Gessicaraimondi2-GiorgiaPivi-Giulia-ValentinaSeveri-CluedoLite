@@ -27,7 +27,7 @@ class TestSecretSolution {
      * and that those cards are removed from the remaining deck.
      */
     @Test
-    public void testSecretSolutionGeneration() {
+    void testSecretSolutionGeneration() {
         final List<AbstractCard> cards = Deck.getAllCards();
 
         final SecretSolution secretSolution = new SecretSolution(cards);

@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * Opens a large window with a black background and the card centered.
  * The window closes automatically after 5 seconds or when the close button is clicked.
  */
-public class CardView extends JFrame {
+public final class CardView extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOG = Logger.getLogger(CardView.class.getName());
@@ -40,7 +40,6 @@ public class CardView extends JFrame {
      *
      * @param cardName the name of the card (e.g. "Miss Scarlett", "Revolver")
      */
-    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public CardView(final String cardName) {
         setTitle(cardName);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -82,11 +81,13 @@ public class CardView extends JFrame {
         outerPanel.add(cardPanel);
 
         add(outerPanel);
-        setVisible(true);
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            setVisible(true);
 
-        final Timer timer = new Timer(AUTO_CLOSE_MS, e -> dispose());
-        timer.setRepeats(false);
-        timer.start();
+            final Timer timer = new Timer(AUTO_CLOSE_MS, e -> dispose());
+            timer.setRepeats(false);
+            timer.start();
+        });
     }
 
     /**

@@ -26,7 +26,7 @@ import it.unibo.cluedolite.view.AppColorFont;
  * This class contains NO game logic: it only handles presentation and input collection.
  * It does not know what happens after the player confirms — that is the controller's responsibility.
  */
-public class SuspicionView extends JFrame {
+public final class SuspicionView extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private static final int WINDOW_WIDTH = 700;
@@ -51,7 +51,6 @@ public class SuspicionView extends JFrame {
      * @param weapons    array of {@link AbstractCard} objects representing the available weapons
      * @param room       {@link AbstractCard} representing the room where the player is currently located
      */
-    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public SuspicionView(final AbstractCard[] characters, final AbstractCard[] weapons, final AbstractCard room) {
         setTitle("Make Your Suspicion:");
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -130,11 +129,20 @@ public class SuspicionView extends JFrame {
     }
 
     /**
-     * Returns the confirm button so the controller can attach the action listener.
-     * 
-     * @return the confirm {@link JButton}
+     * Attaches an action listener to the confirm button.
+     *
+     * @param listener the {@link java.awt.event.ActionListener} to attach
      */
-    public JButton getConfirmButton() {
-        return confirmButton;
+    public void addConfirmListener(final java.awt.event.ActionListener listener) {
+        confirmButton.addActionListener(listener);
+    }
+
+    /**
+     * Enables or disables the confirm button.
+     *
+     * @param enabled {@code true} to enable the button, {@code false} to disable it
+     */
+    public void setConfirmEnabled(final boolean enabled) {
+        confirmButton.setEnabled(enabled);
     }
 }

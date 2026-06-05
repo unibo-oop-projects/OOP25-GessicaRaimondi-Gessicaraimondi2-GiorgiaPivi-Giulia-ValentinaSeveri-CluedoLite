@@ -102,7 +102,7 @@ public class SuspicionController implements InterfaceSuspicionController {
      * @param view the {@link SuspicionView} instance to attach the listener to
      */
     private void setupListeners(final SuspicionView view) {
-        view.getConfirmButton().addActionListener(e -> handleConfirm(view));
+         view.addConfirmListener(e -> handleConfirm(view));
     }
 
     /**
@@ -122,23 +122,13 @@ public class SuspicionController implements InterfaceSuspicionController {
      * @param view the {@link SuspicionView} instance that triggered the confirmation
      */
     private void handleConfirm(final SuspicionView view) {
-        view.getConfirmButton().setEnabled(false);
+        view.setConfirmEnabled(false);
 
         final AbstractCard selectedCharacter = view.getSelectedCharacter();
         final AbstractCard selectedWeapon = view.getSelectedWeapon();
 
         final InterfaceSuspicion suspicion = suspicionManager.makeSuspicion(
                 playerSupplier.get(), selectedCharacter, selectedWeapon, roomSupplier.get());
-
-        if (suspicion == null) {
-            JOptionPane.showMessageDialog(
-                    view,
-                    "You cannot make a suspicion because you are not in a room.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            view.getConfirmButton().setEnabled(true);
-            return;
-        }
         onConfirmed.run();
         suspicionCallback.accept(suspicion);
         view.dispose();

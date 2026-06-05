@@ -65,6 +65,10 @@ public class GameController {
      * 
      * @param game the game model to control
      */
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(
+        value = "EI_EXPOSE_REP2",
+        justification = "Game is an interface and cannot be defensively copied; storing the reference is intentional."
+    )
     public GameController(final Game game) {
         this.game = game;
 
@@ -81,7 +85,6 @@ public class GameController {
      * @param previousWindow the window to dispose after opening the game window,
      *                       or {@code null} if there is none
      */
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
     public void openGameWindow(final JFrame previousWindow) {
         final JFrame oldFrame = gameFrame;
 
@@ -129,7 +132,7 @@ public class GameController {
                 }
             },
             game.getTurnManager()::getCurrentPlayer,
-            () -> gameView.disableActionButtons()
+            gameView::disableActionButtons
         );
 
         this.accusationController = new AccusationController(
@@ -138,7 +141,7 @@ public class GameController {
             weapons,
             rooms,
             this::handleAccusationResult,
-            () -> gameView.disableActionButtons()
+            gameView::disableActionButtons
         );
 
             final EndTurnControllerImpl endTurnController = new EndTurnControllerImpl(() -> {
@@ -202,7 +205,7 @@ public class GameController {
                 @Override
                 public void windowClosing(final java.awt.event.WindowEvent e) {
                     for (final java.awt.Window w : java.awt.Window.getWindows()) {
-                        if (w != gameFrame && w.isVisible()) {
+                        if (!w.equals(gameFrame) && w.isVisible()) {
                             w.dispose();
                         }
                     }
@@ -217,7 +220,7 @@ public class GameController {
             if (previousWindow != null) {
                 previousWindow.dispose();
             }
-            if (oldFrame != null && oldFrame != previousWindow) {
+            if (oldFrame != null && !oldFrame.equals(previousWindow)) {
                 oldFrame.dispose();
             }
 

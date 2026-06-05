@@ -18,7 +18,7 @@ import java.awt.GridLayout;
  * Displays a dialog allowing the player to select a character, a weapon, and a room
  * to make a formal accusation. The confirm button triggers the accusation logic.
  */
-public class AccuseView extends JFrame {
+public final class AccuseView extends JFrame {
 
     private static final int FRAME_WIDTH = 700;
     private static final int FRAME_HEIGHT = 550;
@@ -42,7 +42,6 @@ public class AccuseView extends JFrame {
      * @param weapons    array of weapon cards to display
      * @param room       array of room cards to display
      */
-    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public AccuseView(final AbstractCard[] characters, final AbstractCard[] weapons, final AbstractCard[] room) {
 
         setTitle("Make Your Accusation:");
@@ -127,11 +126,20 @@ public class AccuseView extends JFrame {
     }
 
     /**
-     * Returns the confirm button so the controller can attach the action listener.
-     * 
-     * @return the confirm {@link JButton}
+     * Attaches an action listener to the confirm button.
+     *
+     * @param listener the {@link java.awt.event.ActionListener} to attach
      */
-    public JButton getConfirmButton() {
-        return confirmButton;
+    public void addConfirmListener(final java.awt.event.ActionListener listener) {
+        confirmButton.addActionListener(listener);
+    }
+
+    /**
+     * Enables or disables the confirm button.
+     *
+     * @param enabled {@code true} to enable the button, {@code false} to disable it
+     */
+    public void setConfirmEnabled(final boolean enabled) {
+        confirmButton.setEnabled(enabled);
     }
 }

@@ -27,7 +27,7 @@ import it.unibo.cluedolite.view.AppColorFont;
  * with a decorative envelope card below them, all on the application's dark background.
  * The window closes automatically after {@value AUTO_CLOSE_MS} milliseconds.
  */
-public class SecretSolutionStartView extends JFrame {
+public final class SecretSolutionStartView extends JFrame {
 
     private static final long serialVersionUID = 1L;
 
@@ -69,7 +69,6 @@ public class SecretSolutionStartView extends JFrame {
      * @param solution the list of three secret cards (character, weapon, room)
      *                 whose categories are shown but whose identities remain hidden
      */
-    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public SecretSolutionStartView(final List<AbstractCard> solution) {
         setTitle("Secret Solution");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -110,11 +109,13 @@ public class SecretSolutionStartView extends JFrame {
 
         outerPanel.add(mainPanel);
         add(outerPanel);
-        setVisible(true);
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            setVisible(true);
 
-        final Timer timer = new Timer(AUTO_CLOSE_MS, e -> dispose());
-        timer.setRepeats(false);
-        timer.start();
+            final Timer timer = new Timer(AUTO_CLOSE_MS, e -> dispose());
+            timer.setRepeats(false);
+            timer.start();
+        });
     }
 
     /**

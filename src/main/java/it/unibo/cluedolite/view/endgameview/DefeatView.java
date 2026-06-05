@@ -16,7 +16,7 @@ import it.unibo.cluedolite.view.AppColorFont;
  * View displayed when the player loses the game in CluedoLite.
  * Shows a fullscreen defeat message that closes automatically after 3 seconds.
  */
-public class DefeatView extends JFrame {
+public final class DefeatView extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private static final int BORDER_LINE = 6;
@@ -30,7 +30,6 @@ public class DefeatView extends JFrame {
      * Constructs and displays the defeat screen.
      * The window closes automatically after 3 seconds.
      */
-    @SuppressWarnings("PMD.ConstructorCallsOverridableMethod")
     public DefeatView() {
         setTitle("Defeat");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -70,10 +69,12 @@ public class DefeatView extends JFrame {
 
         add(rootPanel);
         setExtendedState(MAXIMIZED_BOTH);
-        setVisible(true);
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            setVisible(true);
 
-        final Timer timer = new Timer(AUTO_CLOSE_MS, e -> dispose());
-        timer.setRepeats(false);
-        timer.start();
+            final Timer timer = new Timer(AUTO_CLOSE_MS, e -> dispose());
+            timer.setRepeats(false);
+            timer.start();
+        });
     }
 }
